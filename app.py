@@ -21,7 +21,9 @@ def log_run(run_status):
 def index():
     return render_template("index.html")
   
-@app.route("/submit", methods=["POST"])
+@app.route("/planTrip", methods=["GET"])
+def plan_trip():
+  return render_template("plan-trip.html")
 
 
     
