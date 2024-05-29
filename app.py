@@ -20,6 +20,8 @@ def log_run(run_status):
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
+  
+@app.route("/submit", methods=["POST"])
 
 
     
