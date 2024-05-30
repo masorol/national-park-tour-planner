@@ -8,10 +8,61 @@
 </head>
 
 <body>
-  <h1>Where do you want to go?</h1>
-  <a href="/">Back to the home page</a>
+  <h1>Nature Nook.</h1>
+  <a href="/">My trips</a>
+  <h2>Your adventure<br>begins here!</h2>
+  <!-- todo: check wording - the form isn't below, it's to the side -->
+  <p>Fill out the form to kickstart your adventure in the national park of your choice.</p>
   <form action="/create_trip" method="POST">
-    <button type="submit">Create Trip</button>
+    <!-- todo: turn into a toggle for a calendar -->
+    <label for="location-search">Where do you want to go?</label>
+    <input type="text" id="location-search" name="location-search" placeholder="Search by city or country">
+    <label for="start">Exact dates</label>
+    <input type="date" id="start" name="trip-start" value="" min="" max="" />
+    <label for="end"></label>
+    <input type="date" id="end" name="trip-end" value="" min="" max="" />
+    <fieldset>
+      <legend>Who are you traveling with?</legend>
+      <input type="radio" id="solo" name="solo" value="solo" />
+      <label for="solo">Solo</label>
+      <input type="radio" id="partner" name="partner" value="partner" />
+      <label for="group">Partner</label>
+      <input type="radio" id="group" name="group" value="group" />
+      <label for="family">Group</label>
+      <input type="radio" id="with-kids" name="with-kids" value="with-kids" />
+      <label for="friends">With kids</label>
+    </fieldset>
+    <fieldset>
+      <legend>What type of lodging do you prefer? <span>(multi-select)</span></legend>
+      <input type="radio" id="hotels" name="hotels" value="hotels" />
+      <label for="solo">Hotels</label>
+      <input type="radio" id="lodges" name="lodges" value="lodges" />
+      <label for="group">Lodges</label>
+      <input type="radio" id="campsites" name="campsites" value="campsites" />
+      <label for="family">Campsites</label>
+      <input type="radio" id="bed-breakfast" name="bed-breakfast" value="bed-breakfast" />
+      <label for="friends">Bed & breakfasts</label>
+    </fieldset>
+    <fieldset>
+      <!-- todo: check wording - different than the design -->
+      <legend>What type of adventure do you prefer? <span>(multi-select)</span></legend>
+      <input type="checkbox" id="hiking" name="hiking" value="hiking" />
+      <label for="solo">Hiking & walking</label>
+      <input type="checkbox" id="tours" name="tours" value="tours" />
+      <label for="group">Guided Tours</label>
+      <input type="checkbox" id="swimming" name="swimming" value="swimming" />
+      <label for="family">Swimming</label>
+      <input type="checkbox" id="canoeing" name="canoeing" value="canoeing" />
+      <label for="friends">Canoeing</label>
+      <input type="checkbox" id="rafting" name="rafting" value="rafting" />
+      <label for="family">White water rafting</label>
+      <input type="checkbox" id="cycling" name="cycling" value="cycling" />
+      <label for="friends">Cycling</label>
+    </fieldset>
+    <label for="trip-name">Give your trip a unique name:</label>
+    <input type="text" id="trip-name" name="trip-name" placeholder="Enter trip name">
+    <!-- todo: check to see if text can be "Create trip" or something similar instead to be more accessible -->
+    <button type="submit">Next</button>
   </form>
 </body>
 

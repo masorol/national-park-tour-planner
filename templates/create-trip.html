@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Created Trip</title>
 </head>
+
 <body>
-  <h1>Your trip was created!</h1>
-  <a href="/">Back to the home page</a>
-  <a href="/plan_trip">Create another trip</a>
+  <h1>Nature Nook.</h1>
+  <!-- todo: check to make sure that My trips and all trips come from a drawer on the homepage and not a separate route -->
+  <a href="/">My trips</a>
+  <!-- <a href="/plan_trip">Create another trip</a> -->
+  <a href="/">Your trip to the {{ location }}!</a>
+  <p>date will be here{{ date }}</p>
+  <!-- todo: add routes to edit, export, and delete -->
+  <a href="">Edit trip</a>
+  <a href="">Export trip</a>
+  <a href="">Delete trip</a>
+  <section>
+    <p>trip will be here</p>
+    {{ trip }}
+  </section>
 </body>
+
 </html>
