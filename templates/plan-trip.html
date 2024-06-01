@@ -22,42 +22,42 @@
     <label for="end"></label>
     <input type="date" id="end" name="trip-end" value="" min="" max="" />
     <fieldset>
-      <legend>Who are you traveling with?</legend>
-      <input type="radio" id="solo" name="solo" value="solo" />
+      <legend>Who are you traveling with? <span>(multi-select)</span></legend>
+      <input type="checkbox" id="solo" name="traveling-with" value="solo" />
       <label for="solo">Solo</label>
-      <input type="radio" id="partner" name="partner" value="partner" />
+      <input type="checkbox" id="partner" name="traveling-with" value="with one partner" />
       <label for="group">Partner</label>
-      <input type="radio" id="group" name="group" value="group" />
+      <input type="checkbox" id="group" name="traveling-with" value="in a group" />
       <label for="family">Group</label>
-      <input type="radio" id="with-kids" name="with-kids" value="with-kids" />
-      <label for="friends">With kids</label>
+      <input type="checkbox" id="kids" name="traveling-with" value="with kids" />
+      <label for="with-kids">Kids</label>
     </fieldset>
     <fieldset>
       <legend>What type of lodging do you prefer? <span>(multi-select)</span></legend>
-      <input type="radio" id="hotels" name="hotels" value="hotels" />
-      <label for="solo">Hotels</label>
-      <input type="radio" id="lodges" name="lodges" value="lodges" />
-      <label for="group">Lodges</label>
-      <input type="radio" id="campsites" name="campsites" value="campsites" />
-      <label for="family">Campsites</label>
-      <input type="radio" id="bed-breakfast" name="bed-breakfast" value="bed-breakfast" />
-      <label for="friends">Bed & breakfasts</label>
+      <input type="checkbox" id="hotels" name="lodging" value="hotels" />
+      <label for="hotels">Hotels</label>
+      <input type="checkbox" id="lodges" name="lodging" value="lodges" />
+      <label for="lodges">Lodges</label>
+      <input type="checkbox" id="campsites" name="lodging" value="campsites" />
+      <label for="campsites">Campsites</label>
+      <input type="checkbox" id="bed-breakfast" name="lodging" value="bed &amp; breakfasts" />
+      <label for="bed-breakfast">Bed & breakfasts</label>
     </fieldset>
     <fieldset>
       <!-- todo: check wording - different than the design -->
       <legend>What type of adventure do you prefer? <span>(multi-select)</span></legend>
-      <input type="checkbox" id="hiking" name="hiking" value="hiking" />
-      <label for="solo">Hiking & walking</label>
-      <input type="checkbox" id="tours" name="tours" value="tours" />
-      <label for="group">Guided Tours</label>
-      <input type="checkbox" id="swimming" name="swimming" value="swimming" />
-      <label for="family">Swimming</label>
-      <input type="checkbox" id="canoeing" name="canoeing" value="canoeing" />
-      <label for="friends">Canoeing</label>
-      <input type="checkbox" id="rafting" name="rafting" value="rafting" />
-      <label for="family">White water rafting</label>
-      <input type="checkbox" id="cycling" name="cycling" value="cycling" />
-      <label for="friends">Cycling</label>
+      <input type="checkbox" id="hiking" name="adventure" value="hiking" />
+      <label for="hiking">Hiking & walking</label>
+      <input type="checkbox" id="tours" name="adventure" value="tours" />
+      <label for="tours">Guided Tours</label>
+      <input type="checkbox" id="swimming" name="adventure" value="swimming" />
+      <label for="swimming">Swimming</label>
+      <input type="checkbox" id="canoeing" name="adventure" value="canoeing" />
+      <label for="canoeing">Canoeing</label>
+      <input type="checkbox" id="rafting" name="adventure" value="rafting" />
+      <label for="rafting">White water rafting</label>
+      <input type="checkbox" id="cycling" name="adventure" value="cycling" />
+      <label for="cycling">Cycling</label>
     </fieldset>
     <label for="trip-name">Give your trip a unique name:</label>
     <input type="text" id="trip-name" name="trip-name" placeholder="Enter trip name">
