@@ -34,6 +34,9 @@
   --logo-text-font-family: "Josefin Sans", sans-serif;
   --trip-text-font-family: "Inter", sans-serif;
 }
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
@@ -149,18 +152,31 @@ aside {
   /* height: 100%; */
 }
 
+.location, .dates, fieldset, .trip-name {
+  margin-bottom: 40px;
+}
+
 fieldset {
   width: 100%;
   border: none;
   display: flex;
   justify-content: center;
   flex-flow: row wrap;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
 }
 
 label {
-  padding: 20px;
   width: 100%;
+  cursor: pointer;
+  /* display: inline-block; */
+}
+
+fieldset label {
+  padding: 20px 10px 20px 0;
   text-align: center;
+  width: 100%;
 }
 
 input {
@@ -168,11 +184,20 @@ input {
   padding: 10px 20px;
   /* todo: remove border */
   outline: 1px solid black;
-  width: 80%;
+  width: 100%;
+}
+
+fieldset input {
+  margin-top: 10px;
+  padding: 10px 20px;
+  /* todo: remove border */
+  outline: 1px solid black;
+  width: 0;
 }
 
 .plan-trip-form .btn {
   color: var(--button-text-color-primary);
+  width: 100%;
 }
 
 input[type=checkbox]{
@@ -188,18 +213,58 @@ input[type=checkbox]{
     font-size: 3rem;
   }
 
-  label {
-    padding: 20px;
+  .form-content-wrapper {
+    padding: 50px;
+  }
+
+  fieldset label {
     width: 45%;
-    text-align: center;
+    padding: 20px 10px 0 0;
+  }
+
+  .form-label {
+    width: 100%;
   }
   
   input {
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 10px 20px;
-    /* todo: remove border */
-    outline: 1px solid black;
     width: 100%;
+  }
+
+  .dates {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-flow: row wrap;
+  }
+  .calendar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .form-label {
+    width: 100%;
+  }
+
+  #start, #end {
+    width: 45%;
+  }
+
+  .bottom-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-end;
+    /* flex-flow: row wrap; */
+  }
+
+  #trip-name {
+    width: 80%;
+  } 
+  
+  .plan-trip-form .btn {
+    width: 50%;
   }
 }
 
@@ -219,7 +284,9 @@ input[type=checkbox]{
   }
 
   aside {
+    /* todo: decide */
     width: 50%;
+    width: 70%;
     justify-content: flex-end;
   }
 
@@ -250,6 +317,10 @@ input[type=checkbox]{
     height: 100%;
   }
 
+  .location, .dates, fieldset, .trip-name {
+    margin-bottom: 0px;
+  }
+
   .location, .dates, .trip-name {
     width: 50%;
   }
@@ -259,10 +330,11 @@ input[type=checkbox]{
     border: none;
     display: flex;
     justify-content: space-between;
+    flex-flow: row wrap;
   }
 
-  label {
-    padding: 20px;
+  fieldset label {
+    /* todo: ??? */
     width: revert;
   }
 
@@ -271,6 +343,7 @@ input[type=checkbox]{
     padding: 10px 20px;
     /* todo: remove border */
     outline: 1px solid black;
+    /* todo: ??? */
     width: revert;
   }
 
