@@ -1,69 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Where do you want to go?</title>
+  <title>Nature Nook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
-  <h1>Nature Nook.</h1>
-  <a href="/">My trips</a>
-  <h2>Your adventure<br>begins here!</h2>
-  <!-- todo: check wording - the form isn't below, it's to the side -->
-  <p>Fill out the form to kickstart your adventure in the national park of your choice.</p>
-  <form action="/create_trip" method="POST">
-    <!-- todo: turn into a toggle for a calendar -->
-    <label for="location-search">Where do you want to go?</label>
-    <input type="text" id="location-search" name="location-search" placeholder="Search by city or country">
-    <label for="start">Exact dates</label>
-    <input type="date" id="start" name="trip-start" value="" min="" max="" />
-    <label for="end"></label>
-    <input type="date" id="end" name="trip-end" value="" min="" max="" />
-    <fieldset>
-      <legend>Who are you traveling with? <span>(multi-select)</span></legend>
-      <input type="checkbox" id="solo" name="traveling-with" value="solo" />
-      <label for="solo">Solo</label>
-      <input type="checkbox" id="partner" name="traveling-with" value="with one partner" />
-      <label for="group">Partner</label>
-      <input type="checkbox" id="group" name="traveling-with" value="in a group" />
-      <label for="family">Group</label>
-      <input type="checkbox" id="kids" name="traveling-with" value="with kids" />
-      <label for="with-kids">Kids</label>
-    </fieldset>
-    <fieldset>
-      <legend>What type of lodging do you prefer? <span>(multi-select)</span></legend>
-      <input type="checkbox" id="hotels" name="lodging" value="hotels" />
-      <label for="hotels">Hotels</label>
-      <input type="checkbox" id="lodges" name="lodging" value="lodges" />
-      <label for="lodges">Lodges</label>
-      <input type="checkbox" id="campsites" name="lodging" value="campsites" />
-      <label for="campsites">Campsites</label>
-      <input type="checkbox" id="bed-breakfast" name="lodging" value="bed &amp; breakfasts" />
-      <label for="bed-breakfast">Bed & breakfasts</label>
-    </fieldset>
-    <fieldset>
-      <!-- todo: check wording - different than the design -->
-      <legend>What type of adventure do you prefer? <span>(multi-select)</span></legend>
-      <input type="checkbox" id="hiking" name="adventure" value="hiking" />
-      <label for="hiking">Hiking & walking</label>
-      <input type="checkbox" id="tours" name="adventure" value="tours" />
-      <label for="tours">Guided Tours</label>
-      <input type="checkbox" id="swimming" name="adventure" value="swimming" />
-      <label for="swimming">Swimming</label>
-      <input type="checkbox" id="canoeing" name="adventure" value="canoeing" />
-      <label for="canoeing">Canoeing</label>
-      <input type="checkbox" id="rafting" name="adventure" value="rafting" />
-      <label for="rafting">White water rafting</label>
-      <input type="checkbox" id="cycling" name="adventure" value="cycling" />
-      <label for="cycling">Cycling</label>
-    </fieldset>
-    <label for="trip-name">Give your trip a unique name:</label>
-    <input type="text" id="trip-name" name="trip-name" placeholder="Enter trip name">
-    <!-- todo: check to see if text can be "Create trip" or something similar instead to be more accessible -->
-    <button type="submit">Next</button>
-  </form>
+  <div class="dark-bkgd">
+    <header>
+      <div class="header-content-wrapper">
+        <a href="/">
+          <h1>Nature<br>Nook.</h1>
+        </a>
+        <div class="nav-wrapper">
+          <a href="/">My trips</a>
+          <p class="account">ED</p>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="main-content-wrapper">
+        <h2>Your adventure<br>begins here!</h2>
+        <p class="tag-line">Fill out the form to kickstart your adventure in the national park of your choice.</p>
+      </div>
+    </main>
+  </div>
+  <aside>
+    <div class="form-content-wrapper">
+      <form action="/create_trip" method="POST" class="plan-trip-form">
+        <!-- todo: turn into a toggle for a calendar -->
+        <div class="location">
+          <label for="location-search">Where do you want to go?</label>
+          <input type="text" id="location-search" name="location-search" placeholder="Search by city or country">
+        </div>
+        <div class="dates">
+          <label for="start">Exact dates</label>
+          <input type="date" id="start" name="trip-start" value="" min="" max="" />
+          <label for="end"></label>
+          <input type="date" id="end" name="trip-end" value="" min="" max="" />
+        </div>
+        <fieldset>
+          <legend>Who are you traveling with? <span>(multi-select)</span></legend>
+          <input type="checkbox" id="solo" name="traveling-with" value="solo" />
+          <label for="solo">Solo</label>
+          <input type="checkbox" id="partner" name="traveling-with" value="with one partner" />
+          <label for="group">Partner</label>
+          <input type="checkbox" id="group" name="traveling-with" value="in a group" />
+          <label for="family">Group</label>
+          <input type="checkbox" id="kids" name="traveling-with" value="with kids" />
+          <label for="with-kids">Kids</label>
+        </fieldset>
+        <fieldset>
+          <legend>What type of lodging do you prefer? <span>(multi-select)</span></legend>
+          <input type="checkbox" id="hotels" name="lodging" value="hotels" />
+          <label for="hotels">Hotels</label>
+          <input type="checkbox" id="lodges" name="lodging" value="lodges" />
+          <label for="lodges">Lodges</label>
+          <input type="checkbox" id="campsites" name="lodging" value="campsites" />
+          <label for="campsites">Campsites</label>
+          <input type="checkbox" id="bed-breakfast" name="lodging" value="bed &amp; breakfasts" />
+          <label for="bed-breakfast">Bed & breakfasts</label>
+        </fieldset>
+        <fieldset>
+          <!-- todo: check wording - different than the design -->
+          <legend>What type of adventure do you prefer? <span>(multi-select)</span></legend>
+          <!-- ! would it work to nest the input in the label? Maybe start by hiding checkbox -->
+          <input type="checkbox" id="hiking" name="adventure" value="hiking" />
+          <label for="hiking">Hiking & walking</label>
+          <input type="checkbox" id="tours" name="adventure" value="tours" />
+          <label for="tours">Guided Tours</label>
+          <input type="checkbox" id="swimming" name="adventure" value="swimming" />
+          <label for="swimming">Swimming</label>
+          <input type="checkbox" id="canoeing" name="adventure" value="canoeing" />
+          <label for="canoeing">Canoeing</label>
+          <input type="checkbox" id="rafting" name="adventure" value="rafting" />
+          <label for="rafting">White water rafting</label>
+          <input type="checkbox" id="cycling" name="adventure" value="cycling" />
+          <label for="cycling">Cycling</label>
+        </fieldset>
+        <div class="trip-name">
+          <label for="trip-name">Give your trip a unique name:</label>
+          <input type="text" id="trip-name" name="trip-name" placeholder="Enter trip name">
+        </div>
+        <!-- todo: check to see if text can be "Create trip" or something similar instead to be more accessible -->
+        <button type="submit" class="btn">Create trip</button>
+      </form>
+    </div>
+  </aside>
 </body>
 
 </html>
