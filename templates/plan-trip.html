@@ -13,8 +13,8 @@
     rel="stylesheet">
 </head>
 
-<body>
-  <div class="dark-bkgd">
+<body class="split-layout plan">
+  <div class="plan-half-dark-bkgd">
     <header>
       <div class="header-content-wrapper">
         <a href="/">
@@ -45,8 +45,8 @@
         <div class="dates">
           <label for="start" class="form-label">Exact dates</label>
           <div class="calendar">
-            <input type="date" id="start" name="trip-start" value="" min="" max="" />
-            <input type="date" id="end" name="trip-end" value="" min="" max="" />
+            <input type="date" id="start" name="trip-start" value="start" min="" max="" />
+            <input type="date" id="end" name="trip-end" value="end" min="" max="" />
           </div>
         </div>
         <fieldset>
@@ -70,30 +70,31 @@
           <legend>What type of lodging do you prefer? <span>(multi-select)</span></legend>
           <label for="hotels">
             <input type="checkbox" id="hotels" name="lodging" value="hotels" />
-            Hotels
+            Hotel
           </label>
           <label for="lodges">
             <input type="checkbox" id="lodges" name="lodging" value="lodges" />
-            Lodges
+            Lodge
           </label>
           <label for="campsites">
             <input type="checkbox" id="campsites" name="lodging" value="campsites" />
-            Campsites
+            Campsite
           </label>
           <label for="bed-breakfast">
+            <!-- todo: make s lower case -->
             <input type="checkbox" id="bed-breakfast" name="lodging" value="bed &amp; breakfasts" />
-            Bed & breakfasts
+            B&B
           </label>
         </fieldset>
         <fieldset>
           <legend>What type of adventure do you prefer? <span>(multi-select)</span></legend>
           <label for="hiking">
             <input type="checkbox" id="hiking" name="adventure" value="hiking" />
-            Hiking & walking
+            Hiking
           </label>
           <label for="tours">
             <input type="checkbox" id="tours" name="adventure" value="tours" />
-            Guided Tours
+            Tours
           </label>
           <label for="swimming">
             <input type="checkbox" id="swimming" name="adventure" value="swimming" />
@@ -105,11 +106,19 @@
           </label>
           <label for="rafting">
             <input type="checkbox" id="rafting" name="adventure" value="rafting" />
-            White water rafting
+            Rafting
           </label>
           <label for="cycling">
             <input type="checkbox" id="cycling" name="adventure" value="cycling" />
             Cycling
+          </label>
+          <label for="cycling">
+            <input type="checkbox" id="birding" name="adventure" value="birding" />
+            Birding
+          </label>
+          <label for="cycling">
+            <input type="checkbox" id="rock-climbing" name="adventure" value="rock climbing" />
+            Climbing
           </label>
         </fieldset>
         <div class="bottom-section">

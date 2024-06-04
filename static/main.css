@@ -1,39 +1,29 @@
 /* These are CSS variables. They allow you to change the theme of the chatbot by replacing the values. Read more about them here: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
 :root {
   /* logo and account background hover underline */
-  --accent-background: #C4FF47;
+
   /* --header-background: #3352A1; */
-  --dk-bkgd-text-color: #FFFFFF;
-  --default-background: #FFFFFF;
-  --light-bkgd-text-color: #000000;
-  --accent-text-color: #8D8D8D;
-  --button-background-color-primary: #4200FF;
-  --button-text-color-primary: #FFFFFF;
-  --button-background-color-secondary: #F0F0F0;
-  --button-text-color-secondary: #000000;
-  --button-background-color-tertiary: #E1D6FF;
-  --button-text-color-tertiary: #4200FF;
-  --button-background-color-quaternary: #000000;
-  --button-text-color-quaternary: #FFFFFF;
-  --button-background-color-quinary: #ADACAC;
-  --button-text-color-quinary: #FFFFFF;
-  --button-background-color-senary: #FFE9E9;
-  --button-text-color-senary: #FF0000;
-  --scroll-bar: #4200FF;
+  --default-light: #FFFFFF;
+  --default-dark: #000000;
+  --accent-bright: #C4FF47;
+  --accent-very-light: #A2A2A2;
+  --accent-light: #8D8D8D;
+  --accent-medium: #4200FF;
+  --accent-bold: #FF0000;
+  --button-lock: #ADACAC;
+  --button-hover: #E1D6FF;
+  --button-light: #F0F0F0;
+  --button-light-accent: rgba(0, 0, 0, 0.21);
+  --button-warning: #FFE9E9;
+  --border-radius: 7px;
   --toggle-background: #D9D9D9;
-  --toggle-background-active: #000000;
   --waiting-animation: #E2D7FF;
-  /* --user-block: #FFEBFF;
-  --assistant-block: #FFFFFF; */
-  --borders: 1px solid #000000;
-  --border-input: 3px solid #2B6DEE;
-  --border-radius: 5px;
-  --background-border-radius: 20px 20px 0 0;
-  /* --placeholder-text-accents: #9E9C9C; */
+  --placeholder-text-accents: #9E9C9C;
   --default-text-font-family: "Lato", sans-serif;
   --logo-text-font-family: "Josefin Sans", sans-serif;
   --trip-text-font-family: "Inter", sans-serif;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -44,8 +34,20 @@ body {
   margin: 0;
 }
 
-body {
+body.full-layout {
   background: linear-gradient(0deg, rgba(60, 60, 60, 0.55), rgba(60, 60, 60, 0.55)), url('alice-triquet-HeEJU3nrg_0-unsplash.png'), #000000;
+  background-size: cover;
+  background-position: center;
+}
+
+body.plan {
+  background: linear-gradient(0deg, rgba(60, 60, 60, 0.75), rgba(60, 60, 60, 0.75)), url('rohit-tandon-9wg5jCEPBsw-unsplash.png'), #000000;
+  background-size: cover;
+  background-position: center;
+}
+
+body.create {
+  background: linear-gradient(0deg, rgba(60, 60, 60, 0.29), rgba(60, 60, 60, 0.29)), url('AmyMartin_GC_from_above.png'), #000000;
   background-size: cover;
   background-position: center;
 }
@@ -53,24 +55,27 @@ body {
 body,
 input {
   font-size: 1rem;
-  /* line-height: 24px; */
-  color: var(--default-text-color);
+  color: var(--default-dark);
   font-family: var(--default-text-font-family);
-  /* background-color: var(--default-background); */
 }
 
 body .dark-bkgd,
-body .dark-bkgd a {
-  color: var(--dk-bkgd-text-color);
+body .plan-half-dark-bkgd,
+body .create-half-dark-bkgd,
+body .dark-bkgd a,
+body .plan-half-dark-bkgd a,
+body .create-half-dark-bkgd a {
+  color: var(--default-light); 
 }
 
 h1 {
   font-size: 1.875rem;
   font-family: var(--logo-text-font-family);
-  color: var(--light-bkgd-text-color);
-  background-color: var(--accent-background);
+  color: var(--default-dark);
+  background-color: var(--accent-bright);
   padding: 15px 10px 10px 10px;
   border-radius: var(--border-radius);
+  line-height: 0.7;
 }
 
 h2 {
@@ -85,8 +90,10 @@ a {
 
 .btn {
   padding: 10px 40px 10px 45px;
-  background-color: var(--button-background-color-primary);
+  background-color: var(--accent-medium);
   border-radius: var(--border-radius);
+  font-weight: 900;
+  font-size: 1.5rem;
 }
 
 header {
@@ -110,9 +117,9 @@ header .header-content-wrapper {
 
 .account {
   padding: 5px 5px 7px 5px;
-  background-color: var(--accent-background);
+  background-color: var(--accent-bright);
   border-radius: 50%;
-  color: var(--light-bkgd-text-color);
+  color: var(--default-dark);
 }
 
 main {
@@ -126,8 +133,34 @@ main {
   width: 80%;
 }
 
+.create-main-content-wrapper {
+  margin-top: 50px;
+}
+
 .tag-line {
   margin-bottom: 30px;
+}
+
+#trip-date {
+  margin-bottom: 30px;
+}
+
+#edit-trip, #delete-trip, #export-trip {
+  padding: 20px;
+  background-color: var(--default-light);
+  color: var(--default-dark);
+  border-radius: var(--border-radius);
+  margin: 20px 0;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.create-trip-edit-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 }
 
 aside {
@@ -135,11 +168,12 @@ aside {
   justify-content: center;
 }
 
-.form-content-wrapper {
-  background-color: var(--default-background);
-  color: var(--light-bkgd-text-color);
+.form-content-wrapper, .trip-content-wrapper {
+  background-color: var(--default-light);
+  color: var(--default-dark);
   border-radius: 20px;
   width: 80%;
+  width: 100%;
   padding: 20px;
   margin-bottom: 30px;
 }
@@ -147,13 +181,18 @@ aside {
 .plan-trip-form {
   display: flex;
   flex-flow: row wrap;
-  /* ! maybe??? */
-  /* align-content: space-between; */
-  /* height: 100%; */
 }
 
-.location, .dates, fieldset, .trip-name {
-  margin-bottom: 40px;
+span {
+  color: var(--accent-very-light);
+}
+
+.location,
+.dates,
+fieldset,
+.bottom-section,
+.trip-name {
+  margin-bottom: 50px;
 }
 
 fieldset {
@@ -165,42 +204,50 @@ fieldset {
   margin-left: 0;
   margin-right: 0;
   padding: 0;
+  gap: 10px;
+}
+
+fieldset legend {
+  margin-bottom: 20px;
 }
 
 label {
   width: 100%;
   cursor: pointer;
-  /* display: inline-block; */
 }
 
 fieldset label {
   padding: 20px 10px 20px 0;
   text-align: center;
   width: 100%;
+  background-color: var(--button-light);
+  border-radius: var(--border-radius);
+  border-bottom: 4px solid var(--button-light-accent);
 }
 
 input {
   margin-top: 10px;
   padding: 10px 20px;
-  /* todo: remove border */
-  outline: 1px solid black;
   width: 100%;
+  border: none;
+  background-color: var(--default-light);
+  border-radius: var(--border-radius);
+  border-bottom: 4px solid var(--button-light-accent);
 }
 
 fieldset input {
   margin-top: 10px;
   padding: 10px 20px;
-  /* todo: remove border */
-  outline: 1px solid black;
   width: 0;
 }
 
 .plan-trip-form .btn {
-  color: var(--button-text-color-primary);
+  color: var(--default-light);
   width: 100%;
+  border: none;
 }
 
-input[type=checkbox]{
+input[type=checkbox] {
   opacity: 0;
 }
 
@@ -213,19 +260,26 @@ input[type=checkbox]{
     font-size: 3rem;
   }
 
-  .form-content-wrapper {
+  .form-content-wrapper, .trip-content-wrapper {
     padding: 50px;
+  }
+
+  #location-search {
+    font-size: 1rem;
+  }
+
+  fieldset {
+    justify-content: space-between;
   }
 
   fieldset label {
     width: 45%;
-    padding: 20px 10px 0 0;
   }
 
   .form-label {
     width: 100%;
   }
-  
+
   input {
     margin-top: 20px;
     padding: 10px 20px;
@@ -238,38 +292,44 @@ input[type=checkbox]{
     width: 100%;
     flex-flow: row wrap;
   }
+
   .calendar {
     display: flex;
     justify-content: space-between;
+    flex-flow: row wrap;
   }
 
   .form-label {
     width: 100%;
   }
 
-  #start, #end {
+  #start,
+  #end {
     width: 45%;
   }
 
   .bottom-section {
     display: flex;
     justify-content: space-between;
+    /* align-items: flex-end; */
     width: 100%;
-    align-items: flex-end;
-    /* flex-flow: row wrap; */
   }
 
   #trip-name {
-    width: 80%;
-  } 
-  
+    width: 90%;
+  }
+
+  .trip-name {
+    margin: 0;
+  }
+
   .plan-trip-form .btn {
     width: 50%;
   }
 }
 
 @media only screen and (min-width: 1200px) {
-  body {
+  .split-layout {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -279,8 +339,26 @@ input[type=checkbox]{
     width: 79%;
   }
 
-  .dark-bkgd {
+  .plan-half-dark-bkgd {
     width: 50%;
+  }
+
+  .create-half-dark-bkgd {
+    width: 70%;
+  }
+
+  .create-main-content-wrapper h2 {
+    margin-top: 10px;
+  }
+
+  .create-trip-edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #edit-trip, #delete-trip, #export-trip {
+    width: 30%;
   }
 
   aside {
@@ -296,32 +374,48 @@ input[type=checkbox]{
     margin-left: -5px;
   }
 
+  .trip-content-wrapper h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
   .homepage-h2 {
     font-size: 5rem;
     margin-bottom: 30px;
-    width: 50%;
     margin-left: -5px;
+    /* wraps on smaller desktops */
+    /* width: 50%; */
   }
 
-  .form-content-wrapper {
+  .form-content-wrapper, 
+  .trip-content-wrapper {
     border-radius: 30px 0 0 30px;
     margin-bottom: 0;
     padding: 60px;
+    width: 80%;
+  }
+
+  .trip-content-wrapper {
+    overflow: scroll;
+    /* todo: figure out why this doesn't work */
+    scrollbar-color: #4200FF;
   }
 
   .plan-trip-form {
-    /* display: flex;
-    flex-flow: row wrap; */
-    /* ! maybe??? */
     align-content: space-between;
     height: 100%;
   }
 
-  .location, .dates, fieldset, .trip-name {
+  .location,
+  .dates,
+  fieldset,
+  .trip-name {
     margin-bottom: 0px;
   }
 
-  .location, .dates, .trip-name {
+  .location,
+  .dates,
+  .trip-name {
     width: 50%;
   }
 
@@ -334,21 +428,18 @@ input[type=checkbox]{
   }
 
   fieldset label {
-    /* todo: ??? */
-    width: revert;
+    width: 23%;
+    padding: 10px 10px 15px 10px;
   }
 
   input {
     margin-top: 10px;
     padding: 10px 20px;
-    /* todo: remove border */
-    outline: 1px solid black;
-    /* todo: ??? */
-    width: revert;
+    width: 90%;
   }
 
   .plan-trip-form .btn {
-    color: var(--button-text-color-primary);
+    color: var(--default-light);
   }
 
 }

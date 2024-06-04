@@ -1,28 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Created Trip</title>
+  <title>Nature Nook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
 </head>
 
-<body>
-  <a href="/"><h1>Nature Nook.</h1></a>
-  <!-- todo: check to make sure that My trips and all trips come from a drawer on the homepage and not a separate route -->
-  <!-- todo: change route to my trips -->
-  <a href="/">My trips</a>
-  <!-- <a href="/plan_trip">Create another trip</a> -->
-  <a href="/">Your trip to the {{ location }}!</a>
-  <p>date will be here{{ date }}</p>
-  <!-- todo: add routes to edit, export, and delete -->
-  <a href="">Edit trip</a>
-  <a href="">Export trip</a>
-  <a href="">Delete trip</a>
-  <section>
-    <p>trip will be here</p>
-    {{ trip }}
-  </section>
+<body class="split-layout create">
+  <div class="create-half-dark-bkgd">
+    <header>
+      <div class="header-content-wrapper">
+        <a href="/">
+          <h1>Nature<br>Nook.</h1>
+        </a>
+        <div class="nav-wrapper">
+          <!-- todo: change route to my trips -->
+          <a href="/">My trips</a>
+          <p class="account">ED</p>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="main-content-wrapper create-main-content-wrapper">
+
+        <a href="/">Back to all the trips</a>
+        <h2>Your trip to the<br>place{{ location }}!</h2>
+        <p id="trip-date">date{{ date }}</p>
+        <!-- todo: add routes to edit, export, and delete -->
+        <div class="create-trip-edit-buttons">
+          <a href="" id="edit-trip">Edit trip</a>
+          <a href="" id="export-trip">Export trip</a>
+          <a href="" id="delete-trip">Delete trip</a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <aside>
+    <div class="trip-content-wrapper">
+      <h2 class="scroll">Overall itinerary</h2>
+      <p>{{trip}}Carrot cake halvah tart cheesecake topping. Oat cake toffee sweet ice cream gingerbread jelly. Jelly-o jelly-o
+        candy marzipan cake liquorice sweet. Jujubes oat cake oat cake gingerbread danish oat cake tootsie roll. Cupcake
+        cake topping brownie apple pie cake. Candy halvah halvah cookie liquorice marshmallow cupcake pie. Croissant
+        dragée sweet cheesecake cotton candy fruitcake. Croissant gummies chocolate gummi bears bonbon gingerbread gummi
+        bears icing. Jujubes lemon drops cookie cookie tart chocolate bar. Liquorice candy dessert halvah soufflé cookie
+        jujubes muffin. Candy jelly beans gummi bears jelly-o bear claw apple pie shortbread biscuit. Tootsie roll wafer
+        sweet pie wafer toffee marshmallow.
+        Pudding cookie biscuit muffin bonbon tiramisu. Topping cotton candy cupcake sugar plum powder tart gummies
+        liquorice shortbread. Lemon drops halvah carrot cake cupcake powder caramels candy canes donut. Sweet roll
+        gummies gummi bears apple pie apple pie pudding chocolate. Gummies chocolate cake danish chocolate candy canes
+        sugar plum cupcake pudding candy canes. Candy sugar plum marzipan croissant cheesecake dragée cake chocolate.
+        Topping cake macaroon candy cake. Marzipan gummies oat cake donut chocolate halvah marzipan. Gummi bears icing
+        carrot cake tart icing shortbread biscuit topping. Cake macaroon soufflé chocolate bear claw liquorice lollipop.
+        Chocolate chocolate liquorice ice cream chocolate bar topping brownie candy canes shortbread. Gummi bears jelly
+        beans fruitcake croissant donut pudding liquorice tart. Donut tootsie roll pastry gingerbread lollipop candy
+        canes dessert chupa chups jelly-o. Halvah bear claw cookie halvah marzipan oat cake.
+        Lemon drops chocolate bar danish donut cupcake. Icing cake candy dessert jelly-o tootsie roll topping pudding.
+        Gingerbread wafer cake sweet roll tiramisu cupcake tiramisu sweet roll. Lollipop carrot cake ice cream candy
+        cookie toffee fruitcake jelly-o cookie. Tootsie roll dessert shortbread sweet cupcake soufflé. Bonbon jelly-o
+        soufflé pie icing soufflé chocolate oat cake. Pudding chocolate bar dragée lemon drops apple pie muffin. Dragée
+        cake danish chupa chups shortbread. Croissant icing icing biscuit lollipop bear claw muffin. Jelly danish oat
+        cake cake cookie danish. Chocolate cake caramels apple pie sesame snaps liquorice soufflé brownie gummi bears.
+        Topping sugar plum powder chupa chups pastry. Marzipan lollipop cheesecake muffin sesame snaps danish dragée.
+        Carrot cake sweet candy cheesecake toffee shortbread carrot cake topping cheesecake. Sweet oat cake powder
+        fruitcake gummi bears. Croissant muffin biscuit chupa chups oat cake gummies ice cream ice cream ice cream.
+        Danish pie sugar plum sweet roll fruitcake donut. Liquorice apple pie wafer muffin chocolate bar tart powder
+        cookie marzipan. Chocolate bar ice cream wafer sweet sweet roll pie tart candy canes. Danish sugar plum dragée
+        cookie biscuit. Jelly-o icing soufflé apple pie shortbread cake biscuit. Candy canes marzipan biscuit lollipop
+        pudding. Fruitcake marshmallow topping sesame snaps tootsie roll sesame snaps sweet roll. Shortbread muffin
+        macaroon pie jelly pastry danish brownie apple pie. Dragée cheesecake sweet roll candy canes bonbon sugar plum.
+        Candy canes chocolate cake gingerbread gingerbread icing cookie chocolate cake ice cream chupa chups.
+        Powder jelly beans dragée topping tootsie roll pie cookie wafer pudding. Powder cupcake shortbread caramels
+        gingerbread croissant muffin shortbread. Cotton candy caramels lemon drops chupa chups tart chocolate bar
+        soufflé. Chupa chups cotton candy fruitcake chocolate biscuit candy canes cheesecake halvah. Lemon drops sugar
+        plum gummies carrot cake chupa chups chupa chups jelly beans. Tiramisu jelly jelly gummi bears candy canes
+        brownie fruitcake oat cake sugar plum. Caramels apple pie powder dessert marshmallow chocolate bar pastry. Oat
+        cake sesame snaps powder toffee cotton candy dessert. Jelly fruitcake bear claw dragée donut pudding jelly-o
+        pastry wafer. Halvah chocolate pudding topping pie cheesecake danish ice cream candy canes. Topping chocolate
+        cake lemon drops chocolate sweet roll icing sweet sugar plum. Pastry powder ice cream brownie chupa chups
+        dessert danish.</p>
+      {{ trip }}
+    </div>
+  </aside>
 </body>
 
 </html>
