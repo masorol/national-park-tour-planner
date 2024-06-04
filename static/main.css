@@ -88,12 +88,21 @@ a {
   text-decoration: none;
 }
 
+.link-underline:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-bright);
+}
+
 .btn {
   padding: 10px 40px 10px 45px;
   background-color: var(--accent-medium);
   border-radius: var(--border-radius);
   font-weight: 900;
   font-size: 1.5rem;
+}
+
+.btn:hover {
+  background-color: var(--default-dark);
 }
 
 header {
@@ -224,6 +233,28 @@ fieldset label {
   border-radius: var(--border-radius);
   border-bottom: 4px solid var(--button-light-accent);
 }
+
+fieldset label:hover {
+  background-color: var(--button-hover);
+  border-bottom: 4px solid var(--accent-medium);
+}
+
+/* fieldset label:active {
+  background-color: var(--button-lock);
+  border-bottom: 4px solid var(--accent-medium);
+} */
+
+fieldset label input[type=checkbox]:checked {
+  accent-color: red;
+  background: blue;
+  background-color: pink;
+  border-bottom: 4px solid purple;
+}
+
+/* fieldset label:focus {
+  background-color: var(--button-lock);
+  border-bottom: 4px solid var(--accent-medium);
+} */
 
 input {
   margin-top: 10px;
