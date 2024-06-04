@@ -65,7 +65,7 @@ body .create-half-dark-bkgd,
 body .dark-bkgd a,
 body .plan-half-dark-bkgd a,
 body .create-half-dark-bkgd a {
-  color: var(--default-light); 
+  color: var(--default-light);
 }
 
 h1 {
@@ -99,6 +99,7 @@ a {
   border-radius: var(--border-radius);
   font-weight: 900;
   font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .btn:hover {
@@ -154,7 +155,9 @@ main {
   margin-bottom: 30px;
 }
 
-#edit-trip, #delete-trip, #export-trip {
+#edit-trip,
+#delete-trip,
+#export-trip {
   padding: 20px;
   background-color: var(--default-light);
   color: var(--default-dark);
@@ -177,7 +180,8 @@ aside {
   justify-content: center;
 }
 
-.form-content-wrapper, .trip-content-wrapper {
+.form-content-wrapper,
+.trip-content-wrapper {
   background-color: var(--default-light);
   color: var(--default-dark);
   border-radius: 20px;
@@ -192,7 +196,7 @@ aside {
   flex-flow: row wrap;
 }
 
-span {
+.legend-span {
   color: var(--accent-very-light);
 }
 
@@ -222,7 +226,6 @@ fieldset legend {
 
 label {
   width: 100%;
-  cursor: pointer;
 }
 
 fieldset label {
@@ -235,32 +238,8 @@ fieldset label {
 }
 
 fieldset label:hover {
+  color: var(--accent-medium);
   background-color: var(--button-hover);
-  border-bottom: 4px solid var(--accent-medium);
-}
-
-/* fieldset label:active {
-  background-color: var(--button-lock);
-  border-bottom: 4px solid var(--accent-medium);
-} */
-
-/* This shows an underline but only during the click */
-/* fieldset label:active {
-  text-decoration: underline;
-} */
-
-/* This doesn't work at all. I've tried different selectors */
-/* input[type=checkbox]:checked + label {
-  accent-color: red;
-  background: blue;
-  background-color: pink;
-  border-bottom: 4px solid purple;
-  text-decoration: underline;
-} */
-
-/* Doesn't work */
-fieldset label:focus {
-  background-color: var(--button-lock);
   border-bottom: 4px solid var(--accent-medium);
 }
 
@@ -299,16 +278,13 @@ input[type=checkbox] {
     font-size: 3rem;
   }
 
-  .form-content-wrapper, .trip-content-wrapper {
+  .form-content-wrapper,
+  .trip-content-wrapper {
     padding: 50px;
   }
 
   #location-search {
     font-size: 1rem;
-  }
-
-  #start, #end {
-    width: 50%;
   }
 
   fieldset {
@@ -349,12 +325,12 @@ input[type=checkbox] {
   #start,
   #end {
     width: 45%;
+    cursor: pointer;
   }
 
   .bottom-section {
     display: flex;
     justify-content: space-between;
-    /* align-items: flex-end; */
     width: 100%;
   }
 
@@ -400,12 +376,13 @@ input[type=checkbox] {
     width: 100%;
   }
 
-  #edit-trip, #delete-trip, #export-trip {
+  #edit-trip,
+  #delete-trip,
+  #export-trip {
     width: 30%;
   }
 
   aside {
-    /* todo: decide */
     width: 50%;
     width: 70%;
     justify-content: flex-end;
@@ -426,11 +403,9 @@ input[type=checkbox] {
     font-size: 5rem;
     margin-bottom: 30px;
     margin-left: -5px;
-    /* wraps on smaller desktops */
-    /* width: 50%; */
   }
 
-  .form-content-wrapper, 
+  .form-content-wrapper,
   .trip-content-wrapper {
     border-radius: 30px 0 0 30px;
     margin-bottom: 0;
@@ -443,18 +418,6 @@ input[type=checkbox] {
     scrollbar-color: var(--accent-medium) var(--accent-medium);
     scrollbar-width: thin;
   }
-
-  /* May be needed for some browsers */
-  /* ::-webkit-scrollbar {
-    width: 10px;
-    background-color: var(--accent-medium);
-  } */
-  
-  /* ::-webkit-scrollbar-thumb {
-    border-radius: 1000px;
-    background-color: var(--accent-medium);
-    border: 2px solid var()
-  } */
 
   .plan-trip-form {
     align-content: space-between;
@@ -471,6 +434,11 @@ input[type=checkbox] {
   .location,
   .dates,
   .trip-name {
+    width: 50%;
+  }
+
+  #start,
+  #end {
     width: 50%;
   }
 
@@ -499,6 +467,17 @@ input[type=checkbox] {
 
 }
 
-body {
-  background-color: red;
+
+.custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
+  color: var(--accent-medium)
+}
+
+.custom-checkbox {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  display: inline-block;
 }
