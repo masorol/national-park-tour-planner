@@ -244,17 +244,25 @@ fieldset label:hover {
   border-bottom: 4px solid var(--accent-medium);
 } */
 
-fieldset label input[type=checkbox]:checked {
+/* This shows an underline but only during the click */
+/* fieldset label:active {
+  text-decoration: underline;
+} */
+
+/* This doesn't work at all. I've tried different selectors */
+/* input[type=checkbox]:checked + label {
   accent-color: red;
   background: blue;
   background-color: pink;
   border-bottom: 4px solid purple;
-}
+  text-decoration: underline;
+} */
 
-/* fieldset label:focus {
+/* Doesn't work */
+fieldset label:focus {
   background-color: var(--button-lock);
   border-bottom: 4px solid var(--accent-medium);
-} */
+}
 
 input {
   margin-top: 10px;
@@ -297,6 +305,10 @@ input[type=checkbox] {
 
   #location-search {
     font-size: 1rem;
+  }
+
+  #start, #end {
+    width: 50%;
   }
 
   fieldset {
@@ -428,9 +440,21 @@ input[type=checkbox] {
 
   .trip-content-wrapper {
     overflow: scroll;
-    /* todo: figure out why this doesn't work */
-    scrollbar-color: #4200FF;
+    scrollbar-color: var(--accent-medium) var(--accent-medium);
+    scrollbar-width: thin;
   }
+
+  /* May be needed for some browsers */
+  /* ::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--accent-medium);
+  } */
+  
+  /* ::-webkit-scrollbar-thumb {
+    border-radius: 1000px;
+    background-color: var(--accent-medium);
+    border: 2px solid var()
+  } */
 
   .plan-trip-form {
     align-content: space-between;
@@ -473,4 +497,8 @@ input[type=checkbox] {
     color: var(--default-light);
   }
 
+}
+
+body {
+  background-color: red;
 }
