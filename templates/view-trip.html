@@ -31,8 +31,11 @@
       <div class="main-content-wrapper create-main-content-wrapper">
 
         <a href="/">Back to all the trips</a>
-        <h2>Your trip to the<br>place{{ location }}!</h2>
-        <p id="trip-date">date{{ date }}</p>
+        <h2>Your trip to <br>{{ output.location }}!</h2>
+        <p id="trip-date">{{ output.trip_start }} - {{ output.trip_end }}</p>
+        <p id="traveling-with">Companions: {{ output.traveling_with }}</p>
+        <p id="lodging">Lodging: {{ output.lodging }}</p>
+        <p id="adventure">Activities: {{ output.adventure }}</p>
         <!-- todo: add routes to edit, export, and delete -->
         <div class="create-trip-edit-buttons">
           <a href="" id="edit-trip">Edit trip</a>
@@ -45,7 +48,13 @@
   <aside>
     <div class="trip-content-wrapper">
       <h2 class="scroll">Overall itinerary</h2>
-      <p class="trip-itenerary">{{trip}}</p>
+      {% for day in output.itinerary %}
+      <h3>Day {{ day.day }}</h3>
+      <p>Date: {{ day.date }}</p>
+      <p>Morning: {{ day.morning }}</p>
+      <p>Afternoon: {{ day.afternoon }}</p>
+      <p>Evening: {{ day.evening }}</p>
+      {% endfor %}
     </div>
   </aside>
 </body>
