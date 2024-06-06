@@ -48,7 +48,7 @@
   <aside>
     <div class="trip-content-wrapper">
       <h2 class="scroll">Overall itinerary</h2>
-      {% for day in itinerary %}
+      {% for day in output.itinerary %}
       <h3>Day {{ day.day }}</h3>
       <p>Date: {{ day.date }}</p>
       <p>Morning: {{ day.morning }}</p>
