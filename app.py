@@ -55,7 +55,7 @@ def create_trip():
   
   # log.info(cleaned_form_data)
   # print(cleaned_form_data)
-  # prompt = build_new_trip_prompt(cleaned_form_data)
+  prompt = build_new_trip_prompt(cleaned_form_data)
   # log.info(prompt)
   return render_template("create-trip.html")
 

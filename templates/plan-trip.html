@@ -22,7 +22,7 @@
         </a>
         <div class="nav-wrapper">
           <!-- todo: change route to my trips -->
-          <a href="/">My trips</a>
+          <a href="/" class="link-underline">My trips</a>
           <p class="account">ED</p>
         </div>
       </div>
@@ -50,75 +50,76 @@
           </div>
         </div>
         <fieldset>
-          <legend>Who are you traveling with? <span>(multi-select)</span></legend>
-          <label for="solo">
-            <input type="checkbox" id="solo" name="traveling-with" value="solo" />Solo
+          <legend>Who are you traveling with? <span class="legend-span">(multi-select)</span></legend>
+          <label for="solo" class="custom-checkbox">
+            <input type="checkbox" id="solo" name="traveling-with" value="solo" class="visually-hidden" /><span class="checkbox-label">Solo</span>
           </label>
-          <label for="group">
-            <input type="checkbox" id="partner" name="traveling-with" value="with one partner" />
-            Partner
+          <label for="partner" class="custom-checkbox">
+            <input type="checkbox" id="partner" name="traveling-with" value="with one partner"
+              class="visually-hidden" />
+            <span class="checkbox-label">Partner</span>
           </label>
-          <label for="family">
-            <input type="checkbox" id="group" name="traveling-with" value="in a group" />
-            Group
+          <label for="group" class="custom-checkbox">
+            <input type="checkbox" id="group" name="traveling-with" value="in a group" class="visually-hidden" />
+            <span class="checkbox-label">Group</span>
           </label>
-          <label for="with-kids">
-            <input type="checkbox" id="kids" name="traveling-with" value="with kids" />Kids
-          </label>
-        </fieldset>
-        <fieldset>
-          <legend>What type of lodging do you prefer? <span>(multi-select)</span></legend>
-          <label for="hotels">
-            <input type="checkbox" id="hotels" name="lodging" value="hotels" />
-            Hotel
-          </label>
-          <label for="lodges">
-            <input type="checkbox" id="lodges" name="lodging" value="lodges" />
-            Lodge
-          </label>
-          <label for="campsites">
-            <input type="checkbox" id="campsites" name="lodging" value="campsites" />
-            Campsite
-          </label>
-          <label for="bed-breakfast">
-            <!-- todo: make s lower case -->
-            <input type="checkbox" id="bed-breakfast" name="lodging" value="bed &amp; breakfasts" />
-            B&B
+          <label for="kids" class="custom-checkbox">
+            <input type="checkbox" id="kids" name="traveling-with" value="with kids" class="visually-hidden" /><span class="checkbox-label">Kids</span>
           </label>
         </fieldset>
         <fieldset>
-          <legend>What type of adventure do you prefer? <span>(multi-select)</span></legend>
-          <label for="hiking">
-            <input type="checkbox" id="hiking" name="adventure" value="hiking" />
-            Hiking
+          <legend>What type of lodging do you prefer? <span class="legend-span">(multi-select)</span></legend>
+          <label for="hotels" class="custom-checkbox">
+            <input type="checkbox" id="hotels" name="lodging" value="hotels" class="visually-hidden" />
+            <span class="checkbox-label">Hotel</span>
           </label>
-          <label for="tours">
-            <input type="checkbox" id="tours" name="adventure" value="tours" />
-            Tours
+          <label for="lodges" class="custom-checkbox">
+            <input type="checkbox" id="lodges" name="lodging" value="lodges" class="visually-hidden" />
+            <span class="checkbox-label">Lodge</span>
           </label>
-          <label for="swimming">
-            <input type="checkbox" id="swimming" name="adventure" value="swimming" />
-            Swimming
+          <label for="campsites" class="custom-checkbox">
+            <input type="checkbox" id="campsites" name="lodging" value="campsites" class="visually-hidden" />
+            <span class="checkbox-label">Campsite</span>
           </label>
-          <label for="canoeing">
-            <input type="checkbox" id="canoeing" name="adventure" value="canoeing" />
-            Canoeing
+          <label for="bed-breakfast" class="custom-checkbox">
+            <input type="checkbox" id="bed-breakfast" name="lodging" value="bed &amp; breakfasts"
+              class="visually-hidden" />
+            <span class="checkbox-label">B&B</span>
           </label>
-          <label for="rafting">
-            <input type="checkbox" id="rafting" name="adventure" value="rafting" />
-            Rafting
+        </fieldset>
+        <fieldset>
+          <legend>What type of adventure do you prefer? <span class="legend-span">(multi-select)</span></legend>
+          <label for="hiking" class="custom-checkbox">
+            <input type="checkbox" id="hiking" name="adventure" value="hiking" class="visually-hidden" />
+            <span class="checkbox-label">Hiking</span>
           </label>
-          <label for="cycling">
-            <input type="checkbox" id="cycling" name="adventure" value="cycling" />
-            Cycling
+          <label for="tours" class="custom-checkbox">
+            <input type="checkbox" id="tours" name="adventure" value="tours" class="visually-hidden" />
+            <span class="checkbox-label">Tours</span>
           </label>
-          <label for="cycling">
-            <input type="checkbox" id="birding" name="adventure" value="birding" />
-            Birding
+          <label for="swimming" class="custom-checkbox">
+            <input type="checkbox" id="swimming" name="adventure" value="swimming" class="visually-hidden" />
+            <span class="checkbox-label">Swimming</span>
           </label>
-          <label for="cycling">
-            <input type="checkbox" id="rock-climbing" name="adventure" value="rock climbing" />
-            Climbing
+          <label for="canoeing" class="custom-checkbox">
+            <input type="checkbox" id="canoeing" name="adventure" value="canoeing" class="visually-hidden" />
+            <span class="checkbox-label">Canoeing</span>
+          </label>
+          <label for="rafting" class="custom-checkbox">
+            <input type="checkbox" id="rafting" name="adventure" value="rafting" class="visually-hidden" />
+            <span class="checkbox-label">Rafting</span>
+          </label>
+          <label for="cycling" class="custom-checkbox">
+            <input type="checkbox" id="cycling" name="adventure" value="cycling" class="visually-hidden" />
+            <span class="checkbox-label">Cycling</span>
+          </label>
+          <label for="birding" class="custom-checkbox">
+            <input type="checkbox" id="birding" name="adventure" value="birding" class="visually-hidden" />
+            <span class="checkbox-label">Birding</span>
+          </label>
+          <label for="climbing" class="custom-checkbox">
+            <input type="checkbox" id="climbing" name="adventure" value="climbing" class="visually-hidden" />
+            <span class="checkbox-label">Climbing</span>
           </label>
         </fieldset>
         <div class="bottom-section">
