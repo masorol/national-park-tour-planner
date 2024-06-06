@@ -469,7 +469,9 @@ input[type=checkbox] {
 
 
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
-  color: var(--accent-medium)
+  color: var(--accent-medium);
+  /* Todo check font-weight */
+  font-weight: 700;
 }
 
 .custom-checkbox {
