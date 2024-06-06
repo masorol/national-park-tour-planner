@@ -65,7 +65,7 @@ body .create-half-dark-bkgd,
 body .dark-bkgd a,
 body .plan-half-dark-bkgd a,
 body .create-half-dark-bkgd a {
-  color: var(--default-light); 
+  color: var(--default-light);
 }
 
 h1 {
@@ -88,12 +88,22 @@ a {
   text-decoration: none;
 }
 
+.link-underline:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-bright);
+}
+
 .btn {
   padding: 10px 40px 10px 45px;
   background-color: var(--accent-medium);
   border-radius: var(--border-radius);
   font-weight: 900;
   font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(--default-dark);
 }
 
 header {
@@ -145,7 +155,9 @@ main {
   margin-bottom: 30px;
 }
 
-#edit-trip, #delete-trip, #export-trip {
+#edit-trip,
+#delete-trip,
+#export-trip {
   padding: 20px;
   background-color: var(--default-light);
   color: var(--default-dark);
@@ -168,7 +180,8 @@ aside {
   justify-content: center;
 }
 
-.form-content-wrapper, .trip-content-wrapper {
+.form-content-wrapper,
+.trip-content-wrapper {
   background-color: var(--default-light);
   color: var(--default-dark);
   border-radius: 20px;
@@ -183,7 +196,7 @@ aside {
   flex-flow: row wrap;
 }
 
-span {
+.legend-span {
   color: var(--accent-very-light);
 }
 
@@ -213,7 +226,6 @@ fieldset legend {
 
 label {
   width: 100%;
-  cursor: pointer;
 }
 
 fieldset label {
@@ -223,6 +235,12 @@ fieldset label {
   background-color: var(--button-light);
   border-radius: var(--border-radius);
   border-bottom: 4px solid var(--button-light-accent);
+}
+
+fieldset label:hover {
+  color: var(--accent-medium);
+  background-color: var(--button-hover);
+  border-bottom: 4px solid var(--accent-medium);
 }
 
 input {
@@ -260,7 +278,8 @@ input[type=checkbox] {
     font-size: 3rem;
   }
 
-  .form-content-wrapper, .trip-content-wrapper {
+  .form-content-wrapper,
+  .trip-content-wrapper {
     padding: 50px;
   }
 
@@ -306,12 +325,12 @@ input[type=checkbox] {
   #start,
   #end {
     width: 45%;
+    cursor: pointer;
   }
 
   .bottom-section {
     display: flex;
     justify-content: space-between;
-    /* align-items: flex-end; */
     width: 100%;
   }
 
@@ -357,12 +376,13 @@ input[type=checkbox] {
     width: 100%;
   }
 
-  #edit-trip, #delete-trip, #export-trip {
+  #edit-trip,
+  #delete-trip,
+  #export-trip {
     width: 30%;
   }
 
   aside {
-    /* todo: decide */
     width: 50%;
     width: 70%;
     justify-content: flex-end;
@@ -383,11 +403,9 @@ input[type=checkbox] {
     font-size: 5rem;
     margin-bottom: 30px;
     margin-left: -5px;
-    /* wraps on smaller desktops */
-    /* width: 50%; */
   }
 
-  .form-content-wrapper, 
+  .form-content-wrapper,
   .trip-content-wrapper {
     border-radius: 30px 0 0 30px;
     margin-bottom: 0;
@@ -397,8 +415,8 @@ input[type=checkbox] {
 
   .trip-content-wrapper {
     overflow: scroll;
-    /* todo: figure out why this doesn't work */
-    scrollbar-color: #4200FF;
+    scrollbar-color: var(--accent-medium) var(--accent-medium);
+    scrollbar-width: thin;
   }
 
   .plan-trip-form {
@@ -416,6 +434,11 @@ input[type=checkbox] {
   .location,
   .dates,
   .trip-name {
+    width: 50%;
+  }
+
+  #start,
+  #end {
     width: 50%;
   }
 
@@ -442,4 +465,30 @@ input[type=checkbox] {
     color: var(--default-light);
   }
 
+}
+
+
+.custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
+  color: var(--accent-medium);
+  /* Todo check font-weight */
+  font-weight: 700;
+}
+
+.custom-checkbox {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  display: inline-block;
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
 }
