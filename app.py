@@ -21,7 +21,7 @@ logging.basicConfig(filename = "app.log", level = logging.INFO)
 
 app = Flask(__name__)
 
-def build_new_trip_prompt(form_data):
+def build_new_trip_prompt_template():
     examples = [
         {
           "trip_details":
@@ -52,8 +52,7 @@ This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. This p
       suffix = "{input}",
       input_variables = ["input"],
     )
-
-    return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " + form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our web site’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.  Do not include the word itinerary at the beginning of your response.")
+    return few_shot_prompt
 
 def log_run(run_status):
     if run_status in ["cancelled", "failed", "expired"]:
@@ -73,27 +72,14 @@ def view_trip():
   traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
   lodging_list = ", ".join(request.form.getlist("lodging"))
   adventure_list = ", ".join(request.form.getlist("adventure"))
-  
-  cleaned_form_data = {
-    "location": request.form["location-search"],
-    "trip_start": request.form["trip-start"],
-    "trip_end": request.form["trip-end"],
-    "traveling_with": traveling_with_list,
-    "lodging": lodging_list,
-    "adventure": adventure_list,
-    "trip_name": request.form["trip-name"]
-  }
 
-  prompt = build_new_trip_prompt(cleaned_form_data)
+  prompt = build_new_trip_prompt_template()
 
-  response = llm.invoke(prompt)
+  chain = prompt | llm | parser
 
-  stripped_response = response.lstrip("Itinerary:") # forcing it to be only json, true solution is the prompt template
-
-  output = parser.parse(stripped_response)
+  output = chain.invoke("This trip is to " + request.form["location-search"] + " between " + request.form["trip-start"] + " and " + request.form["trip-end"] + ". This person will be traveling " + traveling_with_list + " and would like to stay in " + lodging_list + ". They want to " + adventure_list + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our web site’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.  The first character in the response should be the opening curly brace.")
 
   return render_template("view-trip.html", output = output)
-
 
 
     
