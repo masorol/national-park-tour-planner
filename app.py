@@ -5,8 +5,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
+from langchain_core.output_parsers import JsonOutputParser
 
-llm = OpenAI()
+llm = OpenAI(
+  max_tokens = -1
+)
+
+parser = JsonOutputParser()
+
 
 # app will run at: http://127.0.0.1:5000/
 
@@ -32,31 +38,18 @@ They want to hiking, swimming. Create a daily itinerary for this trip using this
 """,
       "itinerary":
 """
-Day 1: May 23, 2024 (Thursday)
-Morning: Arrive at Yosemite National Park
-Afternoon: Set up campsite at North Pines Campground
-Evening: Explore the campground and have a family campfire dinner
-
-Day 2: May 24, 2024 (Friday)
-Morning: Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)
-Afternoon: Picnic lunch in the Valley
-Evening: Relax at the campsite, storytelling around the campfire
-
-Day 3: May 25, 2024 (Saturday)
-Morning: Hike to Mirror Lake (easy hike, great for kids)
-Afternoon: Swimming at Mirror Lake
-Evening: Dinner at the campsite, stargazing
+{{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","num_days":"3","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}
 """
    },
-   {  
-      "trip_details": "your second example prompt",
-      "itinerary": "your second example response"
-   },
-   {  
-      "trip_details": "your third example prompt",
-      "itinerary": "your third example response"
-   },
-  ]
+    {
+        "trip_details":
+"""
+This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This person will be traveling solo and would like to stay in hotels. They want to hiking. Create a daily itinerary for this trip using this information.
+""",
+        "itinerary": """{{"trip_name": "Zion Here I Come}}"""
+    }
+]
+
 
   example_prompt = PromptTemplate.from_template(
     template =
@@ -74,7 +67,7 @@ Evening: Dinner at the campsite, stargazing
     input_variables = ["input"],
   )
 
-  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information.")
+  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our app’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. Do not include the word itinerary at the beginning.")
 
 
 # Render the HTML template - we're going to see a UI!!!
@@ -86,8 +79,8 @@ def index():
 def plan_trip():
   return render_template("plan-trip.html")
 
-@app.route("/create_trip", methods=["POST"])
-def create_trip():
+@app.route("/view_trip", methods=["POST"])
+def view_trip():
   traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
   lodging_list = ", ".join(request.form.getlist("lodging"))
   adventure_list = ", ".join(request.form.getlist("adventure"))
@@ -104,9 +97,11 @@ def create_trip():
   prompt = build_new_trip_prompt(cleaned_form_data)
   
   response = llm.invoke(prompt)
-  log.info(response)
+  # log.info(response)
+  output = parser.parse(response)
+  log.info(output)
 
-  return render_template("create-trip.html")
+  return render_template("view-trip.html", output = output)
 
 
     
