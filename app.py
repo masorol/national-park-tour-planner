@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, json
+from flask import Flask, render_template, request
 import logging
 import datetime
 from langchain_core.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
 from langchain_core.output_parsers import JsonOutputParser
+import json
 
 # app will run at: http://127.0.0.1:5000/
 
