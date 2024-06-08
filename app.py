@@ -5,14 +5,8 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
-from langchain_core.output_parsers import JsonOutputParser
 
-llm = OpenAI(
-  max_tokens = -1
-)
-
-parser = JsonOutputParser()
-
+llm = OpenAI()
 
 # app will run at: http://127.0.0.1:5000/
 
@@ -67,7 +61,7 @@ This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This perso
     input_variables = ["input"],
   )
 
-  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our app’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. Do not include the word itinerary at the beginning.")
+  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our app’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. Do not include the word itinerary at the beginning. The first character of the response should be an opening curly brace.")
 
 
 # Render the HTML template - we're going to see a UI!!!
@@ -97,11 +91,9 @@ def view_trip():
   prompt = build_new_trip_prompt(cleaned_form_data)
   
   response = llm.invoke(prompt)
-  # log.info(response)
-  output = parser.parse(response)
-  log.info(output)
+  log.info(response)
 
-  return render_template("view-trip.html", output = output)
+  return render_template("view-trip.html")
 
 
     
