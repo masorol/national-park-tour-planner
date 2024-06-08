@@ -52,6 +52,7 @@ This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. This p
       suffix = "{input}",
       input_variables = ["input"],
     )
+    
     return few_shot_prompt
 
 def log_run(run_status):
@@ -77,7 +78,7 @@ def view_trip():
 
   chain = prompt | llm | parser
 
-  output = chain.invoke("This trip is to " + request.form["location-search"] + " between " + request.form["trip-start"] + " and " + request.form["trip-end"] + ". This person will be traveling " + traveling_with_list + " and would like to stay in " + lodging_list + ". They want to " + adventure_list + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our web site’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.  The first character in the response should be the opening curly brace.")
+  output = chain.invoke("This trip is to " + request.form["location-search"] + " between " + request.form["trip-start"] + " and " + request.form["trip-end"] + ". This person will be traveling " + traveling_with_list + " and would like to stay in " + lodging_list + ". They want to " + adventure_list + ". Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our web site’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.  The first character in the response should be the opening curly brace.")
 
   return render_template("view-trip.html", output = output)
 
