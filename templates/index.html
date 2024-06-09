@@ -3,18 +3,36 @@
 
 <head>
   <title>Nature Nook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
   <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
 </head>
 
-<body>
-
-  <h1>Nature Nook.</h1>
-  <a href="">My trips</a>
-  <h2>Welcome back {{ name }}</h2>
-  <p>Thinking of a new adventure? We're here to help!</p>
-  <a href="/plan_trip">Create New Trip</a>
-
+<body class="full-layout">
+  <div class="dark-bkgd">
+    <header>
+      <div class="header-content-wrapper">
+        <a href="/"><h1>Nature<br>Nook.</h1></a>
+        <div class="nav-wrapper">
+          <!-- todo: change route to my trips -->
+          <a href="" class="link-underline">My trips</a>
+          <p class="account">ED</p>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="homepage-content-wrapper">
+        <h2 class="homepage-h2">Dreaming of your<br>next adventure?<br>Let us guide you!</h2>
+        <p class="tag-line">Discover the best places to stay, dine, and explore.</p>
+        <a href="/plan_trip" class="btn">Create New Trip</a>
+      </div>
+    </main>
+  </div>
 </body>
 
 </html>

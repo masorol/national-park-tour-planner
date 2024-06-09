@@ -1,0 +1,494 @@
+/* These are CSS variables. They allow you to change the theme of the chatbot by replacing the values. Read more about them here: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
+:root {
+  /* logo and account background hover underline */
+
+  /* --header-background: #3352A1; */
+  --default-light: #FFFFFF;
+  --default-dark: #000000;
+  --accent-bright: #C4FF47;
+  --accent-very-light: #A2A2A2;
+  --accent-light: #8D8D8D;
+  --accent-medium: #4200FF;
+  --accent-bold: #FF0000;
+  --button-lock: #ADACAC;
+  --button-hover: #E1D6FF;
+  --button-light: #F0F0F0;
+  --button-light-accent: rgba(0, 0, 0, 0.21);
+  --button-warning: #FFE9E9;
+  --border-radius: 7px;
+  --toggle-background: #D9D9D9;
+  --waiting-animation: #E2D7FF;
+  --placeholder-text-accents: #9E9C9C;
+  --default-text-font-family: "Lato", sans-serif;
+  --logo-text-font-family: "Josefin Sans", sans-serif;
+  --trip-text-font-family: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body.full-layout {
+  background: linear-gradient(0deg, rgba(60, 60, 60, 0.55), rgba(60, 60, 60, 0.55)), url('alice-triquet-HeEJU3nrg_0-unsplash.png'), #000000;
+  background-size: cover;
+  background-position: center;
+}
+
+body.plan {
+  background: linear-gradient(0deg, rgba(60, 60, 60, 0.75), rgba(60, 60, 60, 0.75)), url('rohit-tandon-9wg5jCEPBsw-unsplash.png'), #000000;
+  background-size: cover;
+  background-position: center;
+}
+
+body.create {
+  background: linear-gradient(0deg, rgba(60, 60, 60, 0.29), rgba(60, 60, 60, 0.29)), url('AmyMartin_GC_from_above.png'), #000000;
+  background-size: cover;
+  background-position: center;
+}
+
+body,
+input {
+  font-size: 1rem;
+  color: var(--default-dark);
+  font-family: var(--default-text-font-family);
+}
+
+body .dark-bkgd,
+body .plan-half-dark-bkgd,
+body .create-half-dark-bkgd,
+body .dark-bkgd a,
+body .plan-half-dark-bkgd a,
+body .create-half-dark-bkgd a {
+  color: var(--default-light);
+}
+
+h1 {
+  font-size: 1.875rem;
+  font-family: var(--logo-text-font-family);
+  color: var(--default-dark);
+  background-color: var(--accent-bright);
+  padding: 15px 10px 10px 10px;
+  border-radius: var(--border-radius);
+  line-height: 0.7;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-left: -2px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.link-underline:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-bright);
+}
+
+.btn {
+  padding: 10px 40px 10px 45px;
+  background-color: var(--accent-medium);
+  border-radius: var(--border-radius);
+  font-weight: 900;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(--default-dark);
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+header .header-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account {
+  padding: 5px 5px 7px 5px;
+  background-color: var(--accent-bright);
+  border-radius: 50%;
+  color: var(--default-dark);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+}
+
+.homepage-content-wrapper,
+.main-content-wrapper {
+  width: 80%;
+}
+
+.create-main-content-wrapper {
+  margin-top: 50px;
+}
+
+.tag-line {
+  margin-bottom: 30px;
+}
+
+#trip-date {
+  margin-bottom: 30px;
+}
+
+#edit-trip,
+#delete-trip,
+#export-trip {
+  padding: 20px;
+  background-color: var(--default-light);
+  color: var(--default-dark);
+  border-radius: var(--border-radius);
+  margin: 20px 0;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.create-trip-edit-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+aside {
+  display: flex;
+  justify-content: center;
+}
+
+.form-content-wrapper,
+.trip-content-wrapper {
+  background-color: var(--default-light);
+  color: var(--default-dark);
+  border-radius: 20px;
+  width: 80%;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.plan-trip-form {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.legend-span {
+  color: var(--accent-very-light);
+}
+
+.location,
+.dates,
+fieldset,
+.bottom-section,
+.trip-name {
+  margin-bottom: 50px;
+}
+
+fieldset {
+  width: 100%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  gap: 10px;
+}
+
+fieldset legend {
+  margin-bottom: 20px;
+}
+
+label {
+  width: 100%;
+}
+
+fieldset label {
+  padding: 20px 10px 20px 0;
+  text-align: center;
+  width: 100%;
+  background-color: var(--button-light);
+  border-radius: var(--border-radius);
+  border-bottom: 4px solid var(--button-light-accent);
+}
+
+fieldset label:hover {
+  color: var(--accent-medium);
+  background-color: var(--button-hover);
+  border-bottom: 4px solid var(--accent-medium);
+}
+
+input {
+  margin-top: 10px;
+  padding: 10px 20px;
+  width: 100%;
+  border: none;
+  background-color: var(--default-light);
+  border-radius: var(--border-radius);
+  border-bottom: 4px solid var(--button-light-accent);
+}
+
+fieldset input {
+  margin-top: 10px;
+  padding: 10px 20px;
+  width: 0;
+}
+
+.plan-trip-form .btn {
+  color: var(--default-light);
+  width: 100%;
+  border: none;
+}
+
+input[type=checkbox] {
+  opacity: 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .nav-wrapper {
+    gap: 20px;
+  }
+
+  h2 {
+    font-size: 3rem;
+  }
+
+  .form-content-wrapper,
+  .trip-content-wrapper {
+    padding: 50px;
+  }
+
+  #location-search {
+    font-size: 1rem;
+  }
+
+  fieldset {
+    justify-content: space-between;
+  }
+
+  fieldset label {
+    width: 45%;
+  }
+
+  .form-label {
+    width: 100%;
+  }
+
+  input {
+    margin-top: 20px;
+    padding: 10px 20px;
+    width: 100%;
+  }
+
+  .dates {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-flow: row wrap;
+  }
+
+  .calendar {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+  }
+
+  .form-label {
+    width: 100%;
+  }
+
+  #start,
+  #end {
+    width: 45%;
+    cursor: pointer;
+  }
+
+  .bottom-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #trip-name {
+    width: 90%;
+  }
+
+  .trip-name {
+    margin: 0;
+  }
+
+  .plan-trip-form .btn {
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .split-layout {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .homepage-content-wrapper {
+    width: 79%;
+  }
+
+  .plan-half-dark-bkgd {
+    width: 50%;
+  }
+
+  .create-half-dark-bkgd {
+    width: 70%;
+  }
+
+  .create-main-content-wrapper h2 {
+    margin-top: 10px;
+  }
+
+  .create-trip-edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #edit-trip,
+  #delete-trip,
+  #export-trip {
+    width: 30%;
+  }
+
+  aside {
+    width: 50%;
+    width: 70%;
+    justify-content: flex-end;
+  }
+
+  h2 {
+    font-size: 5rem;
+    margin-bottom: 30px;
+    margin-left: -5px;
+  }
+
+  .trip-content-wrapper h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .homepage-h2 {
+    font-size: 5rem;
+    margin-bottom: 30px;
+    margin-left: -5px;
+  }
+
+  .form-content-wrapper,
+  .trip-content-wrapper {
+    border-radius: 30px 0 0 30px;
+    margin-bottom: 0;
+    padding: 60px;
+    width: 80%;
+  }
+
+  .trip-content-wrapper {
+    overflow: scroll;
+    scrollbar-color: var(--accent-medium) var(--accent-medium);
+    scrollbar-width: thin;
+  }
+
+  .plan-trip-form {
+    align-content: space-between;
+    height: 100%;
+  }
+
+  .location,
+  .dates,
+  fieldset,
+  .trip-name {
+    margin-bottom: 0px;
+  }
+
+  .location,
+  .dates,
+  .trip-name {
+    width: 50%;
+  }
+
+  #start,
+  #end {
+    width: 50%;
+  }
+
+  fieldset {
+    width: 100%;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+  }
+
+  fieldset label {
+    width: 23%;
+    padding: 10px 10px 15px 10px;
+  }
+
+  input {
+    margin-top: 10px;
+    padding: 10px 20px;
+    width: 90%;
+  }
+
+  .plan-trip-form .btn {
+    color: var(--default-light);
+  }
+
+}
+
+
+.custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
+  color: var(--accent-medium);
+  /* Todo check font-weight */
+  font-weight: 700;
+}
+
+.custom-checkbox {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  display: inline-block;
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}

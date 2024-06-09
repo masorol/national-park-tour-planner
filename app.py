@@ -25,9 +25,9 @@ def index():
 def plan_trip():
   return render_template("plan-trip.html")
 
-@app.route("/create_trip", methods=["POST"])
-def create_trip():
-  return render_template("create-trip.html")
+@app.route("/view_trip", methods=["POST"])
+def view_trip():
+  return render_template("view-trip.html")
 
 
 
