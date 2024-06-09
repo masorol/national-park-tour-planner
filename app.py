@@ -38,8 +38,8 @@ def index():
 def plan_trip():
   return render_template("plan-trip.html")
 
-@app.route("/create_trip", methods=["POST"])
-def create_trip():
+@app.route("/view_trip", methods=["POST"])
+def view_trip():
   traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
   lodging_list = ", ".join(request.form.getlist("lodging"))
   adventure_list = ", ".join(request.form.getlist("adventure"))
@@ -57,7 +57,7 @@ def create_trip():
   # print(cleaned_form_data)
   prompt = build_new_trip_prompt(cleaned_form_data)
   # log.info(prompt)
-  return render_template("create-trip.html")
+  return render_template("view-trip.html")
 
 
     
