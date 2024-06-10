@@ -24,13 +24,13 @@ def log_run(run_status):
 def build_new_trip_prompt(form_data):
   examples = [
    {  
-      "trip_details":
+      "prompt":
 """
 This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. 
 This person will be traveling solo, with kids and would like to stay in campsites. 
 They want to hiking, swimming. Create a daily itinerary for this trip using this information.
 """,
-      "itinerary":
+      "response":
 """
 Day 1: May 23, 2024 (Thursday)
 Morning: Arrive at Yosemite National Park
@@ -61,7 +61,7 @@ Evening: Dinner at the campsite, stargazing
   example_prompt = PromptTemplate.from_template(
     template =
 """
-{trip_details}\nItinerary: {itinerary}
+{prompt}\nItinerary: {response}
 """
   )
   
