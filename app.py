@@ -49,19 +49,19 @@ Evening: Dinner at the campsite, stargazing
 """
    },
    {  
-      "trip_details": "your second example prompt",
-      "itinerary": "your second example response"
+      "prompt": "your second example prompt",
+      "response": "your second example response"
    },
    {  
-      "trip_details": "your third example prompt",
-      "itinerary": "your third example response"
+      "prompt": "your third example prompt",
+      "response": "your third example response"
    },
   ]
 
   example_prompt = PromptTemplate.from_template(
     template =
 """
-{prompt}\nItinerary: {response}
+{prompt}\n{response}
 """
   )
   
