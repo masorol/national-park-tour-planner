@@ -30,23 +30,23 @@ def log_run(run_status):
 def build_new_trip_prompt(form_data):
   examples = [
    {  
-      "trip_details":
+      "prompt":
 """
 This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. 
 This person will be traveling solo, with kids and would like to stay in campsites. 
-They want to hiking, swimming. Create a daily itinerary for this trip using this information.
+They want to go hiking, swimming. Create a daily itinerary for this trip using this information.
 """,
-      "itinerary":
+      "response":
 """
 {{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","num_days":"3","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}
 """
    },
     {
-        "trip_details":
+        "prompt":
 """
-This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This person will be traveling solo and would like to stay in hotels. They want to hiking. Create a daily itinerary for this trip using this information.
+This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This person will be traveling solo and would like to stay in hotels. They want to go hiking. Create a daily itinerary for this trip using this information.
 """,
-        "itinerary": """{{"trip_name": "Zion Here I Come}}"""
+        "response": """{{"trip_name": "Zion Here I Come}}"""
     }
 ]
 
@@ -54,7 +54,7 @@ This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This perso
   example_prompt = PromptTemplate.from_template(
     template =
 """
-{trip_details}\nItinerary: {itinerary}
+{prompt}\n{response}
 """
   )
   
