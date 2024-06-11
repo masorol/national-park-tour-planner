@@ -28,7 +28,7 @@ def build_new_trip_prompt(form_data):
 """
 This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. 
 This person will be traveling solo, with kids and would like to stay in campsites. 
-They want to hiking, swimming. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
+They want to go hiking, swimming. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
 """,
       "response":
 """
@@ -38,7 +38,7 @@ They want to hiking, swimming. Create a daily itinerary for this trip using this
     {
         "prompt":
 """
-This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This person will be traveling solo and would like to stay in hotels. They want to hiking. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
+This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This person will be traveling solo and would like to stay in hotels. They want to go hiking. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
 """,
         "response": """{{"trip_name": "Zion Here I Come}}"""
     }
@@ -48,7 +48,7 @@ This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This perso
   example_prompt = PromptTemplate.from_template(
     template =
 """
-{prompt}\nItinerary: {response}
+{prompt}\n{response}
 """
   )
   
