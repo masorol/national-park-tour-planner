@@ -67,7 +67,7 @@ This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This perso
     input_variables = ["input"],
   )
 
-  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our app’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. Do not include the word itinerary at the beginning. The first character of the response should be an opening curly brace.")
+  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our app’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. Do not include the word itinerary at the beginning. The first character of the response should be an opening curly brace.")
 
 
 # Render the HTML template - we're going to see a UI!!!
@@ -89,9 +89,10 @@ def view_trip():
     "location": request.form["location-search"],
     "trip_start": request.form["trip-start"],
     "trip_end": request.form["trip-end"],
-    "traveling_with": traveling_with_list,
-    "lodging": lodging_list,
-    "adventure": adventure_list
+    "traveling_with_list": traveling_with_list,
+    "lodging_list": lodging_list,
+    "adventure_list": adventure_list,
+    "trip_name": request.form["trip-name"]
     }
   
   prompt = build_new_trip_prompt(cleaned_form_data)
