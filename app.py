@@ -126,7 +126,8 @@ def view_trip():
     "trip_end": request.form["trip-end"],
     "traveling_with_list": traveling_with_list,
     "lodging_list": lodging_list,
-    "adventure_list": adventure_list
+    "adventure_list": adventure_list,
+    "trip_name": request.form["trip-name"]
   })
   
   # log.info(output)
