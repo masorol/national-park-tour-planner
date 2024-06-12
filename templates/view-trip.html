@@ -31,15 +31,17 @@
       <div class="main-content-wrapper create-main-content-wrapper">
 
         <a href="/">Back to all the trips</a>
-        <h2>Your trip to <br>{{ location }}!</h2>
-        <p id="trip-date">{{ trip_start }} - {{ trip_end }}</p>
+        <h2>{{ trip_name }}</h2>
+        <p id="location">Location: {{ location }}</p>
+        <p id="trip-date">Dates: {{ trip_start }} - {{ trip_end }}</p>
+        <p id="weather">Typical Weather: {{ typical_weather }}</p>
         <p id="traveling-with">Companions: {{ traveling_with }}</p>
         <p id="lodging">Lodging: {{ lodging }}</p>
         <p id="adventure">Activities: {{ adventure }}</p>
         <!-- todo: add routes to edit, export, and delete -->
         <div class="create-trip-edit-buttons">
           <a href="" id="edit-trip">Edit trip</a>
-          <a href="" id="export-trip">Export trip</a>
+          <a href="/export" id="export-trip">Export trip</a>
           <a href="" id="delete-trip">Delete trip</a>
         </div>
       </div>

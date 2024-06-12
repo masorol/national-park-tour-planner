@@ -74,7 +74,7 @@ Evening: Dinner at the campsite, stargazing
     input_variables = ["input"],
   )
 
-  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with"] + " and would like to stay in " + form_data["lodging"] + ". They want to " + form_data["adventure"] + ". Create an daily itinerary for this trip using this information.")
+  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information.")
 
 
 # Render the HTML template - we're going to see a UI!!!
@@ -96,9 +96,12 @@ def view_trip():
     "location": request.form["location-search"],
     "trip_start": request.form["trip-start"],
     "trip_end": request.form["trip-end"],
-    "traveling_with": traveling_with_list,
-    "lodging": lodging_list,
-    "adventure": adventure_list
+    "traveling_with_list": traveling_with_list,
+    "lodging_list": lodging_list,
+    "adventure_list": adventure_list,
+    "trip_name": request.form["trip-name"]
+
+
     }
   
   prompt = build_new_trip_prompt(cleaned_form_data)
