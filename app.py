@@ -23,9 +23,9 @@ def build_new_trip_prompt(form_data):
     location = form_data["location"],
     trip_start = form_data["trip_start"],
     trip_end = form_data["trip_end"],
-    traveling_with = form_data["traveling_with"],
-    lodging = form_data["lodging"],
-    adventure = form_data["adventure"]
+    traveling_with = form_data["traveling_with_list"],
+    lodging = form_data["lodging_list"],
+    adventure = form_data["adventure_list"]
     )
 
 
@@ -48,9 +48,10 @@ def view_trip():
     "location": request.form["location-search"],
     "trip_start": request.form["trip-start"],
     "trip_end": request.form["trip-end"],
-    "traveling_with": traveling_with_list,
-    "lodging": lodging_list,
-    "adventure": adventure_list
+    "traveling_with_list": traveling_with_list,
+    "lodging_list": lodging_list,
+    "adventure_list": adventure_list,
+    "trip_name": request.form["trip-name"]
     }
   
   # log.info(cleaned_form_data)
