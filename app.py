@@ -77,6 +77,8 @@ Evening: Dinner at the campsite, stargazing
   return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information.")
 
 
+
+
 # Render the HTML template - we're going to see a UI!!!
 @app.route("/", methods=["GET"])
 def index():
