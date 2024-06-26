@@ -23,7 +23,7 @@ Once the virtual environment is activated, the beginning of your terminal prompt
 <br>
 Install the LangChain modules by running (in both a Mac and Windows):
 
-`pip install langchain langchain-core langchain-community langchain-openai flask` 
+`pip install langchain langchain-core langchain-community langchain-openai langchainhub flask` 
 
 You'll see an openai-env folder has been added to the directory with all of the installed dependencies.
 
@@ -45,6 +45,3 @@ Then hard refresh the page. When making changes to your Python, HTML, or JavaScr
 When finished, quit the run by clicking control + C and close the virtual environment by running: 
 
 `deactivate`
-
-
-

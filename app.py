@@ -1,150 +1,126 @@
 from flask import Flask, render_template, request
 import logging
 import datetime
-from langchain_core.prompts.few_shot import FewShotPromptTemplate
-from langchain_core.prompts.prompt import PromptTemplate
-from langchain_openai import OpenAI
-from langchain_core.output_parsers import JsonOutputParser
-import json
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_json_chat_agent, AgentExecutor
+from langchain_community.tools import WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper
+from langchain.tools import StructuredTool
+from langchain import hub
 
-# app will run at: http://127.0.0.1:5000/
-
-# set up logging in the assistant.log file
+# Initialize logging
+logging.basicConfig(filename="app.log", level=logging.INFO)
 log = logging.getLogger("app")
 
-llm = OpenAI(
-   max_tokens = -1 # not recommended!!
-)
-
-parser = JsonOutputParser()
-
-logging.basicConfig(filename = "app.log", level = logging.INFO)
-
+# Initialize the Flask application
 app = Flask(__name__)
 
-def build_new_trip_prompt_template():
-    examples = [
-        {
-          "prompt":
-"""
-This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. This person will be traveling solo, with kids and would like to stay in campsites. They want to go hiking, swimming. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
-""",
-          "response": """{{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}"""
-        },
-                {
-          "prompt":
-"""
-This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. This person will be traveling solo, with kids and would like to stay in campsites. They want to go hiking, swimming. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
-""",
-          "response": """{{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}"""
-        }
-    ]
-
-    example_prompt = PromptTemplate.from_template(
-      template =
-"""
-{prompt}\n{response}
-"""
-    )
-
-    few_shot_prompt = FewShotPromptTemplate(
-      examples = examples,
-      example_prompt = example_prompt,
-      suffix = "This trip is to {location} between {trip_start} and {trip_end}. This person will be traveling {traveling_with_list} and would like to stay in {lodging_list}. They want to {adventure_list}. Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.",
-      input_variables = ["location", "trip_start", "trip_end", "traveling_with_list", "lodging_list", "adventure_list"],
-    )
-
-    return few_shot_prompt
-
-def build_weather_prompt_template():
-    examples = [
-      {
-        "prompt":
-"""
-Update the following JSON object to include typical weather conditions for the trip based on the values of trip_start, trip_end, and location. Keep the object exactly as it is, and add a key / value pair to the JSON, with the key being typical_weather and the value being a string describing the typical weather for the time period. Add this key / value pair after the key / value pair with a key of location. You are a backend data processor that is part of our site's programmatic workflow. Output the updated itinerary as only JSON with no text before or after the JSON.
-{{"trip_name":"Family Bird-Watching Trip to Acadia 2024","location":"Acadia National Park","trip_start":"2024-08-07","trip_end":"2024-08-10","traveling_with":"kids","lodging":"bed & breakfasts","adventure":"bird-watching","itinerary":[{{"day":"1","date":"2024-08-07","morning":"Arrive at Acadia National Park","afternoon":"Check in at bed & breakfast","evening":"Relax and explore the property"}},{{"day":"2","date":"2024-08-08","morning":"Bird-watching excursion at Jordan Pond","afternoon":"Picnic lunch at Jordan Pond House","evening":"Dinner at a local seafood restaurant"}},{{"day":"3","date":"2024-08-09","morning":"Explore the Schoodic Peninsula","afternoon":"Hike the Schoodic Head Trail","evening":"Dinner and stargazing at the bed & breakfast"}},{{"day":"4","date":"2024-08-10","morning":"Bird-watching cruise around Frenchman Bay","afternoon":"Visit the Wild Gardens of Acadia","evening":"Farewell dinner in Bar Harbor"}}]}}
-""",
-        "response":
-"""
-{{"trip_name":"Family Bird-Watching Trip to Acadia 2024","location":"Acadia National Park","typical_weather":"In August, the weather in Acadia National Park is typically warm with daytime highs around 75 degrees F (24 degrees C) and cool evenings, along with occasional rain showers.","trip_start":"2024-08-07","trip_end":"2024-08-10","traveling_with":"kids","lodging":"bed & breakfasts","adventure":"bird-watching","itinerary":[{{"day":"1","date":"2024-08-07","morning":"Arrive at Acadia National Park","afternoon":"Check in at bed & breakfast","evening":"Relax and explore the property"}},{{"day":"2","date":"2024-08-08","morning":"Bird-watching excursion at Jordan Pond","afternoon":"Picnic lunch at Jordan Pond House","evening":"Dinner at a local seafood restaurant"}},{{"day":"3","date":"2024-08-09","morning":"Explore the Schoodic Peninsula","afternoon":"Hike the Schoodic Head Trail","evening":"Dinner and stargazing at the bed & breakfast"}},{{"day":"4","date":"2024-08-10","morning":"Bird-watching cruise around Frenchman Bay","afternoon":"Visit the Wild Gardens of Acadia","evening":"Farewell dinner in Bar Harbor"}}]}}
-"""
-      },
-{
-        "prompt":
-"""
-Update the following JSON object to include typical weather conditions for the trip based on the values of trip_start, trip_end, and location. Keep the object exactly as it is, and add a key / value pair to the JSON, with the key being typical_weather and the value being a string describing the typical weather for the time period. Add this key / value pair after the key / value pair with a key of location. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.
-{{"trip_name": "Solo trip to Kenai Fjords 2024 yay!", "location": "Kenai Fjords National Park", "trip_start": "2024-12-01", "trip_end": "2024-12-03", "traveling_with": "solo", "lodging": "lodges", "adventure": "hiking, guided tours", "itinerary": [{{"day": "1", "date": "2024-12-01", "morning": "Arrive at Kenai Fjords National Park", "afternoon": "Check into lodge", "evening": "Relax and explore surrounding area"}}, {{"day": "2", "date": "2024-12-02", "morning": "Guided hike to Exit Glacier", "afternoon": "Lunch at the lodge", "evening": "Sunset cruise through the Kenai Fjords"}}, {{"day": "3", "date": "2024-12-03", "morning": "Morning kayak excursion", "afternoon": "Guided tour of Harding Icefield", "evening": "Farewell dinner at the lodge"}}]}}
-""",
-        "response":
-"""
-{{"trip_name": "Solo trip to Kenai Fjords 2024 yay!", "location": "Kenai Fjords National Park","typical_weather":"In December, the weather in Kenai Fjords National Park is typically cold with temperatures often below freezing and frequent precipitation, including snow and rain.","trip_start": "2024-12-01", "trip_end": "2024-12-03", "traveling_with": "solo", "lodging": "lodges", "adventure": "hiking, guided tours", "itinerary": [{{"day": "1", "date": "2024-12-01", "morning": "Arrive at Kenai Fjords National Park", "afternoon": "Check into lodge", "evening": "Relax and explore surrounding area"}}, {{"day": "2", "date": "2024-12-02", "morning": "Guided hike to Exit Glacier", "afternoon": "Lunch at the lodge", "evening": "Sunset cruise through the Kenai Fjords"}}, {{"day": "3", "date": "2024-12-03", "morning": "Morning kayak excursion", "afternoon": "Guided tour of Harding Icefield", "evening": "Farewell dinner at the lodge"}}]}}
-"""
-      }
-    ]
-
-    example_prompt = PromptTemplate.from_template(
-      template =
-"""
-{prompt}\n{response}
-"""
-    )
-
-    few_shot_prompt = FewShotPromptTemplate(
-      examples = examples,
-      example_prompt = example_prompt,
-      suffix = "Update the following JSON object to include typical weather conditions for the trip based on the values of trip_start, trip_end, and location. Keep the object exactly as it is, and add a key / value pair to the JSON, with the key being typical_weather and the value being a string describing the typical weather for the time period. Add this key / value pair after the key / value pair with a key of location. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. {input}",
-      input_variables = ["input"],
-    )
-    return few_shot_prompt
+# Initialize the OpenAI language model
+llm = ChatOpenAI(model="gpt-4o", temperature=0.5, max_tokens=4000)
 
 def log_run(run_status):
+    """Logs the status of a run if it is cancelled, failed, or expired."""
     if run_status in ["cancelled", "failed", "expired"]:
-        log.error(str(datetime.datetime.now()) + " Run " + run_status + "\n")
+        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
 
-# Render the HTML template - we're going to see a UI!!!
+# Define the route for the home page
 @app.route("/", methods=["GET"])
 def index():
+    """Renders the main page."""
     return render_template("index.html")
-  
+
+# Define the route for the trip planning page
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
-  return render_template("plan-trip.html")
+    """Renders the trip planning page."""
+    return render_template("plan-trip.html")
 
+# Define the route for viewing the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
-  traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
-  lodging_list = ", ".join(request.form.getlist("lodging"))
-  adventure_list = ", ".join(request.form.getlist("adventure"))
+    """Handles the form submission to view the generated trip itinerary."""
+    location = request.form["location-search"]
+    trip_start = request.form["trip-start"]
+    trip_end = request.form["trip-end"]
+    traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
+    lodging_list = ", ".join(request.form.getlist("lodging"))
+    adventure_list = ", ".join(request.form.getlist("adventure"))
 
-  prompt = build_new_trip_prompt_template()
+    # Create the input string with the user's unique trip information
+    input_data = generate_trip_input(location, trip_start, trip_end, traveling_with_list, lodging_list, adventure_list)
 
-  chain = prompt | llm | parser
+    # Create a tool for the agent to use that utilizes Wikipedia's run function
+    wikipedia_tool = create_wikipedia_tool()
 
-  output = chain.invoke({
-    "location": request.form["location-search"],
-    "trip_start": request.form["trip-start"],
-    "trip_end": request.form["trip-end"],
-    "traveling_with_list": traveling_with_list,
-    "lodging_list": lodging_list,
-    "adventure_list": adventure_list,
-    "trip_name": request.form["trip-name"]
-  })
-  
-  # log.info(output)
+    # Pull a tool prompt template from the hub
+    prompt = hub.pull("hwchase17/react-chat-json")
 
-  prompt2 = build_weather_prompt_template()
-  
-  chain2 = prompt2 | llm | parser
+    # Create our agent that will utilize tools and return JSON
+    agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool], prompt=prompt)
 
-  output_str = json.dumps(output)
+    # Create a runnable instance of the agent
+    agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool], verbose=True)
 
-  output2 = chain2.invoke({"input": output_str})
-  
-  # log.info(output2)
+    # Invoke the agent with the input data
+    response = agent_executor.invoke({"input": input_data})
 
-  return render_template("view-trip.html", output = output2)
+    log.info(response["output"])
 
-    
-# Run the flask server
+    return render_template("view-trip.html", output=response["output"])
+
+def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging, adventure):
+    """
+    Generates a structured input string for the trip planning agent.
+    """
+    return f"""
+    Create an itinerary for a trip to {location}.
+    The trip starts on: {trip_start}
+    The trip ends on: {trip_end}
+    I will be traveling with {traveling_with}
+    I would like to stay in {lodging}
+    I would like to do the following activities: {adventure}
+
+    Please generate a complete and detailed trip itinerary with the following JSON data structure:
+
+    {{
+      "trip_name": "String - Name of the trip",
+      "location": "String - Location of the trip",
+      "trip_start": "String - Start date of the trip",
+      "trip_end": "String - End date of the trip",
+      "typical_weather": "String - Description of typical weather for the trip",
+      "traveling_with": "String - Description of travel companions",
+      "lodging": "String - Description of lodging arrangements",
+      "adventure": "String - Description of planned activities",
+      "itinerary": [
+        {{
+          "day": "Integer - Day number",
+          "date": "String - Date of this day",
+          "morning": "String - Description of morning activities",
+          "afternoon": "String - Description of afternoon activities",
+          "evening": "String - Description of evening activities"
+        }}
+      ]
+    }}
+
+    The trip should be appropriate for those listed as traveling, themed around the interests specified, and that last for the entire specified duration of the trip.
+    Include realistic and varied activities for each day, considering the location, hours of operation, and typical weather.
+    Make sure all fields are filled with appropriate and engaging content.
+    Include descriptive information about each day's activities and destination.
+    Respond only with a valid parseable JSON object representing the itinerary.
+    """
+
+def create_wikipedia_tool():
+    """
+    Creates a built in langchain tool for querying Wikipedia.
+    """
+    wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+    return StructuredTool.from_function(
+        func=wikipedia.run,
+        name="Wikipedia",
+        description="Useful for Wikipedia searches about national parks."
+    )
+
+
+# Run the Flask server
 if __name__ == "__main__":
     app.run()
