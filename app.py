@@ -59,7 +59,7 @@ def view_trip():
     agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool], prompt=prompt)
 
     # Create a runnable instance of the agent
-    agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool], verbose=True)
+    agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool], verbose=True, handle_parsing_errors=True)
 
     # Invoke the agent with the input data
     response = agent_executor.invoke({"input": input_data})
