@@ -11,6 +11,8 @@ from langchain.tools import StructuredTool
 from langchain import hub
 from fuzzywuzzy import fuzz, process
 
+# app will run at: http://127.0.0.1:5000/
+
 # Initialize logging
 logging.basicConfig(filename="app.log", level=logging.INFO)
 log = logging.getLogger("app")
