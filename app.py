@@ -21,7 +21,7 @@ log = logging.getLogger("app")
 app = Flask(__name__)
 
 # Initialize the OpenAI language model
-llm = ChatOpenAI(model="gpt-4o", temperature=0.5, max_tokens=4000)
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.5, max_tokens=4000)
 
 def log_run(run_status):
     """Logs the status of a run if it is cancelled, failed, or expired."""
