@@ -135,7 +135,7 @@ def create_nps_tool():
     Creates a custom tool for retrieving data from the National Park Service (NPS) API. 
     """
     base_url = "https://developer.nps.gov/api/v1"
-    api_key = "API_KEY"  # Replace with your actual API key
+    api_key = "NPS_API_KEY"  # Replace with your actual API key
 
     def fetch_data(endpoint, params):
         """
