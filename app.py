@@ -44,6 +44,7 @@ def plan_trip():
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
     """Handles the form submission to view the generated trip itinerary."""
+    # Extract form data
     location = request.form["location-search"]
     trip_start = request.form["trip-start"]
     trip_end = request.form["trip-end"]
@@ -74,6 +75,7 @@ def view_trip():
 
     log.info(response["output"])
 
+    # Render the response on the view-trip.html page
     return render_template("view-trip.html", output=response["output"])
 
 def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging, adventure):
