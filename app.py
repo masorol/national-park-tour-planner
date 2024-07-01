@@ -51,12 +51,14 @@ def view_trip():
 
     # Create the input string with the user's unique trip information
     input_data = generate_trip_input(location, trip_start, trip_end, traveling_with_list, lodging_list, adventure_list)
+    
+    # print('input_data: \n', input_data, '\n')
 
     # Create a tool for the agent to use that utilizes Wikipedia's run function
     wikipedia_tool = create_wikipedia_tool()
 
     # Pull a tool prompt template from the hub
-    prompt = hub.pull("hwchase17/react-chat-json")
+    prompt = hub.pull("hwchase17/react-chat-json") 
 
     # Create our agent that will utilize tools and return JSON
     agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool], prompt=prompt)
