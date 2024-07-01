@@ -10,6 +10,7 @@ from langchain_community.utilities import WikipediaAPIWrapper
 from langchain.tools import StructuredTool
 from langchain import hub
 from fuzzywuzzy import fuzz, process
+import os # for NPS API key
 
 # app will run at: http://127.0.0.1:5000/
 
@@ -68,7 +69,7 @@ def view_trip():
     agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool, nps_tool], prompt=prompt)
 
     # Create a runnable instance of the agent
-    agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool, nps_tool], verbose=True)
+    agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool, nps_tool], verbose=True, handle_parsing_errors="Check your output and make sure it conforms to the expected JSON structure.")
 
     # Invoke the agent with the input data
     response = agent_executor.invoke({"input": input_data})
@@ -121,7 +122,7 @@ def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging,
 
 def create_wikipedia_tool():
     """
-    Creates a built in langchain tool for querying Wikipedia.
+    Creates a built-in langchain tool for querying Wikipedia.
     """
     wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
     return StructuredTool.from_function(
@@ -135,7 +136,11 @@ def create_nps_tool():
     Creates a custom tool for retrieving data from the National Park Service (NPS) API. 
     """
     base_url = "https://developer.nps.gov/api/v1"
-    api_key = "NPS_API_KEY"  # Replace with your actual API key
+    # api_key = "NPS_API_KEY"  # Replace with your actual API key
+    # api_key = os.getenv("NPS_API_KEY")
+    api_key = os.environ.get("NPS_API_KEY")
+    print(api_key)
+    log.info(api_key)
 
     def fetch_data(endpoint, params):
         """
@@ -171,7 +176,8 @@ def create_nps_tool():
         """
         park_code = park["parkCode"]
         endpoints = [
-            "activities/parks", "thingstodo" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
+            "activities/parks"
+            # , "thingstodo" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
         ]
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data
