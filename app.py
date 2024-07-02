@@ -136,11 +136,11 @@ def create_nps_tool():
     Creates a custom tool for retrieving data from the National Park Service (NPS) API. 
     """
     base_url = "https://developer.nps.gov/api/v1"
-    # api_key = "NPS_API_KEY"  # Replace with your actual API key
-    # api_key = os.getenv("NPS_API_KEY")
+
+    # Load your API key from an environment variable
     api_key = os.environ.get("NPS_API_KEY")
-    print(api_key)
-    log.info(api_key)
+    # print(api_key)
+    # log.info(api_key)
 
     def fetch_data(endpoint, params):
         """
@@ -176,8 +176,7 @@ def create_nps_tool():
         """
         park_code = park["parkCode"]
         endpoints = [
-            "activities/parks"
-            # , "thingstodo" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
+            "activities/parks", "thingstodo" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
         ]
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data
