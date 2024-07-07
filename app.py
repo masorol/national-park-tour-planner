@@ -10,16 +10,17 @@ llm = OpenAI()
 
 # app will run at: http://127.0.0.1:5000/
 
+# Initialize logging
+logging.basicConfig(filename="app.log", level=logging.INFO)
 log = logging.getLogger("app")
-
-logging.basicConfig(filename = "app.log", level = logging.INFO)
 
 app = Flask(__name__)
 
 
 def log_run(run_status):
+    """Logs the status of a run if it is cancelled, failed, or expired."""
     if run_status in ["cancelled", "failed", "expired"]:
-        log.error(str(datetime.datetime.now()) + " Run " + run_status + "\n")
+        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
         
 def build_new_trip_prompt(form_data):
   examples = [
