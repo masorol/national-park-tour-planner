@@ -175,8 +175,8 @@ def create_nps_tool():
         Finds related data for a park from various NPS API endpoints.
         """
         park_code = park["parkCode"]
-        endpoints = [
-            "activities/parks", "thingstodo" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
+        endpoints = [ "activities/parks"
+            #, "thingstodo" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
         ]
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data
