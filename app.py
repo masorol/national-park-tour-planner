@@ -9,18 +9,22 @@ import json
 
 # app will run at: http://127.0.0.1:5000/
 
-# set up logging in the assistant.log file
-log = logging.getLogger("app")
-
 llm = OpenAI(
    max_tokens = -1 # not recommended!!
 )
 
 parser = JsonOutputParser()
 
-logging.basicConfig(filename = "app.log", level = logging.INFO)
+# Initialize logging
+logging.basicConfig(filename="app.log", level=logging.INFO)
+log = logging.getLogger("app")
 
 app = Flask(__name__)
+
+def log_run(run_status):
+    """Logs the status of a run if it is cancelled, failed, or expired."""
+    if run_status in ["cancelled", "failed", "expired"]:
+        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
 
 def build_new_trip_prompt_template():
     examples = [
@@ -96,10 +100,6 @@ Update the following JSON object to include typical weather conditions for the t
       input_variables = ["input"],
     )
     return few_shot_prompt
-
-def log_run(run_status):
-    if run_status in ["cancelled", "failed", "expired"]:
-        log.error(str(datetime.datetime.now()) + " Run " + run_status + "\n")
 
 # Render the HTML template - we're going to see a UI!!!
 @app.route("/", methods=["GET"])
