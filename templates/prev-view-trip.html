@@ -41,7 +41,7 @@
         <!-- todo: add routes to edit, export, and delete -->
         <div class="create-trip-edit-buttons">
           <a href="" id="edit-trip">Edit trip</a>
-          <a href="#" id="export-trip" onclick="downloadPDF()">Export trip</a>
+          <a href="/export" id="export-trip">Export trip</a>
           <a href="" id="delete-trip">Delete trip</a>
         </div>
       </div>
@@ -57,36 +57,8 @@
       <p>Afternoon: {{ day.afternoon }}</p>
       <p>Evening: {{ day.evening }}</p>
       {% endfor %}
-      <h2 class="scroll">Important Things to Know</h2>
-      <p>{{ output.important_things_to_know }}</p>
     </div>
   </aside>
-  <script>
-    function downloadPDF() {
-      fetch('/download_pdf', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({{ output | tojson }})
-      })
-        .then(response => response.blob())
-      .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'itinerary.pdf';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      })
-      .catch(error => console.error('Error downloading PDF:', error));
-    }
-  </script>
-
-
 </body>
 
 </html>
