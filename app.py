@@ -1,18 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 import logging
 import datetime
-from langchain_core.prompts import PromptTemplate
-from langchain_core.prompts.few_shot import FewShotPromptTemplate
-from langchain_core.prompts.prompt import PromptTemplate
-from langchain_openai import OpenAI
-from langchain_core.output_parsers import JsonOutputParser
+from langchain_openai import ChatOpenAI
+from pydantic.v1 import BaseModel, ValidationError, Field
+from typing import List
 
-llm = OpenAI(
-  max_tokens = -1
-)
-
-parser = JsonOutputParser()
-
+llm = ChatOpenAI()
 
 # app will run at: http://127.0.0.1:5000/
 
@@ -22,91 +15,73 @@ log = logging.getLogger("app")
 
 app = Flask(__name__)
 
+class ItineraryItem(BaseModel):
+    day: int = Field(description="The day number of the trip")
+    date: str = Field(description="The date of the itinerary item")
+    morning: str = Field(description="The morning activity")
+    afternoon: str = Field(description="The afternoon activity")
+    evening: str = Field(description="The evening activity")
+
+class TripResponse(BaseModel):
+    trip_name: str = Field(description="The name of the trip")
+    location: str = Field(description="The location of the trip")
+    trip_start: str = Field(description="The start date of the trip")
+    trip_end: str = Field(description="The end date of the trip")
+    num_days: int = Field(description="The number of days in the trip")
+    traveling_with: str = Field(description="The people the traveler is traveling with")
+    lodging: str = Field(description="The type of lodging the traveler is staying in")
+    adventure: str = Field(description="The activities the traveler wants to do")
+    itinerary: List[ItineraryItem] = Field(description="List of itinerary items")
+
 
 def log_run(run_status):
     """Logs the status of a run if it is cancelled, failed, or expired."""
     if run_status in ["cancelled", "failed", "expired"]:
         log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-        
+
 def build_new_trip_prompt(form_data):
-  examples = [
-   {  
-      "prompt":
-"""
-This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. 
-This person will be traveling solo, with kids and would like to stay in campsites. 
-They want to go hiking, swimming. Create a daily itinerary for this trip using this information.
-""",
-      "response":
-"""
-{{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","num_days":"3","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}
-"""
-   },
-    {
-        "prompt":
-"""
-This trip is to Zion National Park between 2025-07-01 and 2025-07-31. This person will be traveling solo and would like to stay in hotels. They want to go hiking. Create a daily itinerary for this trip using this information.
-""",
-        "response": """{{"trip_name": "Zion Here I Come}}"""
-    }
-]
-
-
-  example_prompt = PromptTemplate.from_template(
-    template =
-"""
-{prompt}\n{response}
-"""
-  )
-  
-  # log.info(example_prompt.format(**examples[0]))
-  
-  few_shot_prompt = FewShotPromptTemplate(
-    examples = examples,
-    example_prompt = example_prompt,
-    suffix = "{input}",
-    input_variables = ["input"],
-  )
-
-  return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our app’s programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON. Do not include the word itinerary at the beginning. The first character of the response should be an opening curly brace.")
-
+    """Builds a prompt for generating a new trip itinerary based on form data."""
+   
+    return "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information."
 
 # Render the HTML template - we're going to see a UI!!!
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
-  
+
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
-  return render_template("plan-trip.html")
+    return render_template("plan-trip.html")
 
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
-  traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
-  lodging_list = ", ".join(request.form.getlist("lodging"))
-  adventure_list = ", ".join(request.form.getlist("adventure"))
-  
-  cleaned_form_data = {
-    "location": request.form["location-search"],
-    "trip_start": request.form["trip-start"],
-    "trip_end": request.form["trip-end"],
-    "traveling_with_list": traveling_with_list,
-    "lodging_list": lodging_list,
-    "adventure_list": adventure_list,
-    "trip_name": request.form["trip-name"]
-    }
-  
-  prompt = build_new_trip_prompt(cleaned_form_data)
-  
-  response = llm.invoke(prompt)
-  # log.info(response)
-  output = parser.parse(response)
-  log.info(output)
-
-  return render_template("view-trip.html", output = output)
-
-
+    traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
+    lodging_list = ", ".join(request.form.getlist("lodging"))
+    adventure_list = ", ".join(request.form.getlist("adventure"))
     
+    cleaned_form_data = {
+        "location": request.form["location-search"],
+        "trip_start": request.form["trip-start"],
+        "trip_end": request.form["trip-end"],
+        "traveling_with_list": traveling_with_list,
+        "lodging_list": lodging_list,
+        "adventure_list": adventure_list,
+        "trip_name": request.form["trip-name"]
+    }
+    
+    prompt = build_new_trip_prompt(cleaned_form_data)
+
+    structured_llm = llm.with_structured_output(TripResponse)
+    
+    # Manually enforce structured output
+    response = structured_llm.invoke(prompt)
+    
+    try:
+        log.info(response.json())
+        return render_template("view-trip.html", output=response)
+    except (ValidationError, SyntaxError, ValueError) as e:
+        log.error(f"Response validation failed: {e}")
+
 # Run the flask server
 if __name__ == "__main__":
     app.run()
