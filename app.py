@@ -4,8 +4,6 @@ import requests
 import json
 import os
 import io
-# todo: ask Vincent if needed... Part of logging that was removed in pinecone branch. If so, also remove log_run function
-import datetime
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_json_chat_agent, AgentExecutor, tool
 from langchain_community.tools import WikipediaQueryRun
@@ -45,7 +43,35 @@ def index():
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
     """Renders the trip planning page."""
-    return render_template("plan-trip.html")
+    parks = get_parks()
+    return render_template("plan-trip.html", parks=parks)
+
+def get_parks():
+    """Fetches the entire list of national parks from the NPS API."""
+    # url = "https://developer.nps.gov/api/v1/parks"
+    # todo: try https://developer.nps.gov/api/v1/parks?limit=10 - do they have a random option?
+    # adding a limit of 10 brought it down to 27 seconds but is still a long time. And it gave me the entire list???
+    url = "https://developer.nps.gov/api/v1/parks?limit=10"
+    params = {
+        # "api_key": NPS_API_KEY,
+        # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
+        "api_key": os.environ.get("NPS_API_KEY"),
+        # "limit": int(PARK_LIMIT), 
+        "limit": 10, # Is 75 in Vincent's code - slow 47 seconds - tried 5 but still received full list and slow - 🤦‍♀️  # Adjust this number based on the API's limit
+        "start": 0
+    }
+    parks = []
+    while True:
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            parks.extend([{"name": park["fullName"], "code": park["parkCode"]} for park in data["data"]])
+            if len(data["data"]) < params["limit"]:
+                break
+            params["start"] += params["limit"]
+        else:
+            break
+    return parks
 
 # Define the route for viewing the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
@@ -70,7 +96,7 @@ def view_trip():
 
     # Pull a tool prompt template from the hub
     prompt = hub.pull("hwchase17/react-chat-json")
-    
+
     # Create our agent that will utilize tools and return JSON
     agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool, nps_tool], prompt=prompt)
 
@@ -163,7 +189,7 @@ def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging,
           "evening": "String - Description of evening activities"
         }}
       ],
-      important_things_to_know": "String - Any important things to know about the park being visited."
+      "important_things_to_know": "String - Any important things to know about the park being visited."
     }}
 
     The trip should be appropriate for those listed as traveling, themed around the interests specified, and that last for the entire specified duration of the trip.
@@ -189,7 +215,6 @@ def create_nps_tool():
     Creates a custom tool for retrieving data from the National Park Service (NPS) API. 
     """
     base_url = "https://developer.nps.gov/api/v1"
-    
     # Load your API key from an environment variable
     api_key = os.environ.get("NPS_API_KEY")
 
@@ -227,7 +252,7 @@ def create_nps_tool():
         """
         park_code = park["parkCode"]
         endpoints = [
-            "activities/parks" #, "thingstodo"  Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
+            "activities/parks" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
         ]
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data

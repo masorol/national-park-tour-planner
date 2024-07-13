@@ -208,6 +208,12 @@ fieldset,
   margin-bottom: 50px;
 }
 
+/* Added to accommodate dropdown for park search. Wait to see what is done with the feature... Will need to adjust desktop
+and maybe tablet - is currently 100% of a container so is truncated */
+/* #location-search {
+  width: 100%;
+} */
+
 fieldset {
   width: 100%;
   border: none;
@@ -305,7 +311,8 @@ input[type=checkbox] {
     width: 100%;
   }
 
-  .dates {
+  /* Removed in Vincent dropdown-parks branch */
+  /* .dates {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -316,11 +323,37 @@ input[type=checkbox] {
     display: flex;
     justify-content: space-between;
     flex-flow: row wrap;
+  } */
+
+  /* Also online 298 */
+  /* .form-label {
+    width: 100%;
+  } */
+  /* End of Removed in Vincent dropdown-parks branch */
+
+  /* Added in Vincent dropdown-parks branch */
+  /* Doesn't work on mobile - the field overflows the container. Need to hide overflow... */
+  .location .form-label {
+    display: block;
+    margin-bottom: 20px;
+    /* Adds space between the label and the dropdown */
   }
 
-  .form-label {
-    width: 100%;
+  .dates-wrapper {
+    display: flex;
+    flex-direction: column;
   }
+
+  .dates-wrapper .form-label {
+    margin-bottom: 8px;
+  }
+
+  .dates-wrapper .calendar {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* end of Added in Vincent dropdown-parks branch */
 
   #start,
   #end {
