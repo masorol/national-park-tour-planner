@@ -1,15 +1,11 @@
-
-# todo start by removing all extra code. Then use a diff checker to see what to add to the new 09 branch. Maybe run before you do.
 from flask import Flask, render_template, request, send_file
 import logging
 import requests
 import json
 import os
 import io
-# was removed from pinecone branches - check to see if needed... Part of logging that was removed in pinecone branch
+# todo: ask Vincent if needed... Part of logging that was removed in pinecone branch. If so, also remove log_run function
 import datetime
-# Remove code for environment variables
-# from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_json_chat_agent, AgentExecutor, tool
 from langchain_community.tools import WikipediaQueryRun
@@ -17,28 +13,12 @@ from langchain_community.utilities import WikipediaAPIWrapper
 from langchain.tools import StructuredTool
 from langchain import hub
 from fuzzywuzzy import fuzz, process
-# Remove pinecone code
-# from pinecone import Pinecone
-# from langchain_openai import OpenAIEmbeddings
-# from langchain_pinecone import PineconeVectorStore
-# from langchain.chains.query_constructor.base import AttributeInfo
-# from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_openai import OpenAI
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 # app will run at: http://127.0.0.1:5000/
-
-# Remove code for environment variables
-# Load environment variables
-# load_dotenv()
-
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-# NPS_API_KEY = os.getenv("NPS_API_KEY")
-# PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-# PINECONE_ENV = os.getenv("PINECONE_ENV")
-# PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
 
 # Initialize logging
 logging.basicConfig(filename="app.log", level=logging.INFO)
@@ -47,54 +27,13 @@ log = logging.getLogger("app")
 # Initialize the Flask application
 app = Flask(__name__)
 
-# Remove code for environment variables
-# Initialize the OpenAI language model
-# llm = ChatOpenAI(api_key=OPENAI_API_KEY, temperature=0.5, max_tokens=4000)
-
 # Initialize the OpenAI language model
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.5, max_tokens=4000)
 
-# Roved from branch 8 to 11. Should it be here? Is it still needed? Note that datetime import was also removed above. If removing - should it be removed in previous branches too? 
 def log_run(run_status):
     """Logs the status of a run if it is cancelled, failed, or expired."""
     if run_status in ["cancelled", "failed", "expired"]:
         log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-
-# Remove pinecone code
-# # Connect to Pinecone
-# pc = Pinecone(api_key=PINECONE_API_KEY)
-# index = pc.Index(PINECONE_INDEX_NAME)
-
-# # Set up Pinecone vector store
-# embedding_model = OpenAIEmbeddings()
-# vector_store = PineconeVectorStore(index, embedding_model, "text")
-
-# # Define metadata fields for the documents we will store in Pinecone
-# metadata_field_info = [
-#     AttributeInfo(
-#         name="park_name",
-#         description="The name of the national park",
-#         type="string",
-#     ),
-#     AttributeInfo(
-#         name="article_title",
-#         description="The title of the article",
-#         type="string",
-#     ),
-#     AttributeInfo(
-#         name="url",
-#         description="The URL of the article",
-#         type="string",
-#     ),
-# ]
-
-# document_content_description = "Text of the NPS article"
-
-# # Set up a retriever
-# retriever_llm = OpenAI(api_key=OPENAI_API_KEY, temperature=0)
-# retriever = SelfQueryRetriever.from_llm(
-#     retriever_llm, vector_store, document_content_description, metadata_field_info, verbose=True
-# )
 
 # Define the route for the home page
 @app.route("/", methods=["GET"])
@@ -129,25 +68,12 @@ def view_trip():
     # Define and register a custom tool for retrieving data from the National Park Service API
     nps_tool = create_nps_tool()
 
-    # Remove pinecone code
-    # Define and register a custom tool for retrieving important things to know from Pinecone
-    # pinecone_tool = create_pinecone_tool()
-
     # Pull a tool prompt template from the hub
     prompt = hub.pull("hwchase17/react-chat-json")
-
-    # Remove pinecone code
-    # Create our agent that will utilize tools and return JSON
-    # agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool, nps_tool, pinecone_tool], prompt=prompt)
     
     # Create our agent that will utilize tools and return JSON
     agent = create_json_chat_agent(llm=llm, tools=[wikipedia_tool, nps_tool], prompt=prompt)
 
-    # Remove pinecone code
-    # Create a runnable instance of the agent
-    # agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool, nps_tool, pinecone_tool], verbose=True, handle_parsing_errors=True)
-    
-    # Check this handle_parsing_errors was changed from branch 8 to 11. Could be because V not fetching updated code.
     # Create a runnable instance of the agent
     agent_executor = AgentExecutor(agent=agent, tools=[wikipedia_tool, nps_tool], verbose=True, handle_parsing_errors="Check your output and make sure it conforms to the expected JSON structure.")
 
@@ -263,7 +189,6 @@ def create_nps_tool():
     Creates a custom tool for retrieving data from the National Park Service (NPS) API. 
     """
     base_url = "https://developer.nps.gov/api/v1"
-    # api_key = NPS_API_KEY  # Replace with your actual API key
     
     # Load your API key from an environment variable
     api_key = os.environ.get("NPS_API_KEY")
@@ -302,7 +227,7 @@ def create_nps_tool():
         """
         park_code = park["parkCode"]
         endpoints = [
-            "activities/parks" # Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
+            "activities/parks" #, "thingstodo"  Add more endpoints as needed. Be mindful of model input token limits these endpoints provide significant amounts of information that could exceed the context window. See https://www.nps.gov/subjects/developer/api-documentation.htm. 
         ]
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data
@@ -328,25 +253,6 @@ def create_nps_tool():
         return json.dumps(combined_data, indent=4)
 
     return search_park_and_related_data
-
-# Remove pinecone code
-# def create_pinecone_tool():
-#     """
-#     Creates a custom tool for retrieving important things to know from Pinecone.
-#     """
-#     @tool
-#     def important_things_to_know(input: str) -> str:
-#         """
-#         Tool for finding articles that can be used to summarize important things to know about a specific park.
-#         """
-#         query = f"Articles about {input.strip()}"
-#         results = retriever.invoke(query)
-#         if results:
-#             return results[0].page_content  # Returning the first result's content
-#         else:
-#             return "No important information found."
-
-#     return important_things_to_know
 
 # Run the Flask server
 if __name__ == "__main__":

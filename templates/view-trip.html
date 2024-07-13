@@ -61,6 +61,7 @@
       <p>{{ output.important_things_to_know }}</p>
     </div>
   </aside>
+
   <script>
     function downloadPDF() {
       fetch('/download_pdf', {
@@ -68,10 +69,9 @@
         headers: {
           'Content-Type': 'application/json'
         },
-
-        body: JSON.stringify({{ output | tojson }})
+        body: JSON.stringify({{ output| tojson }})
       })
-        .then(response => response.blob())
+      .then(response => response.blob())
       .then(blob => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -85,31 +85,6 @@
       .catch(error => console.error('Error downloading PDF:', error));
     }
   </script>
-
-  <script>
-    function downloadPDF() {
-      fetch('/download_pdf', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({{ output| tojson | safe }})
-          })
-          .then(response => response.blob())
-      .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'itinerary.pdf';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      })
-      .catch(error => console.error('Error downloading PDF:', error));
-        }
-  </script>
-
 
 </body>
 
