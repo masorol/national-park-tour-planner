@@ -209,7 +209,7 @@ fieldset,
 }
 
 /* Added to accommodate dropdown for park search. Wait to see what is done with the feature... Will need to adjust desktop
-and maybe tablet - is currently 100% of a container so is truncated */
+and maybe tablet - is currently 100% of a container so is truncated. Might be ok - the dropdown looks fine.*/
 /* #location-search {
   width: 100%;
 } */
