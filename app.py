@@ -37,7 +37,8 @@ def log_run(run_status):
     if run_status in ["cancelled", "failed", "expired"]:
         log.error(f"{datetime.datetime.now()} Run {run_status}\n")
 
-# ! figure these out
+
+# Configure the Flask application with the SQLite database
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -47,11 +48,13 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# Define the User model for the database
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 
+# Define the Trip model for the database
 class Trip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -69,10 +72,12 @@ class Trip(db.Model):
 
     user = db.relationship('User', backref=db.backref('trips', lazy=True))
 
+# Define the user loader function
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Define the route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -86,13 +91,14 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
 
+# Define the route for the logout
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# todo: The code to create a db wasn't in the previous branch. Try adding and seeing if I'm able to sign in without an error. This is the comment from the previous branch...when is db created? Currently receiving an error: sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user (Background on this error at: https://sqlalche.me/e/20/e3q8)  and I don't see db.create_all()
+# Define the route for the signup page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -152,20 +158,11 @@ def plan_trip():
 # ! work out time issue
 def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
-    # url = "https://developer.nps.gov/api/v1/parks"
-    url = "https://developer.nps.gov/api/v1/parks?limit=10"
+    url = "https://developer.nps.gov/api/v1/parks"
     params = {
-        # "api_key": NPS_API_KEY,
-        # "limit": int(PARK_LIMIT),  # Adjust this number based on the API's limit
-        # "start": 0
-         # "api_key": NPS_API_KEY,
-        # "limit": int(PARK_LIMIT),  # Adjust this number based on the API's limit
-        # "start": 0
-         # "api_key": NPS_API_KEY,
         # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
-        "api_key": os.environ.get("NPS_API_KEY"),
-        # "limit": int(PARK_LIMIT), 
-        "limit": 10, # Is 75 in Vincent's code - slow 47 seconds - tried 5 but still received full list and slow - 🤦‍♀️  # Adjust this number based on the API's limit
+        "api_key": os.environ.get("NPS_API_KEY"), 
+        "limit": 75, # was slow: 47 seconds now 6 seconds # Adjust this number based on the API's limit
         "start": 0
     }
     parks = []
@@ -462,6 +459,7 @@ def create_nps_tool():
     return search_park_and_related_data
 
 # Create a Flask CLI command for initializing the database
+# Run "flask init-db" from the command line to run flask init-db to initialize the database
 @app.cli.command("init-db")
 def init_db():
     db.create_all()
