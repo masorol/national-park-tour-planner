@@ -155,7 +155,7 @@ main {
   margin-bottom: 30px;
 }
 
-#edit-trip,
+/* #edit-trip,
 #delete-trip,
 #export-trip {
   padding: 20px;
@@ -167,13 +167,49 @@ main {
   text-align: center;
   font-weight: 900;
   cursor: pointer;
-}
+} */
 
 .create-trip-edit-buttons {
   display: flex;
+  /* Vincent's code removes this declaration. Check the mobile view. */
   flex-flow: row wrap;
   justify-content: space-between;
+  /* Added in Vincent's code. */
+  gap: 10px;
+  margin-top: 20px;
 }
+
+/* Added in Vincent's save-trip branch code. The .btn code was moved from lines 565 - 575 (diff checker). Does this code work for mobile?*/
+.create-trip-edit-buttons a,
+.create-trip-edit-buttons form {
+  flex: 1;
+  margin: 0;
+}
+
+.create-trip-edit-buttons .btn {
+  width: 100%;
+  margin: 0;
+}
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--accent-medium);
+  color: var(--default-light);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.btn:hover {
+  background-color: var(--default-dark);
+}
+
+/* End of Vincent's code */
 
 aside {
   display: flex;
@@ -209,7 +245,7 @@ fieldset,
 }
 
 /* Added to accommodate dropdown for park search. Wait to see what is done with the feature... Will need to adjust desktop
-and maybe tablet - is currently 100% of a container so is truncated. Might be ok - the dropdown looks fine.*/
+and maybe tablet - is currently 100% of a container so is truncated. Might be ok - the dropdown looks fine and this element may go to the right of the calendar on desktop. */
 /* #location-search {
   width: 100%;
 } */
@@ -291,6 +327,11 @@ input[type=checkbox] {
 
   #location-search {
     font-size: 1rem;
+    /* Added in Vincent's code */
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    /* End of Added in Vincent's code */
   }
 
   fieldset {
@@ -409,11 +450,13 @@ input[type=checkbox] {
     width: 100%;
   }
 
-  #edit-trip,
+  /* Removed in Vincent's code */
+  /* #edit-trip,
   #delete-trip,
   #export-trip {
     width: 30%;
-  }
+  } */
+  /* End of Removed in Vincent's code */
 
   aside {
     width: 50%;
@@ -421,9 +464,11 @@ input[type=checkbox] {
     justify-content: flex-end;
   }
 
-  /* Rethink font size based on the length park names - it's huuuuge! */
+  /* Todo: Rethink font size based on the length park names - it's huuuuge! */
   h2 {
     font-size: 5rem;
+    font-size: 3rem;
+    /* Added in Vincent's code */
     margin-bottom: 30px;
     margin-left: -5px;
   }
@@ -562,7 +607,8 @@ input[type=checkbox] {
   margin: auto;
 }
 
-.btn {
+/* In save-trip branch this was moved up to the mobile styles. See notes there */
+/* .btn {
   display: inline-block;
   width: 100%;
   padding: 10px;
@@ -577,9 +623,11 @@ input[type=checkbox] {
 
 .btn:hover {
   background-color: var(--default-dark);
-}
+} */
 
 .link-underline {
+  color: #fff;
+  /* V's code */
   color: var(--accent-bright);
   text-decoration: none;
 }
@@ -611,6 +659,8 @@ input[type=checkbox] {
 }
 
 .dropdown-content a {
+  color: #fff;
+  /* V's code */
   color: var(--default-dark);
   padding: 12px 16px;
   text-decoration: none;
@@ -630,3 +680,100 @@ input[type=checkbox] {
 }
 
 /* End: In Vincent's code, the Sign in form probably */
+
+/* Added in V's save-trip branch. Likely save trip page styles */
+.left-panel {
+  width: 70%;
+  color: #fff;
+}
+
+.right-panel {
+  width: 30%;
+  background-color: #fff;
+  border-radius: 30px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow: scroll;
+  scrollbar-color: var(--accent-medium) var(--accent-medium);
+  scrollbar-width: thin;
+}
+
+.trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.trip-item {
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius);
+  /* overflow: hidden; */
+}
+
+.trip-image {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.trip-details {
+  padding: 20px;
+}
+
+.trip-details h3 {
+  margin: 0 0 5px 0;
+}
+
+.trip-details p {
+  margin: 0 0 10px 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .nav-wrapper {
+    gap: 20px;
+  }
+
+  .trip-item {
+    padding: 20px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .split-layout {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .homepage-content-wrapper {
+    width: 79%;
+  }
+
+}
+
+@media only screen and (max-width: 1200px) {
+  .split-layout {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+  }
+
+  .right-panel {
+    height: auto;
+    overflow-y: visible;
+    border-radius: 0;
+    margin-top: 20px;
+  }
+}
+
+.underline-blue {
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-color: blue;
+}
+
+/* End: Added in V's save-trip branch Likely save trip page styles */

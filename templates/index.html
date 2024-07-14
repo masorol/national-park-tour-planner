@@ -21,8 +21,7 @@
           <h1>Nature<br>Nook.</h1>
         </a>
         <div class="nav-wrapper">
-          <!-- todo: change route to my trips -->
-          <a href="" class="link-underline">My trips</a>
+          <a href="{{ url_for('my_trips') }}" class="link-underline">My trips</a>
           <!-- <p class="account">ED</p> -->
           <div class="account-dropdown">
             {% if user.is_authenticated %}
