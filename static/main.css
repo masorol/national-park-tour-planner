@@ -1,3 +1,4 @@
+/* Global styles */
 /* These are CSS variables. They allow you to change the theme of the chatbot by replacing the values. Read more about them here: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
 :root {
   /* logo and account background hover underline */
@@ -34,6 +35,7 @@ body {
   margin: 0;
 }
 
+/* Background images for each page */
 body.full-layout {
   background: linear-gradient(0deg, rgba(60, 60, 60, 0.55), rgba(60, 60, 60, 0.55)), url('alice-triquet-HeEJU3nrg_0-unsplash.png'), #000000;
   background-size: cover;
@@ -51,6 +53,8 @@ body.create {
   background-size: cover;
   background-position: center;
 }
+
+/* End background images for each page */
 
 body,
 input {
@@ -151,6 +155,7 @@ main {
   margin-bottom: 30px;
 }
 
+/* view-trip page styles */
 #trip-date {
   margin-bottom: 30px;
 }
@@ -191,6 +196,7 @@ aside {
   margin-bottom: 30px;
 }
 
+/* plan-trip page form styles */
 .plan-trip-form {
   display: flex;
   flex-flow: row wrap;
@@ -283,6 +289,7 @@ input[type=checkbox] {
     padding: 50px;
   }
 
+  /* plan-trip page form styles */
   #location-search {
     font-size: 1rem;
   }
@@ -345,6 +352,8 @@ input[type=checkbox] {
   .plan-trip-form .btn {
     width: 50%;
   }
+
+  /* End plan-trip page form styles */
 }
 
 @media only screen and (min-width: 1200px) {
@@ -376,6 +385,7 @@ input[type=checkbox] {
     width: 100%;
   }
 
+  /* view-trip page styles */
   #edit-trip,
   #delete-trip,
   #export-trip {
@@ -419,6 +429,7 @@ input[type=checkbox] {
     scrollbar-width: thin;
   }
 
+  /* plan-trip page form styles */
   .plan-trip-form {
     align-content: space-between;
     height: 100%;
@@ -465,9 +476,10 @@ input[type=checkbox] {
     color: var(--default-light);
   }
 
+  /* plan-trip page form styles */
 }
 
-
+/* plan-trip page form styles for checkboxes */
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
   color: var(--accent-medium);
   /* Todo check font-weight */
@@ -492,3 +504,5 @@ input[type=checkbox] {
   margin: -1px;
   overflow: hidden;
 }
+
+/* End plan-trip page form styles for checkboxes */

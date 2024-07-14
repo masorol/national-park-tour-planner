@@ -4,7 +4,6 @@ import requests
 import json
 import os
 import io
-# todo: ask Vincent if needed... Part of logging that was removed in pinecone branch. If so, also remove log_run function
 import datetime
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_json_chat_agent, AgentExecutor, tool
