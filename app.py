@@ -75,6 +75,7 @@ def logout():
     return redirect(url_for('index'))
 
 # todo: when is db created? Currently receiving an error: sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user (Background on this error at: https://sqlalche.me/e/20/e3q8)  and I don't see db.create_all()
+# todo update: added the db.create_all() below from next branch. But still doesn't work. Same issue. Wondering about schema...
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
