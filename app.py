@@ -153,9 +153,6 @@ def view_trip():
     # Define and register a custom tool for retrieving data from the National Park Service API
     nps_tool = create_nps_tool()
 
-    # Define and register a custom tool for retrieving important things to know from Pinecone
-    pinecone_tool = create_pinecone_tool()
-
     # Pull a tool prompt template from the hub
     prompt = hub.pull("hwchase17/react-chat-json")
 
@@ -340,6 +337,14 @@ def create_nps_tool():
         return json.dumps(combined_data, indent=4)
 
     return search_park_and_related_data
+  
+# Create a Flask CLI command for initializing the database
+# todo: check to see if this needed in this branch. It was in the final version but not in this one. This branch was missing a db.create_all() call. But is this the right db for login?
+
+@app.cli.command("init-db")
+def init_db():
+    db.create_all()
+    print("Database initialized!")
 
 # Run the Flask server
 if __name__ == "__main__":
