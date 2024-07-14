@@ -17,11 +17,23 @@
   <div class="dark-bkgd">
     <header>
       <div class="header-content-wrapper">
-        <a href="/"><h1>Nature<br>Nook.</h1></a>
+        <a href="/">
+          <h1>Nature<br>Nook.</h1>
+        </a>
         <div class="nav-wrapper">
           <!-- todo: change route to my trips -->
           <a href="" class="link-underline">My trips</a>
-          <p class="account">ED</p>
+          <!-- <p class="account">ED</p> -->
+          <div class="account-dropdown">
+            {% if user.is_authenticated %}
+            <div class="account">{{ user.username[0].upper() if user.username else 'A' }}</div>
+            {% else %}
+            <div class="account">A</div>
+            {% endif %}
+            <div class="dropdown-content">
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>

@@ -421,6 +421,7 @@ input[type=checkbox] {
     justify-content: flex-end;
   }
 
+  /* Rethink font size based on the length park names - it's huuuuge! */
   h2 {
     font-size: 5rem;
     margin-bottom: 30px;
@@ -525,3 +526,107 @@ input[type=checkbox] {
   margin: -1px;
   overflow: hidden;
 }
+
+/* In Vincent's code, the Sign in form probably */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--default-light);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--accent-light);
+  background-color: var(--button-light);
+  color: var(--default-dark);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent-medium);
+}
+
+.auth-form-content-wrapper {
+  background-color: var(--default-light);
+  color: var(--default-dark);
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--accent-medium);
+  color: var(--default-light);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: var(--default-dark);
+}
+
+.link-underline {
+  color: var(--accent-bright);
+  text-decoration: none;
+}
+
+.link-underline:hover {
+  text-decoration: underline;
+}
+
+.account-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.account {
+  padding: 5px 10px;
+  background-color: var(--accent-bright);
+  border-radius: 50%;
+  color: var(--default-dark);
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--accent-medium);
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: var(--default-dark);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--default-dark);
+}
+
+.account-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.account-dropdown:hover .account {
+  background-color: var(--accent-medium);
+}
+
+/* End: In Vincent's code, the Sign in form probably */

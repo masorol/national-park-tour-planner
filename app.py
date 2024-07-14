@@ -1,9 +1,12 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import logging
 import requests
 import json
 import os
 import io
+# ! add datetime and log_run and call for log run???
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_json_chat_agent, AgentExecutor, tool
 from langchain_community.tools import WikipediaQueryRun
@@ -32,28 +35,83 @@ def log_run(run_status):
     """Logs the status of a run if it is cancelled, failed, or expired."""
     if run_status in ["cancelled", "failed", "expired"]:
         log.error(f"{datetime.datetime.now()} Run {run_status}\n")
+        
+# ! figure these out
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and user.password == password:
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            flash('Login Unsuccessful. Please check username and password', 'danger')
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+# todo: when is db created? Currently receiving an error: sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user (Background on this error at: https://sqlalche.me/e/20/e3q8)  and I don't see db.create_all()
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        new_user = User(username=username, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Account created!', 'success')
+        return redirect(url_for('login'))
+    return render_template('signup.html')
 
 # Define the route for the home page
 @app.route("/", methods=["GET"])
+@login_required
 def index():
     """Renders the main page."""
-    return render_template("index.html")
+    return render_template("index.html", user=current_user)
 
 # Define the route for the trip planning page
 @app.route("/plan_trip", methods=["GET"])
+@login_required
 def plan_trip():
     """Renders the trip planning page."""
     parks = get_parks()
-    return render_template("plan-trip.html", parks=parks)
-
+    return render_template("plan-trip.html", parks=parks, user=current_user)
+  
+# ! work out time issue
 def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
     # url = "https://developer.nps.gov/api/v1/parks"
-    # todo: try https://developer.nps.gov/api/v1/parks?limit=10 - do they have a random option?
-    # adding a limit of 10 brought it down to 27 seconds but is still a long time. And it gave me the entire list???
     url = "https://developer.nps.gov/api/v1/parks?limit=10"
     params = {
         # "api_key": NPS_API_KEY,
+        # "limit": int(PARK_LIMIT),  # Adjust this number based on the API's limit
+        # "start": 0
+         # "api_key": NPS_API_KEY,
         # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
         "api_key": os.environ.get("NPS_API_KEY"),
         # "limit": int(PARK_LIMIT), 
@@ -75,6 +133,7 @@ def get_parks():
 
 # Define the route for viewing the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
+@login_required
 def view_trip():
     """Handles the form submission to view the generated trip itinerary."""
     # Extract form data
@@ -94,6 +153,9 @@ def view_trip():
     # Define and register a custom tool for retrieving data from the National Park Service API
     nps_tool = create_nps_tool()
 
+    # Define and register a custom tool for retrieving important things to know from Pinecone
+    pinecone_tool = create_pinecone_tool()
+
     # Pull a tool prompt template from the hub
     prompt = hub.pull("hwchase17/react-chat-json")
 
@@ -109,10 +171,10 @@ def view_trip():
     log.info(response["output"])
 
     # Render the response on the view-trip.html page
-    return render_template("view-trip.html", output=response["output"])
-
+    return render_template("view-trip.html", output=response["output"], user=current_user)
 
 @app.route("/download_pdf", methods=["POST"])
+@login_required
 def download_pdf():
     """Handles the PDF download of the generated trip itinerary."""
     output = request.json
