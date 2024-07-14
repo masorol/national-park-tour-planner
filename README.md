@@ -23,7 +23,7 @@ Once the virtual environment is activated, the beginning of your terminal prompt
 <br>
 Install the LangChain modules by running (in both a Mac and Windows):
 
-`pip install langchain langchain-core langchain-community langchain-openai langchainhub fuzzywuzzy python-Levenshtein wikipedia flask reportlab`
+`pip install langchain langchain-core langchain-community langchain-openai langchainhub fuzzywuzzy python-Levenshtein wikipedia flask reportlab flask-login flask-sqlalchemy`
 
 You'll see an openai-env folder has been added to the directory with all of the installed dependencies.
 
