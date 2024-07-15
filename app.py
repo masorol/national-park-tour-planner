@@ -43,6 +43,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Initialize the database
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -155,7 +156,7 @@ def plan_trip():
     # moved trip=trip to the end of the line. was before user=current_user
     return render_template("plan-trip.html", parks=parks, user=current_user, trip=trip)
 
-# ! work out time issue
+# Define function to get list of national parks
 def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
     url = "https://developer.nps.gov/api/v1/parks"
@@ -165,7 +166,7 @@ def get_parks():
         "limit": 75, # was slow: 47 seconds now 6 seconds # Adjust this number based on the API's limit
         "start": 0
     }
-    parks = []
+    parks = [] 
     while True:
         response = requests.get(url, params=params)
         if response.status_code == 200:
@@ -178,6 +179,7 @@ def get_parks():
             break
     return parks
 
+# Define the route for viewing the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
 @login_required
 def view_trip():
@@ -459,7 +461,7 @@ def create_nps_tool():
     return search_park_and_related_data
 
 # Create a Flask CLI command for initializing the database
-# Run "flask init-db" from the command line to run flask init-db to initialize the database
+# Run "flask init-db" from the command line  to initialize the database
 @app.cli.command("init-db")
 def init_db():
     db.create_all()
