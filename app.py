@@ -48,16 +48,11 @@ def plan_trip():
 
 def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
-    # url = "https://developer.nps.gov/api/v1/parks"
-    # todo: try https://developer.nps.gov/api/v1/parks?limit=10 - do they have a random option?
-    # adding a limit of 10 brought it down to 27 seconds but is still a long time. And it gave me the entire list???
-    url = "https://developer.nps.gov/api/v1/parks?limit=10"
+    url = "https://developer.nps.gov/api/v1/parks"
     params = {
-        # "api_key": NPS_API_KEY,
         # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
         "api_key": os.environ.get("NPS_API_KEY"),
-        # "limit": int(PARK_LIMIT), 
-        "limit": 10, # Is 75 in Vincent's code - slow 47 seconds - tried 5 but still received full list and slow - 🤦‍♀️  # Adjust this number based on the API's limit
+        "limit": 75, # slow 47 seconds now 7 seconds - cache? # Adjust this number based on the API's limit
         "start": 0
     }
     parks = []
