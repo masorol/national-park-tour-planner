@@ -6,7 +6,7 @@ import requests
 import json
 import os
 import io
-# ! add datetime and log_run and call for log run???
+import datetime
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_json_chat_agent, AgentExecutor, tool
 from langchain_community.tools import WikipediaQueryRun
@@ -35,26 +35,30 @@ def log_run(run_status):
     """Logs the status of a run if it is cancelled, failed, or expired."""
     if run_status in ["cancelled", "failed", "expired"]:
         log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-        
-# ! figure these out
+
+# Set up the database       
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Initialize the database
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# Define the User model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 
+# Define the User loader
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Define the route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -68,14 +72,14 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
 
+# Define the route for logging out
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# todo: when is db created? Currently receiving an error: sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user (Background on this error at: https://sqlalche.me/e/20/e3q8)  and I don't see db.create_all()
-# todo update: added the db.create_all() below from next branch. But still doesn't work. Same issue. Wondering about schema...
+# Define the route for signing up
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -103,20 +107,14 @@ def plan_trip():
     parks = get_parks()
     return render_template("plan-trip.html", parks=parks, user=current_user)
   
-# ! work out time issue
+# Define function to get list of national parks
 def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
-    # url = "https://developer.nps.gov/api/v1/parks"
-    url = "https://developer.nps.gov/api/v1/parks?limit=10"
-    params = {
-        # "api_key": NPS_API_KEY,
-        # "limit": int(PARK_LIMIT),  # Adjust this number based on the API's limit
-        # "start": 0
-         # "api_key": NPS_API_KEY,
+    url = "https://developer.nps.gov/api/v1/parks"
+    params = {,
         # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
-        "api_key": os.environ.get("NPS_API_KEY"),
-        # "limit": int(PARK_LIMIT), 
-        "limit": 10, # Is 75 in Vincent's code - slow 47 seconds - tried 5 but still received full list and slow - 🤦‍♀️  # Adjust this number based on the API's limit
+        "api_key": os.environ.get("NPS_API_KEY"), 
+        "limit": 75, # started slow 47 seconds now 6 - 8 but may be cache # Adjust this number based on the API's limit
         "start": 0
     }
     parks = []

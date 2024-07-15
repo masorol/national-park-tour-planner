@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // New script for dropdown menu
-  // todo: ask Vincent about this. Which dropdown menu? Does this replace a script elsewhere? It could be that I don't see because I can't log in.
+  // Script for account dropdown menu
   document.addEventListener('click', function (event) {
     var dropdowns = document.querySelectorAll('.dropdown-content');
     dropdowns.forEach(function (dropdown) {
