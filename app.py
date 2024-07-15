@@ -340,8 +340,7 @@ def create_nps_tool():
     return search_park_and_related_data
   
 # Create a Flask CLI command for initializing the database
-# todo: check to see if this needed in this branch. It was in the final version but not in this one. This branch was missing a db.create_all() call. But is this the right db for login?
-
+# Run "flask init-db" from the command line to initialize the database
 @app.cli.command("init-db")
 def init_db():
     db.create_all()
