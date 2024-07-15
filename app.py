@@ -162,7 +162,7 @@ def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging,
           "evening": "String - Description of evening activities"
         }}
       ],
-      important_things_to_know": "String - Any important things to know about the park being visited."
+      "important_things_to_know": "String - Any important things to know about the park being visited."
     }}
 
     The trip should be appropriate for those listed as traveling, themed around the interests specified, and that last for the entire specified duration of the trip.
