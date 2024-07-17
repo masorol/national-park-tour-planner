@@ -25,9 +25,9 @@
           <!-- <p class="account">ED</p> -->
           <div class="account-dropdown">
             {% if user.is_authenticated %}
-            <div class="account">{{ user.username[0].upper() if user.username else 'A' }}</div>
+            <div class="account">{{ user.username[0].upper() if user.username else '*' }}</div>
             {% else %}
-            <div class="account">A</div>
+            <div class="account">*</div>
             {% endif %}
             <div class="dropdown-content">
               <a href="{{ url_for('logout') }}">Logout</a>

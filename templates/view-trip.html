@@ -83,6 +83,7 @@
         headers: {
           'Content-Type': 'application/json'
         },
+        // You may see linting errors caused by the double set of curly brackets used to pass in the output from the Python script.
         body: JSON.stringify({{ output| tojson }})
       })
       .then(response => response.blob())

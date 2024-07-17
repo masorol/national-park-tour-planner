@@ -153,7 +153,7 @@ def plan_trip():
             return redirect(url_for('view_saved_trip', trip_id=trip.id))
 
     parks = get_parks()
-    # moved trip=trip to the end of the line. was before user=current_user
+
     return render_template("plan-trip.html", parks=parks, user=current_user, trip=trip)
 
 # Define function to get list of national parks
@@ -161,7 +161,6 @@ def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
     url = "https://developer.nps.gov/api/v1/parks"
     params = {
-        # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
         "api_key": os.environ.get("NPS_API_KEY"), 
         "limit": 75, # was slow: 47 seconds now 6 seconds # Adjust this number based on the API's limit
         "start": 0
@@ -184,7 +183,6 @@ def get_parks():
 @login_required
 def view_trip():
     """Handles the form submission to view the generated trip itinerary."""
-    # Todo: the variable names have changed... should they be changed on all branches? Or updated in this branch?
     # Extract form data
     location = request.form["location-search"]
     trip_start_str = request.form["trip-start"]
@@ -374,12 +372,13 @@ def generate_trip_input(trip_name, location, trip_start, trip_end, traveling_wit
     }}
 
     The trip should be appropriate for those listed as traveling, themed around the interests specified, and that last for the entire specified duration of the trip.
+    All dates should be in the format MM-DD-YYYY.
     Include realistic and varied activities for each day, considering the location, hours of operation, and typical weather.
     Make sure all itinerary fields are filled with appropriate and engaging content.
     Include descriptive information about each day's activities and destination.
     Respond only with a valid parseable JSON object representing the itinerary.
     """
-
+    
 def create_wikipedia_tool():
     """
     Creates a built-in langchain tool for querying Wikipedia.
