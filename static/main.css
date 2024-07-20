@@ -467,6 +467,7 @@ input[type=checkbox] {
 
 }
 
+/* Plan trip checkboxes */
 
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
   color: var(--accent-medium);
@@ -492,3 +493,97 @@ input[type=checkbox] {
   margin: -1px;
   overflow: hidden;
 }
+
+/* end Plan trip checkboxes */
+
+/* display/hide overlay for loading state */
+
+.drawer {
+  position: fixed;
+  top: 0;
+  /* Initially hide the drawer */
+  right: -100%;
+  /* todo: for mobile and tablet try 100% */
+  width: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--default-light);
+  padding: 20px;
+  transition: right 0.3s ease;
+  margin-bottom: 0;
+  padding: 60px;
+}
+
+.drawer.open {
+  right: 0;
+  /* Slide the drawer in */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.overlay.show {
+  display: block;
+}
+
+
+.loading-content-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+  width: 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-content {
+  width: 100%;
+}
+
+.loading-text {
+  font-size: 2rem;
+}
+
+/* Loading animation */
+.loader {
+  width: 120px;
+  width: 100%;
+  height: 10px;
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, #0000, var(--accent-medium)) left -50px top 0/50px 20px no-repeat var(--waiting-animation);
+  /* animation: loader 1.5s infinite linear; */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .loader {
+    animation: loader 1.5s infinite linear;
+  }
+}
+
+@keyframes loader {
+  100% {
+    background-position: right -50px top 0
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .drawer {
+    border-radius: 30px 0 0 30px;
+    width: 50%;
+  }
+
+  .loading-content-wrapper {
+    width: 50%;
+  }
+}
+
+/* End display/hide overlay for loading state and loading animation */

@@ -8,3 +8,8 @@ customCheckbox.forEach((customCheckbox, index) => {
     checkbox[index].checked = !checkbox[index].checked;
   });
 });
+
+function showDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
