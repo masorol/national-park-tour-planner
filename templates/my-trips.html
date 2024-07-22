@@ -38,20 +38,20 @@
       </div>
     </main>
   </div>
-  <aside class="my-trip-panel">
-    <!-- <div class="right-panel"> -->
-    <div class="trip-list">
-      {% for trip in trips %}
-      <div class="trip-item">
-        <img src="/static/AmyMartin_GC_from_above.png" alt="{{ trip.trip_name }}" class="trip-image">
-        <div class="trip-details">
-          <h3>{{ trip.trip_name }}</h3>
-          <p>{{ trip.trip_start }} to {{ trip.trip_end }}</p>
-          <a href="{{ url_for('view_saved_trip', trip_id=trip.id) }}" class="secondary-link-underline">View trip</a>
+  <aside>
+    <div class="my-trip-panel">
+      <div class="trip-list">
+        {% for trip in trips %}
+        <div class="trip-item">
+          <img src="/static/AmyMartin_GC_from_above.png" alt="{{ trip.trip_name }}" class="trip-image">
+          <div class="trip-details">
+            <h3>{{ trip.trip_name }}</h3>
+            <p>{{ trip.trip_start }} to {{ trip.trip_end }}</p>
+            <a href="{{ url_for('view_saved_trip', trip_id=trip.id) }}" class="secondary-link-underline">View trip</a>
+          </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
   </aside>
 </body>
 
