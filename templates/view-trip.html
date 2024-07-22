@@ -21,7 +21,6 @@
           <h1>Nature<br>Nook.</h1>
         </a>
         <div class="nav-wrapper">
-          <!-- <a href="/" class="link-underline">My trips</a> -->
           <a href="{{ url_for('my_trips') }}" class="link-underline">My trips</a>
           <!-- <p class="account">ED</p> -->
           <div class="account-dropdown">
@@ -40,7 +39,9 @@
     <main>
       <div class="main-content-wrapper create-main-content-wrapper">
 
-        <a href="{{ url_for('my_trips') }}">Back to all the trips</a>
+        <a href="{{ url_for('my_trips') }}"><img src="../static/img/back-arrow.png" alt="back arrow"
+            class="icons" />Back to all
+          the trips</a>
         <h2>{{ output.trip_name }}</h2>
         <p id="location">Location: {{ output.location }}</p>
         <p id="trip-date">Dates: {{ output.trip_start }} - {{ output.trip_end }}</p>
@@ -49,14 +50,15 @@
         <p id="lodging">Lodging: {{ output.lodging }}</p>
         <p id="adventure">Activities: {{ output.adventure }}</p>
         <div class="create-trip-edit-buttons">
-          <!-- <a href="" id="edit-trip">Edit trip</a>
-          <a href="#" id="export-trip" onclick="downloadPDF()">Export trip</a>
-          <a href="" id="delete-trip">Delete trip</a> -->
-          <a href="{{ url_for('plan_trip', trip_id=trip_id) }}" class="btn">Edit trip</a>
-          <!-- todo Change this to a button. Does the JS need to change also? -->
-          <a href="#" class="btn" onclick="downloadPDF()">Export trip</a>
-          <form action="{{ url_for('delete_trip', trip_id=trip_id) }}" method="post" style="width: 30%; margin: 0;">
-            <button type="submit" class="btn">Delete trip</button>
+
+          <a href="{{ url_for('plan_trip', trip_id=trip_id) }}" class="view-trip-btn" id="edit-trip"><img
+              src="../static/img/pen-black.png" alt="edit icon" class="icons" />Edit trip</a>
+          <button class="view-trip-btn" onclick="downloadPDF()" id="export-trip"><img
+              src="../static/img/export-black.png" alt="pdf icon" class="icons" />Export trip</button>
+          <form action="{{ url_for('delete_trip', trip_id=trip_id) }}" method="POST" class="view-trip-btn"
+            id="delete-trip">
+            <button type="submit"><img src="../static/img/x-black.png" alt="trash icon" class="icons" />Delete
+              trip</button>
           </form>
         </div>
       </div>
@@ -64,7 +66,7 @@
   </div>
   <aside>
     <div class="trip-content-wrapper">
-      <h2 class="scroll">Overall itinerary</h2>
+      <h2>Overall itinerary</h2>
       {% for day in output.itinerary %}
       <h3>Day {{ day.day }}</h3>
       <p>Date: {{ day.date }}</p>
@@ -72,12 +74,11 @@
       <p>Afternoon: {{ day.afternoon }}</p>
       <p>Evening: {{ day.evening }}</p>
       {% endfor %}
-      <h2 class="scroll">Important Things to Know</h2>
+      <h2>Important Things to Know</h2>
       <p>{{ output.important_things_to_know }}</p>
     </div>
   </aside>
 
-  <!-- Todo: can this be moved to the JS file? -->
   <script>
     function downloadPDF() {
       fetch('/download_pdf', {
