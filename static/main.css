@@ -240,6 +240,7 @@ aside {
 .plan-trip-form {
   display: flex;
   flex-flow: row wrap;
+  column-gap: 10px;
 }
 
 .legend-span {
@@ -257,6 +258,7 @@ fieldset,
 #location-search {
   width: 100%;
   padding: 10px 0 10px 20px;
+  background-color: var(--default-light);
 }
 
 .location .form-label {
@@ -424,6 +426,7 @@ input[type=checkbox] {
   background-color: var(--default-light);
   color: var(--default-dark);
   border-radius: 20px;
+  width: 100%;
   padding: 20px;
   margin: 30px 0;
 }
@@ -551,7 +554,8 @@ input[type=checkbox] {
     width: 50%;
   }
 
-  .create-half-dark-bkgd {
+  .create-half-dark-bkgd,
+  .my-trips-dark-bkgd {
     width: 70%;
   }
 
@@ -580,7 +584,6 @@ input[type=checkbox] {
   }
 
   aside {
-    width: 50%;
     width: 70%;
     justify-content: flex-end;
   }
@@ -662,8 +665,9 @@ input[type=checkbox] {
   }
 
   /* My Trips Page Styles */
+  /* If adding more info to my-trips, this is the width to adjust */
   .my-trip-panel {
-    width: 50%;
+    width: 70%;
     display: flex;
     justify-content: center;
     border-radius: 30px 0 0 30px;

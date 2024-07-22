@@ -31,13 +31,6 @@ app = Flask(__name__)
 # Initialize the OpenAI language model
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.5, max_tokens=4000)
 
-# todo: add call for log run? This was removed and re-added but no call exists
-def log_run(run_status):
-    """Logs the status of a run if it is cancelled, failed, or expired."""
-    if run_status in ["cancelled", "failed", "expired"]:
-        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-
-
 # Configure the Flask application with the SQLite database
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'

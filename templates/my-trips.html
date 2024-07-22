@@ -32,7 +32,11 @@
     </header>
     <main>
       <div class="main-content-wrapper">
+        {% if trips|length == 1 %}
+        <h2>You have {{ trips|length }} saved trip.</h2>
+        {% else %}
         <h2>You have {{ trips|length }} saved trips.</h2>
+        {% endif %}
         <p class="tag-line">Thinking about a new adventure? Let us help!</p>
         <a href="{{ url_for('plan_trip') }}" class="btn my-trip-btn">Create New Trip</a>
       </div>
