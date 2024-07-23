@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI
 from pydantic.v1 import BaseModel, ValidationError, Field
 from typing import List
 
-# Initialize LLM
+# Initialize the OpenAI language model
 llm = ChatOpenAI()
 
 # app will run at: http://127.0.0.1:5000/
@@ -17,6 +17,7 @@ log = logging.getLogger("app")
 # Initialize the Flask application
 app = Flask(__name__)
 
+# Define the data model
 class ItineraryItem(BaseModel):
     day: int = Field(description="The day number of the trip")
     date: str = Field(description="The date of the itinerary item")
@@ -24,6 +25,7 @@ class ItineraryItem(BaseModel):
     afternoon: str = Field(description="The afternoon activity")
     evening: str = Field(description="The evening activity")
 
+# Define the response model
 class TripResponse(BaseModel):
     trip_name: str = Field(description="The name of the trip")
     location: str = Field(description="The location of the trip")
