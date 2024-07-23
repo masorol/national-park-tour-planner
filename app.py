@@ -1,27 +1,23 @@
 from flask import Flask, render_template, request, jsonify
 import logging
-import datetime
+from datetime import datetime
 from langchain_core.prompts import PromptTemplate
 from langchain_core.prompts.few_shot import FewShotPromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
 from langchain_openai import OpenAI
 
-llm = OpenAI()
-
 # app will run at: http://127.0.0.1:5000/
+
+# Initialize the OpenAI language model
+llm = OpenAI()
 
 # Initialize logging
 logging.basicConfig(filename="app.log", level=logging.INFO)
 log = logging.getLogger("app")
 
 app = Flask(__name__)
-
-
-def log_run(run_status):
-    """Logs the status of a run if it is cancelled, failed, or expired."""
-    if run_status in ["cancelled", "failed", "expired"]:
-        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-        
+   
+# Define a function to build the new trip prompt    
 def build_new_trip_prompt(form_data):
   examples = [
    {  
@@ -77,18 +73,17 @@ Evening: Dinner at the campsite, stargazing
 
   return few_shot_prompt.format(input = "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information.")
 
-
-
-
-# Render the HTML template - we're going to see a UI!!!
+# Define the route for the home page
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
   
+# Define the route for the plan trip page
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
   return render_template("plan-trip.html")
 
+# Define the route for view trip page with the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
   traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
