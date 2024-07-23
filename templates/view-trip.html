@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Nature Nook</title>
+  <title>View Trip | Nature Nook</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
   <script src="{{ url_for('static', filename='script.js') }}" defer></script>
@@ -21,16 +21,16 @@
           <h1>Nature<br>Nook.</h1>
         </a>
         <div class="nav-wrapper">
-          <!-- todo: change route to my trips -->
-          <a href="/" class="link-underline">My trips</a>
-          <p class="account">ED</p>
+          <a href="" class="link-underline">My trips</a>
+          <p class="account">E</p>
         </div>
       </div>
     </header>
     <main>
       <div class="main-content-wrapper create-main-content-wrapper">
 
-        <a href="/">Back to all the trips</a>
+        <a href="/"><img src="../static/img/back-arrow.png" alt="back arrow" class="icons" />Back to all
+          the trips</a>
         <h2>{{ trip_name }}</h2>
         <p id="location">Location: {{ location }}</p>
         <p id="trip-date">Dates: {{ trip_start }} - {{ trip_end }}</p>
@@ -38,18 +38,26 @@
         <p id="traveling-with">Companions: {{ traveling_with }}</p>
         <p id="lodging">Lodging: {{ lodging }}</p>
         <p id="adventure">Activities: {{ adventure }}</p>
-        <!-- todo: add routes to edit, export, and delete -->
         <div class="create-trip-edit-buttons">
-          <a href="" id="edit-trip">Edit trip</a>
-          <a href="/export" id="export-trip">Export trip</a>
-          <a href="" id="delete-trip">Delete trip</a>
+
+          <a href="" class="view-trip-btn" id="edit-trip">
+            <img src="../static/img/pen-black.png" alt="pencil icon" class="icons" />Edit trip
+          </a>
+          <button class="view-trip-btn" onclick="downloadPDF()" id="export-trip">
+            <img src="../static/img/export-black.png" alt="file icon" class="icons" />Export trip
+          </button>
+          <form action="" method="POST" class="view-trip-btn" id="delete-trip">
+            <button type="submit">
+              <img src="../static/img/x-black.png" alt="delete icon" class="icons" />Delete trip
+            </button>
+          </form>
         </div>
       </div>
     </main>
-  </div> 
+  </div>
   <aside>
     <div class="trip-content-wrapper">
-      <h2 class="scroll">Overall itinerary</h2>
+      <h2>Overall itinerary</h2>
       {% for day in itinerary %}
       <h3>Day {{ day.day }}</h3>
       <p>Date: {{ day.date }}</p>
@@ -57,8 +65,12 @@
       <p>Afternoon: {{ day.afternoon }}</p>
       <p>Evening: {{ day.evening }}</p>
       {% endfor %}
+      <!-- Will be used in a future lesson -->
+      <!-- <h2>Important Things to Know</h2>
+      <p></p> -->
     </div>
   </aside>
+
 </body>
 
 </html>
