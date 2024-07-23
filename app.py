@@ -5,6 +5,7 @@ from langchain_openai import ChatOpenAI
 from pydantic.v1 import BaseModel, ValidationError, Field
 from typing import List
 
+# Initialize the OpenAI language model
 llm = ChatOpenAI()
 
 # app will run at: http://127.0.0.1:5000/
@@ -13,8 +14,10 @@ llm = ChatOpenAI()
 logging.basicConfig(filename="app.log", level=logging.INFO)
 log = logging.getLogger("app")
 
+# Initialize the Flask application
 app = Flask(__name__)
 
+# Define the data model
 class ItineraryItem(BaseModel):
     day: int = Field(description="The day number of the trip")
     date: str = Field(description="The date of the itinerary item")
@@ -22,6 +25,7 @@ class ItineraryItem(BaseModel):
     afternoon: str = Field(description="The afternoon activity")
     evening: str = Field(description="The evening activity")
 
+# Define the response model
 class TripResponse(BaseModel):
     trip_name: str = Field(description="The name of the trip")
     location: str = Field(description="The location of the trip")
@@ -32,27 +36,24 @@ class TripResponse(BaseModel):
     lodging: str = Field(description="The type of lodging the traveler is staying in")
     adventure: str = Field(description="The activities the traveler wants to do")
     itinerary: List[ItineraryItem] = Field(description="List of itinerary items")
-
-
-def log_run(run_status):
-    """Logs the status of a run if it is cancelled, failed, or expired."""
-    if run_status in ["cancelled", "failed", "expired"]:
-        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-
+    
+# Define a function to build the new trip prompt 
 def build_new_trip_prompt(form_data):
     """Builds a prompt for generating a new trip itinerary based on form data."""
    
     return "This trip is to " + form_data["location"] + " between " + form_data["trip_start"] + " and " +  form_data["trip_end"] + ". This person will be traveling " + form_data["traveling_with_list"] + " and would like to stay in " + form_data["lodging_list"] + ". They want to " + form_data["adventure_list"] + ". Create an daily itinerary for this trip using this information."
 
-# Render the HTML template - we're going to see a UI!!!
+# Define the route for the home page
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
 
+# Define the route for the plan trip page
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
     return render_template("plan-trip.html")
 
+# Define the route for view trip page with the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
     traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
