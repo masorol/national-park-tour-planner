@@ -38,6 +38,11 @@ With a debugger:
 `flask run --debug`
 
 <br>
+
+The app will run at: http://127.0.0.1:5000/
+
+<br>
+
 To stop the run, click control + C.
 Then hard refresh the page. When making changes to your Python, HTML, or JavaScript code (and not using debugger) you'll need to stop the run after each change.
 
@@ -45,3 +50,8 @@ Then hard refresh the page. When making changes to your Python, HTML, or JavaScr
 When finished, quit the run by clicking control + C and close the virtual environment by running:
 
 `deactivate`
+
+<br>
+To initialize the database, run:
+
+`flask init-db`
