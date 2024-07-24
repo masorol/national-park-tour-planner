@@ -23,7 +23,7 @@ Once the virtual environment is activated, the beginning of your terminal prompt
 <br>
 Install the LangChain modules by running (in both a Mac and Windows):
 
-`pip install langchain langchain-core langchain-community langchain-openai langchainhub fuzzywuzzy python-Levenshtein flask` 
+`pip install langchain langchain-core langchain-community langchain-openai langchainhub fuzzywuzzy python-Levenshtein wikipedia flask reportlab flask-login flask-sqlalchemy`
 
 You'll see an openai-env folder has been added to the directory with all of the installed dependencies.
 
@@ -38,10 +38,20 @@ With a debugger:
 `flask run --debug`
 
 <br>
+
+The app will run at: http://127.0.0.1:5000/
+
+<br>
+
 To stop the run, click control + C.
 Then hard refresh the page. When making changes to your Python, HTML, or JavaScript code (and not using debugger) you'll need to stop the run after each change.
 
 <br>
-When finished, quit the run by clicking control + C and close the virtual environment by running: 
+When finished, quit the run by clicking control + C and close the virtual environment by running:
 
 `deactivate`
+
+<br>
+To initialize the database, run:
+
+`flask init-db`
