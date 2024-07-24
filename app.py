@@ -85,7 +85,6 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
 
-# todo - not working yet
 # Define the route for the logout
 @app.route('/logout')
 @login_required
@@ -241,7 +240,7 @@ def view_trip():
     # Render the response on the view-trip.html page
     return render_template("view-trip.html", output=output, user=current_user, trip_id=trip.id)
 
-
+# Define the route for viewing the saved trips
 @app.route("/my_trips", methods=["GET"])
 @login_required
 def my_trips():
@@ -249,6 +248,7 @@ def my_trips():
     trips = Trip.query.filter_by(user_id=current_user.id).all()
     return render_template("my-trips.html", trips=trips, user=current_user)
 
+# Define the route for deleting a trip
 @app.route("/delete_trip/<int:trip_id>", methods=["POST"])
 @login_required
 def delete_trip(trip_id):
@@ -263,7 +263,7 @@ def delete_trip(trip_id):
     flash("Trip deleted successfully.", "success")
     return redirect(url_for('my_trips'))
 
-
+# Define the route for viewing a saved trip
 @app.route("/view_trip/<int:trip_id>", methods=["GET"])
 @login_required
 def view_saved_trip(trip_id):
@@ -283,7 +283,7 @@ def view_saved_trip(trip_id):
     }
     return render_template("view-trip.html", output=output, user=current_user, trip_id=trip.id)
 
-
+# Define the route for the PDF download
 @app.route("/download_pdf", methods=["POST"])
 @login_required
 def download_pdf():
@@ -330,6 +330,7 @@ def download_pdf():
     buffer.seek(0)
     return send_file(buffer, as_attachment=True, download_name="itinerary.pdf", mimetype='application/pdf')
 
+# Define a function to generate the input string
 def generate_trip_input(trip_name, location, trip_start, trip_end, traveling_with, lodging, adventure):
     """
     Generates a structured input string for the trip planning agent.
@@ -366,13 +367,13 @@ def generate_trip_input(trip_name, location, trip_start, trip_end, traveling_wit
     }}
 
     The trip should be appropriate for those listed as traveling, themed around the interests specified, and that last for the entire specified duration of the trip.
-    All dates should be in the format MM-DD-YYYY.
     Include realistic and varied activities for each day, considering the location, hours of operation, and typical weather.
     Make sure all itinerary fields are filled with appropriate and engaging content.
     Include descriptive information about each day's activities and destination.
     Respond only with a valid parseable JSON object representing the itinerary.
     """
     
+# Define a function to create the Wikipedia tool
 def create_wikipedia_tool():
     """
     Creates a built-in langchain tool for querying Wikipedia.
@@ -384,6 +385,7 @@ def create_wikipedia_tool():
         description="Useful for Wikipedia searches about national parks."
     )
 
+# Define a function to create the National Park Service tool
 def create_nps_tool():
     """
     Creates a custom tool for retrieving data from the National Park Service (NPS) API.  
@@ -392,6 +394,7 @@ def create_nps_tool():
     # Load your API key from an environment variable
     api_key = os.environ.get("NPS_API_KEY")
 
+    # Define a function to fetch data from the NPS API
     def fetch_data(endpoint, params):
         """
         Fetches data from the NPS API given an endpoint and parameters.
@@ -403,12 +406,14 @@ def create_nps_tool():
             return response.json()
         return {"error": f"Failed to fetch data from {endpoint}, status code: {response.status_code}"}
 
+    # Define a function to search for parks by name using the NPS API
     def search_parks_by_name(park_name):
         """
         Searches for parks by name.
         """
         return fetch_data("parks", {"q": park_name}).get("data", [])
 
+    # Define a function to find the best matching park
     def find_best_matching_park(park_name, parks):
         """
         Finds the best matching park using fuzzy search.
@@ -420,6 +425,7 @@ def create_nps_tool():
                 return park
         return None
 
+    # Define a function to find related data for a park
     def find_related_data_for_park(park):
         """
         Finds related data for a park from various NPS API endpoints.
@@ -431,6 +437,7 @@ def create_nps_tool():
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data
     
+    # Define a tool for searching for parks and related data
     @tool
     def search_park_and_related_data(input: str) -> str:
         """
