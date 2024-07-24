@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Nature Nook</title>
+  <title>Plan Trip | Nature Nook</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
   <script src="{{ url_for('static', filename='script.js') }}" defer></script>
@@ -21,9 +21,8 @@
           <h1>Nature<br>Nook.</h1>
         </a>
         <div class="nav-wrapper">
-          <!-- todo: change route to my trips -->
-          <a href="/" class="link-underline">My trips</a>
-          <p class="account">ED</p>
+          <a href="" class="link-underline">My trips</a>
+          <p class="account">E</p>
         </div>
       </div>
     </header>
@@ -36,23 +35,24 @@
   </div>
   <aside>
     <div class="form-content-wrapper">
-      <form action="/view_trip" method="POST" class="plan-trip-form">
-        <!-- todo: turn into a toggle for a calendar -->
+      <form id="trip-form" action="/view_trip" method="POST" onsubmit="showDrawer()" class="plan-trip-form">
         <div class="location">
           <label for="location-search" class="form-label">Where do you want to go?</label>
-          <input type="text" id="location-search" name="location-search" placeholder="Search by city or state">
+          <input type="text" id="location-search" name="location-search" placeholder="Grand Canyon National Park"
+            required />
         </div>
-        <div class="dates">
+        <div class="dates-wrapper">
           <label for="start" class="form-label">Exact dates</label>
           <div class="calendar">
-            <input type="date" id="start" name="trip-start" value="start" min="" max="" />
-            <input type="date" id="end" name="trip-end" value="end" min="" max="" />
+            <input type="date" id="start" name="trip-start" value="start" min="" max="" required />
+            <input type="date" id="end" name="trip-end" value="end" min="" max="" required />
           </div>
         </div>
         <fieldset>
           <legend>Who are you traveling with? <span class="legend-span">(multi-select)</span></legend>
           <label for="solo" class="custom-checkbox">
-            <input type="checkbox" id="solo" name="traveling-with" value="solo" class="visually-hidden" /><span class="checkbox-label">Solo</span>
+            <input type="checkbox" id="solo" name="traveling-with" value="solo" class="visually-hidden" />
+            <span class="checkbox-label">Solo</span>
           </label>
           <label for="partner" class="custom-checkbox">
             <input type="checkbox" id="partner" name="traveling-with" value="with one partner"
@@ -64,7 +64,8 @@
             <span class="checkbox-label">Group</span>
           </label>
           <label for="kids" class="custom-checkbox">
-            <input type="checkbox" id="kids" name="traveling-with" value="with kids" class="visually-hidden" /><span class="checkbox-label">Kids</span>
+            <input type="checkbox" id="kids" name="traveling-with" value="with kids" class="visually-hidden" />
+            <span class="checkbox-label">Kids</span>
           </label>
         </fieldset>
         <fieldset>
@@ -126,13 +127,23 @@
           <div class="trip-name">
             <label for="trip-name" class="form-label">Give your trip a unique
               name:</label>
-            <input type="text" id="trip-name" name="trip-name" placeholder="Enter trip name">
+            <input type="text" id="trip-name" name="trip-name" placeholder="Spring break!">
           </div>
           <button type="submit" class="btn">Create trip</button>
         </div>
       </form>
     </div>
   </aside>
+  <!-- Drawer for loading state -->
+  <div class="overlay" id="overlay"></div>
+  <div class="drawer loading-content-wrapper" id="drawer">
+    <div>
+      <p class="loading-content">This will take a few moments.</p>
+      <p class="loading-content loading-text">We're creating your trip plan.</p>
+      <div class="loader"></div>
+    </div>
+  </div>
+  <!-- End drawer for loading state -->
 </body>
 
 </html>
