@@ -81,7 +81,6 @@ def view_trip():
     
         structured_llm = llm.with_structured_output(TripResponse)
 
-        # todo: when is this chain invoked?
         chain = build_new_trip_prompt() | structured_llm
         
         # Invoke the chain with the cleaned form data
