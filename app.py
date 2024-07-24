@@ -15,6 +15,7 @@ llm = OpenAI()
 logging.basicConfig(filename="app.log", level=logging.INFO)
 log = logging.getLogger("app")
 
+# Initialize the Flask application
 app = Flask(__name__)
    
 # Define a function to build the new trip prompt    
