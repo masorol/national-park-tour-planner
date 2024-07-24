@@ -17,11 +17,22 @@
   <div class="dark-bkgd">
     <header>
       <div class="header-content-wrapper">
-        <a href="/"><h1>Nature<br>Nook.</h1></a>
+        <a href="/">
+          <h1>Nature<br>Nook.</h1>
+        </a>
         <div class="nav-wrapper">
-          <!-- todo: change route to my trips -->
-          <a href="" class="link-underline">My trips</a>
-          <p class="account">ED</p>
+          <a href="{{ url_for('my_trips') }}" class="link-underline">My trips</a>
+          <!-- <p class="account">ED</p> -->
+          <div class="account-dropdown">
+            {% if user.is_authenticated %}
+            <div class="account">{{ user.username[0].upper() if user.username else '*' }}</div>
+            {% else %}
+            <div class="account">*</div>
+            {% endif %}
+            <div class="dropdown-content">
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -29,10 +40,22 @@
       <div class="homepage-content-wrapper">
         <h2 class="homepage-h2">Dreaming of your<br>next adventure?<br>Let us guide you!</h2>
         <p class="tag-line">Discover the best places to stay, dine, and explore.</p>
-        <a href="/plan_trip" class="btn">Create New Trip</a>
+        <form action="/plan_trip">
+          <button type="submit" class="btn" onclick="showDrawer()">Create New Trip</button>
+        </form>
       </div>
     </main>
   </div>
+  <!-- Drawer for loading state -->
+  <div class="overlay" id="overlay"></div>
+  <div class="drawer loading-content-wrapper" id="drawer">
+    <div>
+      <p class="loading-content">This will take a few moments.</p>
+      <p class="loading-content loading-text">We're retrieving a list of national parks.</p>
+      <div class="loader"></div>
+    </div>
+  </div>
+  <!-- End drawer for loading state -->
 </body>
 
 </html>

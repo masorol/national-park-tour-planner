@@ -21,42 +21,88 @@
           <h1>Nature<br>Nook.</h1>
         </a>
         <div class="nav-wrapper">
-          <!-- todo: change route to my trips -->
-          <a href="/" class="link-underline">My trips</a>
-          <p class="account">ED</p>
+          <a href="{{ url_for('my_trips') }}" class="link-underline">My trips</a>
+          <div class="account-dropdown">
+            {% if user.is_authenticated %}
+            <div class="account">{{ user.username[0].upper() if user.username else '*' }}</div>
+            {% else %}
+            <div class="account">*</div>
+            {% endif %}
+            <div class="dropdown-content">
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
     <main>
       <div class="main-content-wrapper create-main-content-wrapper">
 
-        <a href="/">Back to all the trips</a>
-        <h2>Your trip to <br>{{ location }}!</h2>
-        <p id="trip-date">{{ trip_start }} - {{ trip_end }}</p>
-        <p id="traveling-with">Companions: {{ traveling_with }}</p>
-        <p id="lodging">Lodging: {{ lodging }}</p>
-        <p id="adventure">Activities: {{ adventure }}</p>
-        <!-- todo: add routes to edit, export, and delete -->
+        <a href="{{ url_for('my_trips') }}"><img src="../static/img/back-arrow.png" alt="back arrow"
+            class="icons" />Back to all
+          the trips</a>
+        <h2>{{ output.trip_name }}</h2>
+        <p id="location">Location: {{ output.location }}</p>
+        <p id="trip-date">Dates: {{ output.trip_start }} - {{ output.trip_end }}</p>
+        <p id="weather">Typical Weather: {{ output.typical_weather }}</p>
+        <p id="traveling-with">Companions: {{ output.traveling_with }}</p>
+        <p id="lodging">Lodging: {{ output.lodging }}</p>
+        <p id="adventure">Activities: {{ output.adventure }}</p>
         <div class="create-trip-edit-buttons">
-          <a href="" id="edit-trip">Edit trip</a>
-          <a href="" id="export-trip">Export trip</a>
-          <a href="" id="delete-trip">Delete trip</a>
+
+          <a href="{{ url_for('plan_trip', trip_id=trip_id) }}" class="view-trip-btn" id="edit-trip"><img
+              src="../static/img/pen-black.png" alt="edit icon" class="icons" />Edit trip</a>
+          <button class="view-trip-btn" onclick="downloadPDF()" id="export-trip"><img
+              src="../static/img/export-black.png" alt="pdf icon" class="icons" />Export trip</button>
+          <form action="{{ url_for('delete_trip', trip_id=trip_id) }}" method="POST" class="view-trip-btn"
+            id="delete-trip">
+            <button type="submit"><img src="../static/img/x-black.png" alt="trash icon" class="icons" />Delete
+              trip</button>
+          </form>
         </div>
       </div>
     </main>
   </div>
   <aside>
     <div class="trip-content-wrapper">
-      <h2 class="scroll">Overall itinerary</h2>
-      {% for day in itinerary %}
+      <h2>Overall itinerary</h2>
+      {% for day in output.itinerary %}
       <h3>Day {{ day.day }}</h3>
       <p>Date: {{ day.date }}</p>
       <p>Morning: {{ day.morning }}</p>
       <p>Afternoon: {{ day.afternoon }}</p>
       <p>Evening: {{ day.evening }}</p>
       {% endfor %}
+      <h2>Important Things to Know</h2>
+      <p>{{ output.important_things_to_know }}</p>
     </div>
   </aside>
+
+  <script>
+    function downloadPDF() {
+      fetch('/download_pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // You may see linting errors caused by the double set of curly brackets used to pass in the output from the Python script.
+        body: JSON.stringify({{ output| tojson }})
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'itinerary.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => console.error('Error downloading PDF:', error));
+    }
+  </script>
+
 </body>
 
 </html>
