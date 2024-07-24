@@ -1,8 +1,5 @@
 /* These are CSS variables. They allow you to change the theme of the chatbot by replacing the values. Read more about them here: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
 :root {
-  /* logo and account background hover underline */
-
-  /* --header-background: #3352A1; */
   --default-light: #FFFFFF;
   --default-dark: #000000;
   --accent-bright: #C4FF47;
@@ -34,6 +31,8 @@ body {
   margin: 0;
 }
 
+/* Background images  */
+
 body.full-layout {
   background: linear-gradient(0deg, rgba(60, 60, 60, 0.55), rgba(60, 60, 60, 0.55)), url('alice-triquet-HeEJU3nrg_0-unsplash.png'), #000000;
   background-size: cover;
@@ -52,19 +51,39 @@ body.create {
   background-position: center;
 }
 
+/* End background images */
+
 body,
-input {
+input,
+button,
+select,
+a {
   font-size: 1rem;
   color: var(--default-dark);
   font-family: var(--default-text-font-family);
 }
 
-body .dark-bkgd,
-body .plan-half-dark-bkgd,
-body .create-half-dark-bkgd,
-body .dark-bkgd a,
-body .plan-half-dark-bkgd a,
-body .create-half-dark-bkgd a {
+button {
+  border: none;
+  cursor: pointer;
+  background-color: var(--default-light);
+  font-weight: 900;
+  background-color: none;
+}
+
+button:hover {
+  background-color: var(--accent-medium);
+  color: var(--default-light);
+}
+
+.dark-bkgd,
+.plan-half-dark-bkgd,
+.create-half-dark-bkgd,
+.my-trips-dark-bkgd,
+.my-trips-dark-bkgd a,
+.dark-bkgd a,
+.plan-half-dark-bkgd a,
+.create-half-dark-bkgd a {
   color: var(--default-light);
 }
 
@@ -88,14 +107,22 @@ a {
   text-decoration: none;
 }
 
+.link-underline {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .link-underline:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
   text-decoration-color: var(--accent-bright);
 }
 
 .btn {
   padding: 10px 40px 10px 45px;
   background-color: var(--accent-medium);
+  color: var(--default-light);
+  border: none;
   border-radius: var(--border-radius);
   font-weight: 900;
   font-size: 1.5rem;
@@ -104,6 +131,10 @@ a {
 
 .btn:hover {
   background-color: var(--default-dark);
+}
+
+.my-trip-btn {
+  font-size: 1.25rem;
 }
 
 header {
@@ -138,6 +169,11 @@ main {
   flex-flow: row wrap;
 }
 
+#username,
+#password {
+  font-style: italic;
+}
+
 .homepage-content-wrapper,
 .main-content-wrapper {
   width: 80%;
@@ -155,9 +191,19 @@ main {
   margin-bottom: 30px;
 }
 
+.create-trip-edit-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.icons {
+  margin-right: 10px;
+}
+
 #edit-trip,
-#delete-trip,
-#export-trip {
+#export-trip,
+#delete-trip {
   padding: 20px;
   background-color: var(--default-light);
   color: var(--default-dark);
@@ -169,10 +215,12 @@ main {
   cursor: pointer;
 }
 
-.create-trip-edit-buttons {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
+#edit-trip:hover,
+#export-trip:hover,
+#delete-trip:hover,
+#delete-trip:hover>button {
+  background-color: var(--accent-medium);
+  color: var(--default-light);
 }
 
 aside {
@@ -185,7 +233,6 @@ aside {
   background-color: var(--default-light);
   color: var(--default-dark);
   border-radius: 20px;
-  width: 80%;
   width: 100%;
   padding: 20px;
   margin-bottom: 30px;
@@ -194,6 +241,7 @@ aside {
 .plan-trip-form {
   display: flex;
   flex-flow: row wrap;
+  column-gap: 10px;
 }
 
 .legend-span {
@@ -201,11 +249,27 @@ aside {
 }
 
 .location,
-.dates,
+.dates-wrapper {
+  width: 100%;
+}
+
+.location,
+.dates-wrapper,
 fieldset,
 .bottom-section,
 .trip-name {
-  margin-bottom: 50px;
+  margin: 25px 0 25px 0;
+}
+
+#location-search {
+  width: 100%;
+  padding: 10px 0 10px 20px;
+  background-color: var(--default-light);
+}
+
+.location .form-label {
+  display: block;
+  margin-bottom: 20px;
 }
 
 fieldset {
@@ -269,6 +333,158 @@ input[type=checkbox] {
   opacity: 0;
 }
 
+/* Sign in form styles */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-top: 20px;
+  color: var(--default-dark);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--accent-light);
+  background-color: var(--button-light);
+  color: var(--default-dark);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent-medium);
+}
+
+.auth-form-content-wrapper {
+  background-color: var(--default-light);
+  color: var(--default-dark);
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+/* End sign in form styles */
+
+/* Account styles */
+
+.link-underline:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent-bright);
+}
+
+.account-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.account-dropdown:hover .dropdown-content {
+  display: block;
+  border-radius: var(--border-radius);
+}
+
+.account-dropdown:hover .account {
+  color: var(--default-dark);
+  background-color: var(--default-light);
+}
+
+.account {
+  padding: 5px 10px;
+  background-color: var(--accent-bright);
+  border-radius: 50%;
+  color: var(--default-dark);
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  color: var(--default-dark);
+  background-color: var(--accent-bright);
+  border-radius: var(--border-radius);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: var(--default-dark);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  color: var(--default-dark);
+  background-color: var(--default-light);
+  border-radius: var(--border-radius);
+}
+
+/* End account styles */
+
+/* Saved trip page styles */
+
+.my-trip-panel {
+  background-color: var(--default-light);
+  color: var(--default-dark);
+  border-radius: 20px;
+  width: 100%;
+  padding: 20px;
+  margin: 30px 0;
+}
+
+.trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.trip-item {
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius);
+  /* overflow: hidden; */
+}
+
+.trip-image {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+
+.trip-details {
+  padding: 20px;
+}
+
+.trip-details h3 {
+  margin: 0 0 5px 0;
+}
+
+.trip-details p {
+  margin: 0 0 10px 0;
+}
+
+.secondary-link-underline {
+  color: var(--default-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.secondary-link-underline:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent-medium);
+  cursor: pointer;
+}
+
+/* End saved trip page styles */
+
 @media only screen and (min-width: 768px) {
   .nav-wrapper {
     gap: 20px;
@@ -283,10 +499,6 @@ input[type=checkbox] {
     padding: 50px;
   }
 
-  #location-search {
-    font-size: 1rem;
-  }
-
   fieldset {
     justify-content: space-between;
   }
@@ -299,27 +511,10 @@ input[type=checkbox] {
     width: 100%;
   }
 
-  input {
-    margin-top: 20px;
-    padding: 10px 20px;
-    width: 100%;
-  }
-
-  .dates {
+  .dates-wrapper .calendar {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    flex-flow: row wrap;
-  }
-
-  .calendar {
-    display: flex;
-    justify-content: space-between;
-    flex-flow: row wrap;
-  }
-
-  .form-label {
-    width: 100%;
+    gap: 10px;
   }
 
   #start,
@@ -345,9 +540,14 @@ input[type=checkbox] {
   .plan-trip-form .btn {
     width: 50%;
   }
+
+  .my-trip-btn {
+    font-size: 1.5rem;
+  }
 }
 
 @media only screen and (min-width: 1200px) {
+
   .split-layout {
     display: flex;
     justify-content: space-between;
@@ -362,12 +562,21 @@ input[type=checkbox] {
     width: 50%;
   }
 
-  .create-half-dark-bkgd {
+  .create-half-dark-bkgd,
+  .my-trips-dark-bkgd {
     width: 70%;
   }
 
   .create-main-content-wrapper h2 {
     margin-top: 10px;
+  }
+
+  .location,
+  .dates-wrapper,
+  fieldset,
+  .bottom-section,
+  .trip-name {
+    margin: initial;
   }
 
   .create-trip-edit-buttons {
@@ -377,19 +586,18 @@ input[type=checkbox] {
   }
 
   #edit-trip,
-  #delete-trip,
-  #export-trip {
+  #export-trip,
+  #delete-trip {
     width: 30%;
   }
 
   aside {
-    width: 50%;
     width: 70%;
     justify-content: flex-end;
   }
 
   h2 {
-    font-size: 5rem;
+    font-size: 3rem;
     margin-bottom: 30px;
     margin-left: -5px;
   }
@@ -431,7 +639,6 @@ input[type=checkbox] {
     margin-bottom: 0px;
   }
 
-  .location,
   .dates,
   .trip-name {
     width: 50%;
@@ -465,13 +672,28 @@ input[type=checkbox] {
     color: var(--default-light);
   }
 
+  /* My Trips Page Styles */
+  /* If adding more info to my-trips, this is the width to adjust */
+
+  .my-trip-panel {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    border-radius: 30px 0 0 30px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow: scroll;
+    scrollbar-color: var(--accent-medium) var(--accent-medium);
+    scrollbar-width: thin;
+    margin: 0;
+  }
+
 }
 
-/* Plan trip checkboxes */
+/* Checkbox styles */
 
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
   color: var(--accent-medium);
-  /* Todo check font-weight */
   font-weight: 700;
 }
 
@@ -494,7 +716,7 @@ input[type=checkbox] {
   overflow: hidden;
 }
 
-/* end Plan trip checkboxes */
+/* End checkbox styles */
 
 /* display/hide overlay for loading state */
 
@@ -503,7 +725,6 @@ input[type=checkbox] {
   top: 0;
   /* Initially hide the drawer */
   right: -100%;
-  /* todo: for mobile and tablet try 100% */
   width: 50%;
   width: 100%;
   height: 100%;
@@ -553,6 +774,7 @@ input[type=checkbox] {
 }
 
 /* Loading animation */
+
 .loader {
   width: 120px;
   width: 100%;
@@ -560,7 +782,6 @@ input[type=checkbox] {
   border-radius: 10px;
   background:
     linear-gradient(90deg, #0000, var(--accent-medium)) left -50px top 0/50px 20px no-repeat var(--waiting-animation);
-  /* animation: loader 1.5s infinite linear; */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -575,6 +796,8 @@ input[type=checkbox] {
   }
 }
 
+/* End loading animation */
+
 @media only screen and (min-width: 1200px) {
   .drawer {
     border-radius: 30px 0 0 30px;
@@ -585,5 +808,3 @@ input[type=checkbox] {
     width: 50%;
   }
 }
-
-/* End display/hide overlay for loading state and loading animation */
