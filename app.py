@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import logging
-import datetime
+from datetime import datetime
 from langchain_openai import ChatOpenAI
 from pydantic.v1 import BaseModel, ValidationError, Field
 from typing import List
