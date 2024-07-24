@@ -1,8 +1,5 @@
 /* These are CSS variables. They allow you to change the theme of the chatbot by replacing the values. Read more about them here: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
 :root {
-  /* logo and account background hover underline */
-
-  /* --header-background: #3352A1; */
   --default-light: #FFFFFF;
   --default-dark: #000000;
   --accent-bright: #C4FF47;
@@ -34,6 +31,8 @@ body {
   margin: 0;
 }
 
+/* Background images  */
+
 body.full-layout {
   background: linear-gradient(0deg, rgba(60, 60, 60, 0.55), rgba(60, 60, 60, 0.55)), url('alice-triquet-HeEJU3nrg_0-unsplash.png'), #000000;
   background-size: cover;
@@ -51,6 +50,8 @@ body.create {
   background-size: cover;
   background-position: center;
 }
+
+/* End background images */
 
 body,
 input,
@@ -248,6 +249,11 @@ aside {
 }
 
 .location,
+.dates-wrapper {
+  width: 100%;
+}
+
+.location,
 .dates-wrapper,
 fieldset,
 .bottom-section,
@@ -328,6 +334,7 @@ input[type=checkbox] {
 }
 
 /* Sign in form styles */
+
 .form-group {
   margin-bottom: 15px;
 }
@@ -506,6 +513,7 @@ input[type=checkbox] {
 
   .dates-wrapper .calendar {
     display: flex;
+    justify-content: space-between;
     gap: 10px;
   }
 
@@ -666,6 +674,7 @@ input[type=checkbox] {
 
   /* My Trips Page Styles */
   /* If adding more info to my-trips, this is the width to adjust */
+
   .my-trip-panel {
     width: 70%;
     display: flex;
@@ -682,6 +691,7 @@ input[type=checkbox] {
 }
 
 /* Checkbox styles */
+
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
   color: var(--accent-medium);
   font-weight: 700;
@@ -764,6 +774,7 @@ input[type=checkbox] {
 }
 
 /* Loading animation */
+
 .loader {
   width: 120px;
   width: 100%;
@@ -784,6 +795,8 @@ input[type=checkbox] {
     background-position: right -50px top 0
   }
 }
+
+/* End loading animation */
 
 @media only screen and (min-width: 1200px) {
   .drawer {

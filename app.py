@@ -91,7 +91,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 # Define the route for the signup page
 @app.route('/signup', methods=['GET', 'POST'])
@@ -113,7 +113,7 @@ def index():
     """Renders the main page."""
     return render_template("index.html", user=current_user)
 
-# Define the route for the trip planning page
+# Define the route for the plan trip page
 @app.route("/plan_trip", methods=["GET", "POST"])
 @login_required
 def plan_trip():
