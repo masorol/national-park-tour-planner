@@ -40,8 +40,7 @@
           <label for="location-search" class="form-label">Where do you want to go?</label>
           <select id="location-search" name="location-search">
             {% for park in parks %}
-            <option value="{{ park.name }}" {% if trip and trip.location==park.name %}selected{% endif %}>{{ park.name
-              }}</option>
+            <option value="{{ park.name }}">{{ park.name }}</option>
             {% endfor %}
           </select>
         </div>
