@@ -4,6 +4,7 @@ import requests
 import json
 import os
 import io
+from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_json_chat_agent, AgentExecutor, tool
 from langchain_community.tools import WikipediaQueryRun
@@ -28,31 +29,26 @@ app = Flask(__name__)
 # Initialize the OpenAI language model
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.5, max_tokens=4000)
 
-def log_run(run_status):
-    """Logs the status of a run if it is cancelled, failed, or expired."""
-    if run_status in ["cancelled", "failed", "expired"]:
-        log.error(f"{datetime.datetime.now()} Run {run_status}\n")
-
 # Define the route for the home page
 @app.route("/", methods=["GET"])
 def index():
     """Renders the main page."""
     return render_template("index.html")
 
-# Define the route for the trip planning page
+# Define the route for the plan trip page
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
     """Renders the trip planning page."""
     parks = get_parks()
     return render_template("plan-trip.html", parks=parks)
 
+# Define the route for getting the list of national parks
 def get_parks():
     """Fetches the entire list of national parks from the NPS API."""
     url = "https://developer.nps.gov/api/v1/parks"
     params = {
-        # todo: does this work? If so, need to declare a global variable for NPS_API_KEY
         "api_key": os.environ.get("NPS_API_KEY"),
-        "limit": 75, # slow 47 seconds now 7 seconds - cache? # Adjust this number based on the API's limit
+        "limit": 75, # Adjust this number based on the API's limit
         "start": 0
     }
     parks = []
@@ -68,7 +64,7 @@ def get_parks():
             break
     return parks
 
-# Define the route for viewing the generated trip itinerary
+# Define the route for view trip page with the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
     """Handles the form submission to view the generated trip itinerary."""
@@ -106,7 +102,7 @@ def view_trip():
     # Render the response on the view-trip.html page
     return render_template("view-trip.html", output=response["output"])
 
-
+# Define the route for the PDF download
 @app.route("/download_pdf", methods=["POST"])
 def download_pdf():
     """Handles the PDF download of the generated trip itinerary."""
@@ -152,6 +148,7 @@ def download_pdf():
     buffer.seek(0)
     return send_file(buffer, as_attachment=True, download_name="itinerary.pdf", mimetype='application/pdf')
 
+# Define a function to generate the input string
 def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging, adventure):
     """
     Generates a structured input string for the trip planning agent.
@@ -194,6 +191,7 @@ def generate_trip_input(location, trip_start, trip_end, traveling_with, lodging,
     Respond only with a valid parseable JSON object representing the itinerary.
     """
 
+# Define a function to create the Wikipedia tool
 def create_wikipedia_tool():
     """
     Creates a built-in langchain tool for querying Wikipedia.
@@ -205,6 +203,7 @@ def create_wikipedia_tool():
         description="Useful for Wikipedia searches about national parks."
     )
 
+# Define a function to create the National Park Service tool
 def create_nps_tool():
     """
     Creates a custom tool for retrieving data from the National Park Service (NPS) API. 
@@ -213,6 +212,7 @@ def create_nps_tool():
     # Load your API key from an environment variable
     api_key = os.environ.get("NPS_API_KEY")
 
+    # Define a function to fetch data from the NPS API  
     def fetch_data(endpoint, params):
         """
         Fetches data from the NPS API given an endpoint and parameters.
@@ -224,12 +224,14 @@ def create_nps_tool():
             return response.json()
         return {"error": f"Failed to fetch data from {endpoint}, status code: {response.status_code}"}
 
+    # Define a function to search for parks by name using the NPS API
     def search_parks_by_name(park_name):
         """
         Searches for parks by name.
         """
         return fetch_data("parks", {"q": park_name}).get("data", [])
 
+    # Define a function to find the best matching park
     def find_best_matching_park(park_name, parks):
         """
         Finds the best matching park using fuzzy search.
@@ -241,6 +243,7 @@ def create_nps_tool():
                 return park
         return None
 
+    # Define a function to find related data for a park
     def find_related_data_for_park(park):
         """
         Finds related data for a park from various NPS API endpoints.
@@ -252,6 +255,7 @@ def create_nps_tool():
         related_data = {endpoint: fetch_data(endpoint, {"parkCode": park_code}) for endpoint in endpoints}
         return related_data
     
+    # Define a tool for searching for parks and related data
     @tool
     def search_park_and_related_data(input: str) -> str:
         """
