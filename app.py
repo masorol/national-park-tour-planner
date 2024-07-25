@@ -1,13 +1,18 @@
 from flask import Flask, render_template, request
 import logging
 from datetime import datetime
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
-from pydantic.v1 import BaseModel, ValidationError, Field
-from typing import List
+from langchain_core.prompts.few_shot import FewShotPromptTemplate
+from langchain_core.prompts.prompt import PromptTemplate
+from langchain_openai import OpenAI
+from langchain_core.output_parsers import JsonOutputParser
 
 # Initialize the OpenAI language model
-llm = ChatOpenAI()
+llm = OpenAI(
+   max_tokens = -1 # not recommended!!
+)
+
+# Initialize the output parser
+parser = JsonOutputParser()
 
 # app will run at: http://127.0.0.1:5000/
 
@@ -18,82 +23,76 @@ log = logging.getLogger("app")
 # Initialize the Flask application
 app = Flask(__name__)
 
-# Define the data model
-class ItineraryItem(BaseModel):
-    day: int = Field(description="The day number of the trip")
-    date: str = Field(description="The date of the itinerary item")
-    morning: str = Field(description="The morning activity")
-    afternoon: str = Field(description="The afternoon activity")
-    evening: str = Field(description="The evening activity")
+# Create a prompt to build a new trip
+def build_new_trip_prompt_template():
+    examples = [
+        {
+          "prompt":
+"""
+This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. This person will be traveling solo, with kids and would like to stay in campsites. They want to go hiking, swimming. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our web site’s programmatic workflow.  Output the itinerary as only JSON with no text before or after the JSON.
+""",
+          "response": """{{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","num_days":"3","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}"""
+        },
+                {
+          "prompt":
+"""
+This trip is to Yosemite National Park between 2024-05-23 and 2024-05-25. This person will be traveling solo, with kids and would like to stay in campsites. They want to go hiking, swimming. Create a daily itinerary for this trip using this information. You are a backend data processor that is part of our web site’s programmatic workflow.  Output the itinerary as only JSON with no text before or after the JSON.
+""",
+          "response": """{{"trip_name":"My awesome trip to Yosemite 2024 woohoooo","location":"Yosemite National Park","trip_start":"2024-05-23","trip_end":"2024-05-25","num_days":"3","traveling_with":"solo, with kids","lodging":"campsites","adventure":"hiking, swimming","itinerary":[{{"day":"1","date":"2024-05-23","morning":"Arrive at Yosemite National Park","afternoon":"Set up campsite at North Pines Campground","evening":"Explore the campground and have a family campfire dinner"}},{{"day":"2","date":"2024-05-24","morning":"Guided tour of Yosemite Valley (includes stops at El Capitan, Bridalveil Fall, Half Dome)","afternoon":"Picnic lunch in the Valley","evening":"Relax at the campsite, storytelling around the campfire"}},{{"day":"3","date":"2024-05-25","morning":"Hike to Mirror Lake (easy hike, great for kids)","afternoon":"Swimming at Mirror Lake","evening":"Dinner at the campsite, stargazing"}}]}}"""
+        }
+    ]
 
-# Define the response model
-class TripResponse(BaseModel):
-    trip_name: str = Field(description="The name of the trip")
-    location: str = Field(description="The location of the trip")
-    trip_start: str = Field(description="The start date of the trip")
-    trip_end: str = Field(description="The end date of the trip")
-    num_days: int = Field(description="The number of days in the trip")
-    traveling_with: str = Field(description="The people the traveler is traveling with")
-    lodging: str = Field(description="The type of lodging the traveler is staying in")
-    adventure: str = Field(description="The activities the traveler wants to do")
-    itinerary: List[ItineraryItem] = Field(description="List of itinerary items")
+    example_prompt = PromptTemplate.from_template(
+      template =
+"""
+{prompt}\n{response}
+"""
+    )
 
-# Define a function to build the new trip prompt 
-def build_new_trip_prompt():
-    """Builds a prompt template for generating a new trip itinerary."""
-    return PromptTemplate.from_template("This trip is to {location} between {trip_start} and {trip_end}. This person will be traveling {traveling_with_list} and would like to stay in {lodging_list}. They want to {adventure_list}. Create an daily itinerary for this trip using this information.")
+    few_shot_prompt = FewShotPromptTemplate(
+      examples = examples,
+      example_prompt = example_prompt,
+      suffix = "This trip is to {location} between {trip_start} and {trip_end}. This person will be traveling {traveling_with} and would like to stay in {lodging}. They want to {adventure}. Create an daily itinerary for this trip using this information. You are a backend data processor that is part of our site's programmatic workflow. Output the itinerary as only JSON with no text before or after the JSON.",
+      input_variables = ["location", "trip_start", "trip_end", "traveling_with", "lodging", "adventure"],
+    )
+    
+    return few_shot_prompt
 
 # Define the route for the home page
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
-
+  
 # Define the route for the plan trip page
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
-    return render_template("plan-trip.html")
+  return render_template("plan-trip.html")
 
 # Define the route for view trip page with the generated trip itinerary
 @app.route("/view_trip", methods=["POST"])
 def view_trip():
-    traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
-    lodging_list = ", ".join(request.form.getlist("lodging"))
-    adventure_list = ", ".join(request.form.getlist("adventure"))
-    
-    # todo: likely take this out. In the lesson clean_form_data() is changed to output = chain.invoke which is basically below (output/response)
-    # cleaned_form_data = {
-    #     "location": request.form["location-search"],
-    #     "trip_start": request.form["trip-start"],
-    #     "trip_end": request.form["trip-end"],
-    #     "traveling_with_list": traveling_with_list,
-    #     "lodging_list": lodging_list,
-    #     "adventure_list": adventure_list,
-    #     "trip_name": request.form["trip-name"]
-    # }
-    
-    prompt = build_new_trip_prompt()
+  traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
+  lodging_list = ", ".join(request.form.getlist("lodging"))
+  adventure_list = ", ".join(request.form.getlist("adventure"))
 
-    structured_llm = llm.with_structured_output(TripResponse)
+  prompt = build_new_trip_prompt_template()
 
-    chain = prompt | structured_llm
-    
-    # Invoke the chain with the cleaned form data
-    response = chain.invoke({
-        "location": request.form["location-search"],
-        "trip_start": request.form["trip-start"],
-        "trip_end": request.form["trip-end"],
-        "traveling_with_list": traveling_with_list,
-        "lodging_list": lodging_list,
-        "adventure_list": adventure_list,
-        "trip_name": request.form["trip-name"]
-    })
-    
-    try:
-        log.info(response.json())
-        return render_template("view-trip.html", output=response)
-    except (ValidationError, SyntaxError, ValueError) as e:
-        log.error(f"Response validation failed: {e}")
+  chain = prompt | llm | parser
 
+  output = chain.invoke({
+    "location": request.form["location-search"],
+    "trip_start": request.form["trip-start"],
+    "trip_end": request.form["trip-end"],
+    "traveling_with": traveling_with_list,
+    "lodging": lodging_list,
+    "adventure": adventure_list,
+    "trip_name": request.form["trip-name"]
+  })
+
+  return render_template("view-trip.html", output = output)
+
+
+    
 # Run the flask server
 if __name__ == "__main__":
     app.run()
