@@ -27,8 +27,7 @@ log = logging.getLogger("app")
 # Initialize the Flask application
 app = Flask(__name__)
  
-# Set up the database       
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
+# Set up the database      
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -306,7 +305,7 @@ def init_db():
             new_park = Park(name=park["name"], code=park["code"])
             db.session.add(new_park)
     db.session.commit()
-    print("Database initialized with parks!")
+    print("Database initialized!")
 
 # Run the Flask server
 if __name__ == "__main__":
