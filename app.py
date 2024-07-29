@@ -42,6 +42,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# Define the Park model
+class Park(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    code = db.Column(db.String(10), unique=True, nullable=False)
+
 # Define the User model for the database
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -145,7 +151,7 @@ def plan_trip():
             db.session.commit()
             return redirect(url_for('view_saved_trip', trip_id=trip.id))
 
-    parks = get_parks()
+    parks = Park.query.all()
 
     return render_template("plan-trip.html", parks=parks, user=current_user, trip=trip)
 
@@ -465,6 +471,13 @@ def create_nps_tool():
 @app.cli.command("init-db")
 def init_db():
     db.create_all()
+    parks = get_parks()
+    for park in parks:
+        existing_park = Park.query.filter_by(code=park["code"]).first()
+        if not existing_park:
+            new_park = Park(name=park["name"], code=park["code"])
+            db.session.add(new_park)
+    db.session.commit()
     print("Database initialized!")
 
 # Run the Flask server

@@ -51,12 +51,12 @@
         <div class="create-trip-edit-buttons">
 
           <a href="{{ url_for('plan_trip', trip_id=trip_id) }}" class="view-trip-btn" id="edit-trip"><img
-              src="../static/img/pen-black.png" alt="edit icon" class="icons" />Edit trip</a>
+              src="../static/img/pen-black.png" alt="pencil icon" class="icons" />Edit trip</a>
           <button class="view-trip-btn" onclick="downloadPDF()" id="export-trip"><img
-              src="../static/img/export-black.png" alt="pdf icon" class="icons" />Export trip</button>
+              src="../static/img/export-black.png" alt="file icon" class="icons" />Export trip</button>
           <form action="{{ url_for('delete_trip', trip_id=trip_id) }}" method="POST" class="view-trip-btn"
             id="delete-trip">
-            <button type="submit"><img src="../static/img/x-black.png" alt="trash icon" class="icons" />Delete
+            <button type="submit"><img src="../static/img/x-black.png" alt="delete icon" class="icons" />Delete
               trip</button>
           </form>
         </div>
