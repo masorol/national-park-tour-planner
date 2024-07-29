@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, send_file
+# ! edit
+from flask_sqlalchemy import SQLAlchemy
 import logging
 import requests
 import json
@@ -29,6 +31,22 @@ app = Flask(__name__)
 # Initialize the OpenAI language model
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.5, max_tokens=4000)
 
+# ! edit  
+# Set up the database       
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize the database
+db = SQLAlchemy(app)
+
+# Define the Park model
+class Park(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    code = db.Column(db.String(10), unique=True, nullable=False)
+# ! end edit
+
 # Define the route for the home page
 @app.route("/", methods=["GET"])
 def index():
@@ -39,7 +57,9 @@ def index():
 @app.route("/plan_trip", methods=["GET"])
 def plan_trip():
     """Renders the trip planning page."""
-    parks = get_parks()
+    # ! edit
+    # parks = get_parks()
+    parks = Park.query.all()
     return render_template("plan-trip.html", parks=parks)
 
 # Define the route for getting the list of national parks
@@ -277,6 +297,21 @@ def create_nps_tool():
         return json.dumps(combined_data, indent=4)
 
     return search_park_and_related_data
+  
+# ! edit
+# Create a Flask CLI command for initializing the database
+# Run "flask init-db" from the command line to initialize the database
+@app.cli.command("init-db")
+def init_db():
+    db.create_all()
+    parks = get_parks()
+    for park in parks:
+        existing_park = Park.query.filter_by(code=park["code"]).first()
+        if not existing_park:
+            new_park = Park(name=park["name"], code=park["code"])
+            db.session.add(new_park)
+    db.session.commit()
+    print("Database initialized with parks!")
 
 # Run the Flask server
 if __name__ == "__main__":
