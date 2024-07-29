@@ -102,8 +102,7 @@ def index():
 
 # Define the route for the plan trip page
 @app.route("/plan_trip", methods=["GET"])
-# !edit
-# @login_required
+@login_required
 def plan_trip():
     """Renders the trip planning page."""
     parks = Park.query.all()
