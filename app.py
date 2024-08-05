@@ -36,7 +36,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize the database
+# Create the database object
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
