@@ -31,7 +31,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize the database
+# Create the database object
 db = SQLAlchemy(app)
 
 # Define the Park model
@@ -86,12 +86,12 @@ def view_trip():
     location = request.form["location-search"]
     trip_start = request.form["trip-start"]
     trip_end = request.form["trip-end"]
-    traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
-    lodging_list = ", ".join(request.form.getlist("lodging"))
-    adventure_list = ", ".join(request.form.getlist("adventure"))
+    traveling_with = ", ".join(request.form.getlist("traveling-with"))
+    lodging = ", ".join(request.form.getlist("lodging"))
+    adventure = ", ".join(request.form.getlist("adventure"))
 
     # Create the input string with the user's unique trip information
-    input_data = generate_trip_input(location, trip_start, trip_end, traveling_with_list, lodging_list, adventure_list)
+    input_data = generate_trip_input(location, trip_start, trip_end, traveling_with, lodging, adventure)
 
     # Create a tool for the agent to use that utilizes Wikipedia's run function
     wikipedia_tool = create_wikipedia_tool()
