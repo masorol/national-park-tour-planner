@@ -36,7 +36,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", 'default-secret-key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nature_nook.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize the database
+# Create the database object
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -127,29 +127,6 @@ def plan_trip():
     trip = None
     if trip_id:
         trip = Trip.query.get_or_404(trip_id)
-    
-    if request.method == 'POST':
-        location = request.form["location-search"]
-        trip_start_str = request.form["trip-start"]
-        trip_end_str = request.form["trip-end"]
-        trip_start = datetime.strptime(trip_start_str, '%Y-%m-%d').date()
-        trip_end = datetime.strptime(trip_end_str, '%Y-%m-%d').date()
-        traveling_with = ", ".join(request.form.getlist("traveling-with"))
-        lodging = ", ".join(request.form.getlist("lodging"))
-        adventure = ", ".join(request.form.getlist("adventure"))
-        trip_name = request.form["trip-name"]
-
-        if trip:
-            # Update existing trip
-            trip.trip_name = trip_name
-            trip.location = location
-            trip.trip_start = trip_start
-            trip.trip_end = trip_end
-            trip.traveling_with = traveling_with
-            trip.lodging = lodging
-            trip.adventure = adventure
-            db.session.commit()
-            return redirect(url_for('view_saved_trip', trip_id=trip.id))
 
     parks = Park.query.all()
 
@@ -161,7 +138,7 @@ def get_parks():
     url = "https://developer.nps.gov/api/v1/parks"
     params = {
         "api_key": os.environ.get("NPS_API_KEY"), 
-        "limit": 75, # was slow: 47 seconds now 6 seconds # Adjust this number based on the API's limit
+        "limit": 75, # Adjust this number based on the API's limit
         "start": 0
     }
     parks = [] 
