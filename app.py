@@ -159,6 +159,8 @@ def get_parks():
 @login_required
 def view_trip():
     """Handles the form submission to view the generated trip itinerary."""
+    trip_id = request.form.get('trip_id')  # Retrieve trip_id from the form
+    
     # Extract form data
     location = request.form["location-search"]
     trip_start_str = request.form["trip-start"]
@@ -193,10 +195,12 @@ def view_trip():
 
     output = response["output"]
 
-    # Check if a trip with the same name already exists for the current user
-    existing_trip = Trip.query.filter_by(user_id=current_user.id, trip_name=trip_name).first()
+    # Query the database for the existing trip or create a new one
+    existing_trip = Trip.query.get(trip_id) if trip_id else None
+    
     if existing_trip:
         # Update the existing trip
+        existing_trip.trip_name = trip_name
         existing_trip.location = location
         existing_trip.trip_start = trip_start
         existing_trip.trip_end = trip_end
@@ -244,6 +248,7 @@ def delete_trip(trip_id):
     db.session.delete(trip)
     db.session.commit()
     flash("Trip deleted successfully.", "success")
+    log.info("Trip deleted: %s", flash)
     return redirect(url_for('my_trips'))
 
 # Define the route for viewing a saved trip
