@@ -62,6 +62,8 @@ class Trip(db.Model):
     location = db.Column(db.String(150), nullable=False)
     trip_start = db.Column(db.Date, nullable=False)
     trip_end = db.Column(db.Date, nullable=False)
+    trip_start_formatted = db.Column(db.String(150), nullable=False)
+    trip_end_formatted = db.Column(db.String(150), nullable=False)
     traveling_with = db.Column(db.String(150), nullable=False)
     lodging = db.Column(db.String(150), nullable=False)
     adventure = db.Column(db.String(150), nullable=False)
@@ -166,13 +168,15 @@ def view_trip():
     trip_end_str = request.form["trip-end"]
     trip_start = datetime.strptime(trip_start_str, '%Y-%m-%d').date()
     trip_end = datetime.strptime(trip_end_str, '%Y-%m-%d').date()
+    trip_start_formatted = trip_start.strftime('%m/%d/%Y')
+    trip_end_formatted = trip_end.strftime('%m/%d/%Y') 
     traveling_with = ", ".join(request.form.getlist("traveling-with"))
     lodging = ", ".join(request.form.getlist("lodging"))
     adventure = ", ".join(request.form.getlist("adventure"))
     trip_name = request.form["trip-name"]
 
     # Create the input string with the user's unique trip information
-    input_data = generate_trip_input(trip_name, location, trip_start_str, trip_end_str, traveling_with, lodging, adventure)
+    input_data = generate_trip_input(trip_name, location, trip_start_formatted, trip_end_formatted, traveling_with, lodging, adventure)
     
     # Create a tool for the agent to use that utilizes Wikipedia's run function
     wikipedia_tool = create_wikipedia_tool()
@@ -203,6 +207,8 @@ def view_trip():
         existing_trip.location = location
         existing_trip.trip_start = trip_start
         existing_trip.trip_end = trip_end
+        existing_trip.trip_start_formatted = trip_start_formatted
+        existing_trip.trip_end_formatted = trip_end_formatted
         existing_trip.traveling_with = traveling_with
         existing_trip.lodging = lodging
         existing_trip.adventure = adventure
@@ -214,7 +220,7 @@ def view_trip():
     else:
         # Create a new trip
         new_trip = Trip(user_id=current_user.id, trip_name=trip_name, location=location, trip_start=trip_start, 
-                        trip_end=trip_end, traveling_with=traveling_with, lodging=lodging, adventure=adventure,
+                        trip_end=trip_end, trip_start_formatted=trip_start_formatted, trip_end_formatted=trip_end_formatted, traveling_with=traveling_with, lodging=lodging, adventure=adventure,
                         typical_weather=output["typical_weather"], itinerary=json.dumps(output["itinerary"]),
                         important_things_to_know=output["important_things_to_know"])
         db.session.add(new_trip)
@@ -259,8 +265,8 @@ def view_saved_trip(trip_id):
     output = {
         "trip_name": trip.trip_name,
         "location": trip.location,
-        "trip_start": trip.trip_start,
-        "trip_end": trip.trip_end,
+        "trip_start": trip.trip_start_formatted,
+        "trip_end": trip.trip_end_formatted,
         "typical_weather": trip.typical_weather,
         "traveling_with": trip.traveling_with,
         "lodging": trip.lodging,
@@ -358,6 +364,7 @@ def generate_trip_input(trip_name, location, trip_start, trip_end, traveling_wit
     Make sure all itinerary fields are filled with appropriate and engaging content.
     Include descriptive information about each day's activities and destination.
     Respond only with a valid parseable JSON object representing the itinerary.
+    All dates should be in a mm/dd/yyyy format.
     """
     
 # Define a function to create the Wikipedia tool
