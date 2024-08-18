@@ -15,7 +15,7 @@ On a Mac:
 `source nptour-env/bin/activate`
 
 On Windows:
-`nptour-env\Scripts\activate`
+`source nptour-env/Scripts/activate`
 
 <br>
 Once the virtual environment is activated, the beginning of your terminal prompt should display (nptour-env).
@@ -23,12 +23,7 @@ Once the virtual environment is activated, the beginning of your terminal prompt
 <br>
 Install the LangChain modules by running (in both a Mac and Windows):
 
-<<<<<<< HEAD
-`pip install langchain langchain-core langchain-community langchain-openai langchainhub fuzzywuzzy python-Levenshtein flask`
-=======
 `pip install langchain langchain-core langchain-community langchain-openai langchainhub fuzzywuzzy python-Levenshtein wikipedia flask reportlab flask-login flask-sqlalchemy`
-
-> > > > > > > 12-save-trip
 
 You'll see an openai-env folder has been added to the directory with all of the installed dependencies.
 
