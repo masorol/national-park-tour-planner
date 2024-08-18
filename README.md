@@ -15,7 +15,7 @@ On a Mac:
 `source nptour-env/bin/activate`
 
 On Windows:
-`nptour-env\Scripts\activate`
+`source nptour-env/Scripts/activate`
 
 <br>
 Once the virtual environment is activated, the beginning of your terminal prompt should display (nptour-env).
