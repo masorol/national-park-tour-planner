@@ -58,19 +58,23 @@ def plan_trip():
 
 # Define the route for getting the list of national parks
 def get_parks():
-    """Fetches the entire list of national parks from the NPS API."""
+    """Fetches the entire list of national parks and historic parks from the NPS API."""
     url = "https://developer.nps.gov/api/v1/parks"
     params = {
         "api_key": os.environ.get("NPS_API_KEY"),
-        "limit": 75, # Adjust this number based on the API's limit
-        "start": 0
+        "limit": 75,  # Adjust this number based on the API's limit
+        "start": 0,
+        "designation": "National Park,National Historic Park",  # Filter by designations
     }
     parks = []
     while True:
         response = requests.get(url, params=params)
         if response.status_code == 200:
             data = response.json()
-            parks.extend([{"name": park["fullName"], "code": park["parkCode"]} for park in data["data"]])
+            for park in data["data"]:
+                designation = park.get("designation", "")
+                if "National Park" in designation or "National Historic Park" in designation:
+                    parks.append({"name": park["fullName"], "code": park["parkCode"]})
             if len(data["data"]) < params["limit"]:
                 break
             params["start"] += params["limit"]
