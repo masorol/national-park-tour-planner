@@ -40,12 +40,12 @@ def view_trip():
     location = request.form["location-search"]
     trip_start = request.form["trip-start"]
     trip_end = request.form["trip-end"]
-    traveling_with_list = ", ".join(request.form.getlist("traveling-with"))
-    lodging_list = ", ".join(request.form.getlist("lodging"))
-    adventure_list = ", ".join(request.form.getlist("adventure"))
+    traveling_with = ", ".join(request.form.getlist("traveling-with"))
+    lodging = ", ".join(request.form.getlist("lodging"))
+    adventure = ", ".join(request.form.getlist("adventure"))
 
     # Create the input string with the user's unique trip information
-    input_data = generate_trip_input(location, trip_start, trip_end, traveling_with_list, lodging_list, adventure_list)
+    input_data = generate_trip_input(location, trip_start, trip_end, traveling_with, lodging, adventure)
     
     # print('input_data: \n', input_data, '\n')
 
