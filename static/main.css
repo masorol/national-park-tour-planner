@@ -317,20 +317,17 @@ input {
   border-bottom: 4px solid var(--button-light-accent);
 }
 
+/* ! */
 fieldset input {
   margin-top: 10px;
   padding: 10px 20px;
-  width: 0;
+  /* width: 0; */
 }
 
 .plan-trip-form .btn {
   color: var(--default-light);
   width: 100%;
   border: none;
-}
-
-input[type=checkbox] {
-  opacity: 0;
 }
 
 /* Sign in form styles */
@@ -448,7 +445,6 @@ input[type=checkbox] {
   display: flex;
   align-items: center;
   border-radius: var(--border-radius);
-  /* overflow: hidden; */
 }
 
 .trip-image {
@@ -695,16 +691,27 @@ input[type=checkbox] {
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-label {
   color: var(--accent-medium);
   font-weight: 700;
+  text-decoration: underline;
+}
+
+/* The :has() pseudo selector is used to target elements that have a parent element that matches the selector. It's recently been approved in all modern browsers. You can learn more about the :has() selector here: https://developer.mozilla.org/en-US/docs/Web/CSS/:has */
+.custom-checkbox:has(input[type="checkbox"]:checked) {
+  background-color: var(--button-hover);
+  border-bottom: 4px solid var(--accent-medium);
+}
+
+.custom-checkbox:has(input[type="checkbox"]:focus) {
+  outline-color: transparent;
+}
+
+.custom-checkbox:has(input[type="checkbox"]:focus-visible) {
+  outline: 2px solid #1766b4;
+  outline-offset: 2px;
 }
 
 .custom-checkbox {
-  display: inline-block;
   position: relative;
   cursor: pointer;
-}
-
-.checkbox-label {
-  display: inline-block;
 }
 
 .visually-hidden {
