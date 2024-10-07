@@ -163,7 +163,11 @@
             <input type="text" id="trip-name" name="trip-name" placeholder="Spring break!"
               value="{{ trip.trip_name if trip else '' }}">
           </div>
+          {% if trip %}
+          <button type="submit" class="btn">Update trip</button>
+          {% else %}
           <button type="submit" class="btn">Create trip</button>
+          {% endif %}
         </div>
       </form>
     </div>

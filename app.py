@@ -163,8 +163,7 @@ def get_parks():
 @app.route("/view_trip", methods=["POST"])
 @login_required
 def view_trip():
-    """Handles the form submission to view the generated trip itinerary."""
-       
+    """Handles the form submission to view the generated trip itinerary."""    
     # Extract form data
     trip_id = request.form.get('trip_id')  # Retrieve trip_id from the form
     location = request.form["location-search"]
