@@ -11,11 +11,8 @@ On Windows:
 <br>
 After creating the virtual environment, you need to activate it:
 
-On a Mac:
-`source nptour-env/bin/activate`
-
 On Windows:
-`source nptour-env/Scripts/activate`
+`.\nptour-env\Scripts\Activate.ps1`
 
 <br>
 Once the virtual environment is activated, the beginning of your terminal prompt should display (nptour-env).
